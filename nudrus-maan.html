@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نُدرس معًا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A41;
+    --ink-soft:#3A4B66;
+    --paper:#FBF8F2;
+    --paper-dim:#F1ECE1;
+    --brick:#B8532E;
+    --brick-dark:#94411F;
+    --sage:#5C8368;
+    --gold:#C79A2B;
+    --line:#E4DDD0;
+    --white:#FFFFFF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Almarai', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Cairo', sans-serif;}
+  button{font-family:inherit; cursor:pointer; border:none;}
+  a{color:var(--brick);}
+  ::selection{background:var(--gold); color:var(--ink);}
+
+  /* ---------- ROLE SELECT SCREEN ---------- */
+  #screen-role{
+    min-height:100vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; padding:32px 20px; position:relative;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%),
+      var(--paper);
+  }
+  .brand{text-align:center; margin-bottom:40px;}
+  .brand-mark{font-family:'Cairo', sans-serif; font-weight:900; font-size:38px; color:var(--ink); letter-spacing:-0.5px;}
+  .brand-mark span{color:var(--brick);}
+  .brand-tag{margin-top:10px; font-size:15px; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:10px; display:inline-block;}
+  .role-cards{display:flex; gap:20px; flex-wrap:wrap; justify-content:center; max-width:640px;}
+  .role-card{
+    background:var(--white); border:1px solid var(--line); border-radius:6px; padding:26px 24px;
+    width:270px; text-align:right; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; position:relative;
+  }
+  .role-card::before{content:''; position:absolute; top:0; right:0; width:100%; height:4px; background:var(--role-color, var(--brick)); border-radius:6px 6px 0 0;}
+  .role-card:hover{transform:translateY(-4px); box-shadow:0 14px 28px rgba(27,42,65,0.1); border-color:transparent;}
+  .role-card .icon{font-size:30px; display:inline-block; margin-bottom:14px;}
+  .role-card h3{font-size:19px; margin-bottom:8px;}
+  .role-card p{font-size:13.5px; color:var(--ink-soft); line-height:1.7; margin-bottom:18px;}
+  .role-card button{background:var(--role-color, var(--brick)); color:var(--white); padding:10px 18px; border-radius:4px; font-weight:800; font-size:14px; width:100%;}
+  .role-card.student{ --role-color:var(--sage); }
+
+  /* ---------- SIGNUP & PLANS SCREENS ---------- */
+  #screen-signup, #screen-plans{
+    min-height:100vh; display:none; align-items:center; justify-content:center; padding:32px 20px;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%),
+      var(--paper);
+  }
+  .auth-panel{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:32px 30px; width:100%; max-width:400px;}
+  .auth-panel .brand-mark{font-size:22px; margin-bottom:4px;}
+  .auth-panel .step-tag{font-size:12.5px; color:var(--ink-soft); margin-bottom:22px; border-bottom:1px dashed var(--line); padding-bottom:14px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:var(--ink-soft);}
+  .field input, .field select, .field textarea{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:14px; background:var(--paper);}
+  .field-row{display:flex; gap:14px;}
+  .field-row .field{flex:1;}
+  .auth-status{font-size:12.5px; margin-top:12px; min-height:16px;}
+  .auth-status.ok{color:var(--sage); font-weight:700;}
+  .auth-status.err{color:var(--brick); font-weight:700;}
+  .auth-status.pending{color:var(--ink-soft);}
+  .btn-primary{background:var(--brick); color:var(--white); padding:11px 24px; border-radius:4px; font-weight:800; font-size:14.5px;}
+  .btn-primary:hover{background:var(--brick-dark);}
+  .btn-block{width:100%;}
+  .back-link{background:transparent; color:var(--ink-soft); font-size:12.5px; text-decoration:underline; margin-top:14px; display:block; text-align:center; width:100%;}
+
+  .plans-wrap{width:100%; max-width:960px;}
+  .plans-head{text-align:center; margin-bottom:28px;}
+  .plans-head h1{font-size:24px; margin-bottom:6px;}
+  .plans-head p{font-size:13.5px; color:var(--ink-soft);}
+  .plans-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px;}
+  .plan-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:22px 18px; text-align:center; display:flex; flex-direction:column;}
+  .plan-card.featured{border-color:var(--gold); box-shadow:0 10px 24px rgba(199,154,43,0.16);}
+  .plan-name{font-family:'Cairo'; font-weight:800; font-size:16px; margin-bottom:4px;}
+  .plan-duration{font-size:12px; color:var(--ink-soft); margin-bottom:14px;}
+  .plan-price{margin-bottom:16px;}
+  .plan-price .old{font-size:13px; color:var(--ink-soft); text-decoration:line-through; display:block;}
+  .plan-price .new{font-family:'Cairo'; font-weight:900; font-size:26px; color:var(--brick);}
+  .plan-price .new small{font-size:13px; font-weight:700;}
+  .plan-card button{background:var(--ink); color:var(--white); padding:10px 14px; border-radius:4px; font-weight:800; font-size:13.5px; margin-top:auto;}
+  .plan-card.featured button{background:var(--brick);}
+  .plan-note{font-size:11px; color:var(--ink-soft); margin-top:10px; line-height:1.6;}
+
+  /* ---------- APP SHELL ---------- */
+  #screen-app{ display:none; min-height:100vh; }
+  .shell{display:flex; min-height:100vh;}
+  .sidebar{width:250px; flex-shrink:0; background:var(--ink); color:var(--paper); padding:24px 18px; display:flex; flex-direction:column;}
+  .sidebar .brand-mark{font-size:21px; color:var(--paper); margin-bottom:4px;}
+  .sidebar .brand-mark span{color:var(--gold);}
+  .sidebar .role-pill{font-size:11.5px; color:var(--paper); opacity:.65; margin-bottom:28px;}
+  .nav-item{display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:5px; color:var(--paper); opacity:.72; font-size:14px; font-weight:700; background:transparent; text-align:right; width:100%; margin-bottom:2px; transition:background .15s ease, opacity .15s ease;}
+  .nav-item:hover{opacity:1; background:rgba(255,255,255,0.06);}
+  .nav-item.active{opacity:1; background:rgba(184,83,46,0.28); border-right:3px solid var(--brick);}
+  .sidebar-foot{margin-top:auto; padding-top:16px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; opacity:.6;}
+
+  .main{flex:1; padding:32px 40px; max-width:1100px;}
+  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;}
+  .topbar h1{font-size:24px;}
+  .topbar .sub{font-size:13.5px; color:var(--ink-soft); margin-top:4px;}
+  .avatar{width:40px; height:40px; border-radius:50%; background:var(--sage); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'Cairo'; font-weight:800; font-size:15px;}
+
+  .view{display:none;}
+  .view.active{display:block;}
+
+  .stat-row{display:flex; gap:16px; margin-bottom:32px; flex-wrap:wrap;}
+  .stat{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:18px 20px; flex:1; min-width:150px;}
+  .stat .num{font-family:'Cairo'; font-weight:800; font-size:26px; color:var(--ink);}
+  .stat .lbl{font-size:12.5px; color:var(--ink-soft); margin-top:4px;}
+
+  .section-title{font-size:16px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px dashed var(--line); display:flex; justify-content:space-between; align-items:center;}
+  .section-title a, .section-title button.linklike{font-size:12.5px; color:var(--brick); background:none; text-decoration:underline;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px; margin-bottom:32px;}
+  .course-card{background:var(--white); border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+  .course-cover{height:90px; background:linear-gradient(135deg, var(--cover, var(--brick)), var(--ink)); display:flex; align-items:flex-end; padding:10px 12px;}
+  .course-cover span{color:var(--white); font-size:11.5px; font-weight:700; background:rgba(0,0,0,0.28); padding:3px 8px; border-radius:3px;}
+  .course-body{padding:14px 14px 16px;}
+  .course-body h4{font-size:15px; margin-bottom:6px;}
+  .course-body .meta{font-size:12px; color:var(--ink-soft); margin-bottom:10px;}
+  .progress-track{height:6px; background:var(--paper-dim); border-radius:3px; overflow:hidden; margin-bottom:6px;}
+  .progress-fill{height:100%; background:var(--sage);}
+  .progress-txt{font-size:11px; color:var(--ink-soft);}
+
+  .card-panel{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:26px; max-width:560px;}
+  .hint{font-size:12px; color:var(--ink-soft); margin-top:14px; border-top:1px dashed var(--line); padding-top:12px;}
+
+  .quiz-box{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:26px; max-width:560px;}
+  .quiz-progress{font-size:12px; color:var(--ink-soft); margin-bottom:6px;}
+  .quiz-q{font-size:17px; font-weight:800; font-family:'Cairo'; margin-bottom:20px;}
+  .quiz-opt{display:block; width:100%; text-align:right; background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:12px 14px; margin-bottom:10px; font-size:14px; transition:border-color .15s ease, background .15s ease;}
+  .quiz-opt:hover{border-color:var(--brick);}
+  .quiz-opt.correct{background:rgba(92,131,104,0.14); border-color:var(--sage);}
+  .quiz-opt.wrong{background:rgba(184,83,46,0.12); border-color:var(--brick);}
+  .quiz-feedback{font-size:13.5px; font-weight:700; margin-top:14px; display:none;}
+
+  .post{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:18px 20px; margin-bottom:14px;}
+  .post-head{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .post-head .mini-avatar{width:32px; height:32px; border-radius:50%; background:var(--brick); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Cairo'; font-weight:800; font-size:13px;}
+  .post-head .who{font-size:13.5px; font-weight:800;}
+  .post-head .tag{font-size:11px; background:var(--paper-dim); color:var(--ink-soft); padding:2px 9px; border-radius:10px; margin-right:auto;}
+  .post p{font-size:14px; line-height:1.8; margin-bottom:10px;}
+  .post-actions{display:flex; gap:16px; font-size:12.5px; color:var(--ink-soft);}
+  .post-actions span{cursor:pointer;}
+
+  /* new: link-out cards for امتحانك بسهولة / سبورة الكترونية */
+  .link-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:28px; max-width:480px; text-align:center;}
+  .link-card .emoji{font-size:34px; margin-bottom:12px;}
+  .link-card h3{font-size:18px; margin-bottom:8px;}
+  .link-card p{font-size:13.5px; color:var(--ink-soft); margin-bottom:18px; line-height:1.7;}
+
+  /* content list (lessons / tips / videos) */
+  .content-list{display:flex; flex-direction:column; gap:12px; max-width:640px;}
+  .content-item{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  .content-item .ci-title{font-weight:800; font-size:14.5px; margin-bottom:4px;}
+  .content-item .ci-desc{font-size:12.5px; color:var(--ink-soft); line-height:1.6;}
+  .content-item a.ci-link{font-size:12.5px; font-weight:700; white-space:nowrap; text-decoration:none; background:var(--paper-dim); padding:7px 12px; border-radius:4px;}
+  .empty-state{background:var(--white); border:1px dashed var(--line); border-radius:6px; padding:26px; text-align:center; color:var(--ink-soft); font-size:13.5px; max-width:560px;}
+
+  /* upgrade card */
+  .upgrade-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:24px; max-width:400px;}
+  .upgrade-card .cur-plan{font-family:'Cairo'; font-weight:800; font-size:19px; margin-bottom:4px;}
+  .upgrade-card .cur-note{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px;}
+
+  @media (max-width:760px){
+    .shell{flex-direction:column;}
+    .sidebar{width:100%; flex-direction:row; overflow-x:auto; align-items:center; padding:14px;}
+    .sidebar .brand-mark, .sidebar .role-pill, .sidebar-foot{display:none;}
+    .nav-item{white-space:nowrap; width:auto;}
+    .main{padding:22px 18px;}
+    .role-cards{gap:16px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== ROLE SELECT ========== -->
+<div id="screen-role">
+  <div class="brand">
+    <div class="brand-mark">نُدرس <span>معًا</span></div>
+    <div class="brand-tag">نتعلم… نتطور… ونُدرس معًا</div>
+  </div>
+  <div class="role-cards">
+    <div class="role-card">
+      <div class="icon">👨‍🏫</div>
+      <h3>أنا معلم</h3>
+      <p>أدير كورساتي، طلابي، واختباراتي في مكان واحد، وأتواصل مع مجتمع المعلمين.</p>
+      <button onclick="startSignup('teacher')">ابدأ كمعلم</button>
+    </div>
+    <div class="role-card student">
+      <div class="icon">🎓</div>
+      <h3>أنا طالب معلم</h3>
+      <p>أتعلم أصول المهنة خطوة بخطوة، وأبني ملف أعمالي قبل ما ابدأ التدريس فعليًا.</p>
+      <button onclick="startSignup('student')">ابدأ كطالب معلم</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SIGNUP SCREEN ========== -->
+<div id="screen-signup">
+  <div class="auth-panel">
+    <div class="brand-mark">نُدرس <span>معًا</span></div>
+    <div class="step-tag" id="signup-step-tag">إنشاء حساب — معلم</div>
+    <div class="field"><label>الاسم الكامل</label><input type="text" id="su-name" placeholder="مثال: مهدي حسن"></div>
+    <div class="field"><label>البريد الإلكتروني</label><input type="email" id="su-email" placeholder="name@example.com"></div>
+    <div class="field"><label>رقم الموبايل</label><input type="tel" id="su-phone" placeholder="01xxxxxxxxx"></div>
+    <div class="field"><label>كلمة المرور</label><input type="password" id="su-pass" placeholder="6 أحرف على الأقل"></div>
+    <button class="btn-primary btn-block" onclick="goToPlans()" id="su-submit-btn">متابعة لاختيار الخطة</button>
+    <div class="auth-status" id="signup-status"></div>
+    <button class="back-link" onclick="backToRole('screen-signup')">رجوع</button>
+  </div>
+</div>
+
+<!-- ========== PLANS SCREEN ========== -->
+<div id="screen-plans">
+  <div class="plans-wrap">
+    <div class="plans-head">
+      <h1>اختر خطتك</h1>
+      <p>تقدر تبدأ بالخطة المجانية أو تشترك في إحدى الخطط المدفوعة</p>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">الخطة المجانية</div>
+        <div class="plan-duration">20 يوم — غير متجددة تلقائيًا</div>
+        <div class="plan-price"><div class="new">مجانًا</div></div>
+        <div class="plan-note">بعد انتهاء المدة، التجديد بـ 100 جنيه</div>
+        <button onclick="selectPlan('free')">ابدأ مجانًا</button>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">الخطة البلس</div>
+        <div class="plan-duration">28 يوم</div>
+        <div class="plan-price"><span class="old">1500 جنيه</span><div class="new">500 <small>جنيه</small></div></div>
+        <div class="plan-note">&nbsp;</div>
+        <button onclick="selectPlan('plus')">اشترك الآن</button>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-name">الخطة البرايم</div>
+        <div class="plan-duration">35 يوم</div>
+        <div class="plan-price"><span class="old">3000 جنيه</span><div class="new">1500 <small>جنيه</small></div></div>
+        <div class="plan-note">الأكثر طلبًا</div>
+        <button onclick="selectPlan('prime')">اشترك الآن</button>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">الخطة برو بلس</div>
+        <div class="plan-duration">40 يوم</div>
+        <div class="plan-price"><span class="old">5500 جنيه</span><div class="new">2500 <small>جنيه</small></div></div>
+        <div class="plan-note">&nbsp;</div>
+        <button onclick="selectPlan('proplus')">اشترك الآن</button>
+      </div>
+    </div>
+    <div class="auth-status" id="plans-status" style="text-align:center; margin-top:18px;"></div>
+    <button class="back-link" id="plans-back-btn" onclick="showSignupAgain()">رجوع لبيانات الحساب</button>
+  </div>
+</div>
+
+<!-- ========== APP SHELL ========== -->
+<div id="screen-app">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="brand-mark">نُدرس <span>معًا</span></div>
+      <div class="role-pill" id="role-pill">معلم</div>
+
+      <div id="nav-teacher" style="display:none;">
+        <button class="nav-item active" onclick="showView('t-dash', this)">🏠 الصفحة الرئيسية</button>
+        <button class="nav-item" onclick="switchRole()">🔁 تغيير المسار</button>
+        <button class="nav-item" onclick="showView('v-learn', this)">📖 تعلم كيف</button>
+        <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/examform','_blank')">📝 امتحانك بسهولة</button>
+        <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')">🖊️ سبورة إلكترونية</button>
+        <button class="nav-item" onclick="showView('v-upgrade', this)">⭐ طوّر خطتك</button>
+        <button class="nav-item" onclick="showView('t-community', this)">🤝 المجتمع</button>
+      </div>
+
+      <div id="nav-student" style="display:none;">
+        <button class="nav-item active" onclick="showView('s-home', this)">🏠 الصفحة الرئيسية</button>
+        <button class="nav-item" onclick="switchRole()">🔁 تغيير المسار</button>
+        <button class="nav-item" onclick="showView('v-learn', this)">📖 تعلم كيف</button>
+        <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/examform','_blank')">📝 امتحانك بسهولة</button>
+        <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')">🖊️ سبورة إلكترونية</button>
+        <button class="nav-item" onclick="showView('v-upgrade', this)">⭐ طوّر خطتك</button>
+        <button class="nav-item" onclick="showView('s-contact', this)">💬 تواصل معنا</button>
+        <button class="nav-item" onclick="showView('s-practical', this)">🧑‍🏫 التربية العملية</button>
+        <button class="nav-item" onclick="showView('s-research', this)">🎥 بحوث الفعل</button>
+        <button class="nav-item" onclick="showView('s-myresearch', this)">📁 أبحاثي</button>
+        <button class="nav-item" onclick="showView('t-community', this)">🤝 المجتمع</button>
+      </div>
+
+      <div class="sidebar-foot">نموذج أولي — نُدرس معًا</div>
+    </div>
+
+    <div class="main">
+
+      <!-- TEACHER HOME -->
+      <div class="view active" id="t-dash">
+        <div class="topbar">
+          <div><h1 id="dash-greeting">أهلًا 👋</h1><div class="sub">نظرة سريعة على نشاطك اليوم</div></div>
+          <div class="avatar" id="dash-avatar">م ح</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="num">4</div><div class="lbl">كورسات منشورة</div></div>
+          <div class="stat"><div class="num">128</div><div class="lbl">طالب مسجّل</div></div>
+          <div class="stat"><div class="num">9</div><div class="lbl">اختبارات نشطة</div></div>
+          <div class="stat"><div class="num">86٪</div><div class="lbl">متوسط الإنجاز</div></div>
+        </div>
+        <div class="section-title">كورساتي<button class="linklike" onclick="showView('t-create', document.querySelector('#nav-teacher .nav-item'))">+ إنشاء كورس</button></div>
+        <div class="grid">
+          <div class="course-card">
+            <div class="course-cover" style="--cover:#B8532E;"><span>رياضيات · ثالثة ثانوي</span></div>
+            <div class="course-body"><h4>المعادلات والمتباينات</h4><div class="meta">18 درس · 42 طالب</div>
+              <div class="progress-track"><div class="progress-fill" style="width:72%;"></div></div><div class="progress-txt">72٪ متوسط إنجاز الطلاب</div>
+            </div>
+          </div>
+          <div class="course-card">
+            <div class="course-cover" style="--cover:#5C8368;"><span>رياضيات · أولى ثانوي</span></div>
+            <div class="course-body"><h4>مقدمة في الجبر</h4><div class="meta">12 درس · 31 طالب</div>
+              <div class="progress-track"><div class="progress-fill" style="width:54%;"></div></div><div class="progress-txt">54٪ متوسط إنجاز الطلاب</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-title">آخر نشاط الطلاب</div>
+        <div class="post"><div class="post-head"><div class="mini-avatar">س ع</div><div class="who">سارة علي</div><span class="tag">أنهت درس "المعادلات"</span></div><p>حصلت على 9/10 في اختبار نهاية الدرس، منذ ساعتين.</p></div>
+      </div>
+
+      <!-- TEACHER: CREATE COURSE -->
+      <div class="view" id="t-create">
+        <div class="topbar"><div><h1>إنشاء كورس جديد</h1><div class="sub">هيتبعت الكورس لمراجعة الأدمن قبل النشر</div></div></div>
+        <div class="card-panel">
+          <div class="field"><label>عنوان الكورس</label><input type="text" placeholder="مثال: أساسيات التفاضل"></div>
+          <div class="field-row">
+            <div class="field"><label>المادة</label><select><option>رياضيات</option><option>عربي</option><option>إنجليزي</option><option>علوم</option></select></div>
+            <div class="field"><label>الصف الدراسي</label><select><option>الأول الثانوي</option><option>الثاني الثانوي</option><option>الثالث الثانوي</option></select></div>
+          </div>
+          <div class="field"><label>وصف مختصر</label><textarea rows="3" placeholder="عن ماذا يتحدث الكورس؟"></textarea></div>
+          <button class="btn-primary" onclick="fakePublish()">إرسال للمراجعة</button>
+          <div class="hint" id="publish-hint">بعد الموافقة، هيظهر الكورس في صفحتك وصفحة "اكتشف معلمك".</div>
+        </div>
+      </div>
+
+      <!-- STUDENT-TEACHER HOME -->
+      <div class="view" id="s-home">
+        <div class="topbar">
+          <div><h1 id="dash-greeting-s">أهلًا 👋</h1><div class="sub">رحلتك: طالب معلم → متدرب → معلم مبتدئ → معلم محترف</div></div>
+          <div class="avatar" id="dash-avatar-s">ط م</div>
+        </div>
+        <div class="grid">
+          <div class="course-card">
+            <div class="course-cover" style="--cover:#1B2A41;"><span>مسار تدريبي</span></div>
+            <div class="course-body"><h4>معلم مبتدئ — الأساسيات</h4><div class="meta">6 كورسات · اختبار ختامي</div>
+              <div class="progress-track"><div class="progress-fill" style="width:40%;"></div></div><div class="progress-txt">40٪ — استمر في المسار</div>
+            </div>
+          </div>
+          <div class="course-card">
+            <div class="course-cover" style="--cover:#5C8368;"><span>مسار تدريبي</span></div>
+            <div class="course-body"><h4>إدارة الفصل الدراسي</h4><div class="meta">4 كورسات · اختبار ختامي</div>
+              <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div><div class="progress-txt">لم يبدأ بعد</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHARED: تعلم كيف (Firestore: lessons) -->
+      <div class="view" id="v-learn">
+        <div class="topbar"><div><h1>تعلم كيف</h1><div class="sub">دروس مرفوعة من الداشبورد لاكتساب خبرة التدريس</div></div></div>
+        <div id="learn-list" class="content-list"><div class="empty-state">جاري تحميل الدروس...</div></div>
+        <div style="margin-top:20px;">
+          <button class="btn-primary" onclick="showView('v-quiz', document.querySelector('.nav-item.active'))">جرّب اختبار قصير</button>
+        </div>
+      </div>
+
+      <!-- shared quiz demo -->
+      <div class="view" id="v-quiz">
+        <div class="topbar"><div><h1>اختبار قصير</h1><div class="sub">تجربة سريعة على أسلوب الاختبارات في المنصة</div></div></div>
+        <div class="quiz-box">
+          <div class="quiz-progress">السؤال 1 من 1</div>
+          <div class="quiz-q">أول خطوة في إعداد أي درس ناجح هي:</div>
+          <button class="quiz-opt" onclick="answerQuiz(this,false)">اختيار الكتاب المدرسي فقط</button>
+          <button class="quiz-opt" onclick="answerQuiz(this,true)">تحديد هدف الدرس بوضوح</button>
+          <button class="quiz-opt" onclick="answerQuiz(this,false)">تجهيز عرض تقديمي طويل</button>
+          <div class="quiz-feedback" id="quiz-feedback"></div>
+        </div>
+      </div>
+
+      <!-- طور خطتك -->
+      <div class="view" id="v-upgrade">
+        <div class="topbar"><div><h1>طوّر خطتك</h1><div class="sub">تابع خطتك الحالية أو غيّرها</div></div></div>
+        <div class="upgrade-card">
+          <div class="cur-plan" id="upgrade-current-plan">الخطة المجانية</div>
+          <div class="cur-note" id="upgrade-current-note">سارية حتى انتهاء الـ 20 يوم</div>
+          <button class="btn-primary btn-block" onclick="openUpgrade()">تغيير الخطة</button>
+        </div>
+      </div>
+
+      <!-- امتحانك بسهولة / سبورة — بطاقات بديلة (النافبار بيفتح لينك مباشرة، الاتنين دول احتياطي لو حد وصل هنا) -->
+
+      <!-- STUDENT-TEACHER: تواصل معنا -->
+      <div class="view" id="s-contact">
+        <div class="topbar"><div><h1>تواصل معنا</h1><div class="sub">لو عندك أي مشكلة أو استفسار</div></div></div>
+        <div class="card-panel">
+          <div class="field"><label>الموضوع</label><input type="text" id="contact-subject" placeholder="مثال: مشكلة في تسجيل الدخول"></div>
+          <div class="field"><label>الرسالة</label><textarea rows="4" id="contact-message" placeholder="اكتب مشكلتك بالتفصيل..."></textarea></div>
+          <button class="btn-primary" onclick="sendContactMessage()">إرسال</button>
+          <div class="auth-status" id="contact-status"></div>
+        </div>
+      </div>
+
+      <!-- STUDENT-TEACHER: التربية العملية (Firestore: practicalTips) -->
+      <div class="view" id="s-practical">
+        <div class="topbar"><div><h1>التربية العملية</h1><div class="sub">نصائح وإرشادات عملية من فريق نُدرس معًا</div></div></div>
+        <div id="practical-list" class="content-list"><div class="empty-state">جاري تحميل النصائح...</div></div>
+      </div>
+
+      <!-- STUDENT-TEACHER: بحوث الفعل (Firestore: actionResearchVideos) -->
+      <div class="view" id="s-research">
+        <div class="topbar"><div><h1>بحوث الفعل</h1><div class="sub">فيديوهات تدريبية مرفوعة من الداشبورد</div></div></div>
+        <div id="research-list" class="content-list"><div class="empty-state">جاري تحميل الفيديوهات...</div></div>
+      </div>
+
+      <!-- STUDENT-TEACHER: أبحاثي (Firestore: research, filtered by owner) -->
+      <div class="view" id="s-myresearch">
+        <div class="topbar"><div><h1>أبحاثي</h1><div class="sub">أضف أبحاثك الخاصة واحتفظ بها هنا</div></div></div>
+        <div class="card-panel" style="margin-bottom:24px;">
+          <div class="field"><label>عنوان البحث</label><input type="text" id="myres-title" placeholder="مثال: أثر التعلم النشط على..."></div>
+          <div class="field"><label>رابط الملف/المستند</label><input type="text" id="myres-link" placeholder="رابط جوجل درايف أو أي رابط"></div>
+          <button class="btn-primary" onclick="addMyResearch()">إضافة</button>
+          <div class="auth-status" id="myres-status"></div>
+        </div>
+        <div id="myres-list" class="content-list"></div>
+      </div>
+
+      <!-- COMMUNITY (shared) -->
+      <div class="view" id="t-community">
+        <div class="topbar"><div><h1>مجتمع المعلمين</h1><div class="sub">قسم: رياضيات</div></div></div>
+        <div class="post"><div class="post-head"><div class="mini-avatar">ن ك</div><div class="who">نور كامل</div><span class="tag">فكرة شرح</span></div><p>بستخدم قصة قصيرة عشان أشرح المتتاليات الحسابية للطلاب — بتفرق معاهم جدًا في الفهم.</p><div class="post-actions"><span>👍 24</span><span>💬 6 تعليقات</span><span>🔗 مشاركة</span></div></div>
+        <div class="post"><div class="post-head"><div class="mini-avatar">ط ح</div><div class="who">طارق حلمي</div><span class="tag">سؤال</span></div><p>حد عنده نموذج تحضير درس جاهز لدرس "التفاضل والتكامل"؟ محتاجه للأسبوع الجاي.</p><div class="post-actions"><span>👍 11</span><span>💬 3 تعليقات</span><span>🔗 مشاركة</span></div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Firebase (compat SDK — no bundler needed) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+/* ---------- Firebase config (مشروعك: studytogether) ---------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyCM4lbv83xStvHDB31CqPTpb40ss9q04so",
+  authDomain: "studytogether-e8108.firebaseapp.com",
+  projectId: "studytogether-e8108",
+  storageBucket: "studytogether-e8108.firebasestorage.app",
+  messagingSenderId: "1019488103298",
+  appId: "1:1019488103298:web:0ff82b789018ff1418fd9b",
+  measurementId: "G-DKCCXL9WTL"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+/* ---------- EmailJS config ---------- */
+const EMAILJS_PUBLIC_KEY = 'oxTulRj_SvhD_-rHR';
+const EMAILJS_SERVICE_ID = 'service_h61jmbn';
+const EMAILJS_TEMPLATE_AUTOREPLY = 'template_kt4qi3e';
+const EMAILJS_TEMPLATE_INVOICE   = 'template_n26245k';
+
+const PLANS = {
+  free:    { name:'الخطة المجانية', price:0,    original:0,    duration:'20 يوم' },
+  plus:    { name:'الخطة البلس',    price:500,  original:1500, duration:'28 يوم' },
+  prime:   { name:'الخطة البرايم',  price:1500, original:3000, duration:'35 يوم' },
+  proplus: { name:'الخطة برو بلس',  price:2500, original:5500, duration:'40 يوم' },
+};
+
+let pendingRole = null;
+let pendingUser = { name:'', email:'', phone:'' };
+let currentUid = null;
+let plansMode = 'signup'; // 'signup' | 'upgrade'
+
+function startSignup(role){
+  pendingRole = role;
+  document.getElementById('screen-role').style.display = 'none';
+  document.getElementById('screen-signup').style.display = 'flex';
+  document.getElementById('signup-step-tag').textContent = 'إنشاء حساب — ' + (role === 'teacher' ? 'معلم' : 'طالب معلم');
+}
+function showSignupAgain(){
+  document.getElementById('screen-plans').style.display = 'none';
+  document.getElementById('screen-signup').style.display = 'flex';
+}
+function backToRole(fromId){
+  document.getElementById(fromId).style.display = 'none';
+  document.getElementById('screen-role').style.display = 'flex';
+}
+
+async function goToPlans(){
+  const name = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const phone = document.getElementById('su-phone').value.trim();
+  const pass = document.getElementById('su-pass').value;
+  const status = document.getElementById('signup-status');
+  const btn = document.getElementById('su-submit-btn');
+
+  if(!name || !email || !phone || !pass){
+    status.className = 'auth-status err'; status.textContent = 'من فضلك املأ كل الحقول.'; return;
+  }
+  if(pass.length < 6){
+    status.className = 'auth-status err'; status.textContent = 'كلمة المرور لازم تكون 6 أحرف على الأقل.'; return;
+  }
+
+  btn.disabled = true;
+  status.className = 'auth-status pending'; status.textContent = 'جاري إنشاء الحساب...';
+
+  try{
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    currentUid = cred.user.uid;
+    await db.collection('users').doc(currentUid).set({
+      name, email, phone, role: pendingRole, plan: 'free',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    pendingUser = { name, email, phone };
+    plansMode = 'signup';
+    document.getElementById('plans-back-btn').style.display = 'block';
+    status.textContent = '';
+    document.getElementById('screen-signup').style.display = 'none';
+    document.getElementById('screen-plans').style.display = 'flex';
+  }catch(err){
+    status.className = 'auth-status err';
+    status.textContent = 'حصل خطأ: ' + (err.message || err.code);
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+async function sendEmailJS(templateId, extraParams){
+  const body = {
+    service_id: EMAILJS_SERVICE_ID, template_id: templateId, user_id: EMAILJS_PUBLIC_KEY,
+    template_params: Object.assign({
+      to_name: pendingUser.name, to_email: pendingUser.email, to_phone: pendingUser.phone,
+      role: pendingRole === 'teacher' ? 'معلم' : 'طالب معلم',
+    }, extraParams)
+  };
+  const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(t || ('HTTP ' + res.status)); }
+}
+
+async function selectPlan(planKey){
+  const plan = PLANS[planKey];
+  const status = document.getElementById('plans-status');
+  status.className = 'auth-status pending'; status.textContent = 'جاري الحفظ...';
+
+  const planParams = {
+    plan_name: plan.name,
+    plan_price: plan.price === 0 ? 'مجانًا' : (plan.price + ' جنيه'),
+    plan_original_price: plan.original ? (plan.original + ' جنيه') : '',
+    plan_duration: plan.duration,
+  };
+
+  try{
+    if(currentUid){
+      await db.collection('users').doc(currentUid).update({
+        plan: planKey, planSelectedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    if(plansMode === 'signup'){
+      try{
+        await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, planParams);
+        if(plan.price > 0) await sendEmailJS(EMAILJS_TEMPLATE_INVOICE, planParams);
+      }catch(mailErr){ console.warn('EmailJS error:', mailErr); }
+
+      status.className = 'auth-status ok'; status.textContent = '✓ تم إنشاء الحساب بنجاح.';
+      setTimeout(() => { document.getElementById('screen-plans').style.display = 'none'; enterApp(pendingRole); }, 800);
+    }else{
+      if(plan.price > 0){
+        try{ await sendEmailJS(EMAILJS_TEMPLATE_INVOICE, planParams); }catch(mailErr){ console.warn(mailErr); }
+      }
+      status.className = 'auth-status ok'; status.textContent = '✓ تم تحديث خطتك.';
+      setTimeout(() => {
+        document.getElementById('screen-plans').style.display = 'none';
+        document.getElementById('screen-app').style.display = 'block';
+        refreshUpgradeView(planKey);
+      }, 800);
+    }
+  }catch(err){
+    status.className = 'auth-status err'; status.textContent = 'حصلت مشكلة: ' + err.message;
+  }
+}
+
+function openUpgrade(){
+  plansMode = 'upgrade';
+  document.getElementById('plans-back-btn').style.display = 'none';
+  document.getElementById('screen-app').style.display = 'none';
+  document.getElementById('screen-plans').style.display = 'flex';
+}
+function refreshUpgradeView(planKey){
+  const plan = PLANS[planKey];
+  document.getElementById('upgrade-current-plan').textContent = plan.name;
+  document.getElementById('upgrade-current-note').textContent = 'المدة: ' + plan.duration + (plan.price ? (' — ' + plan.price + ' جنيه') : ' — مجانية');
+}
+
+function enterApp(role){
+  document.getElementById('screen-role').style.display = 'none';
+  document.getElementById('screen-signup').style.display = 'none';
+  document.getElementById('screen-app').style.display = 'block';
+  document.getElementById('nav-teacher').style.display = role === 'teacher' ? 'block' : 'none';
+  document.getElementById('nav-student').style.display = role === 'student' ? 'block' : 'none';
+  document.getElementById('role-pill').textContent = role === 'teacher' ? 'معلم' : 'طالب معلم';
+
+  if(pendingUser && pendingUser.name){
+    const firstName = pendingUser.name.trim().split(' ')[0];
+    const initials = pendingUser.name.trim().split(' ').slice(0,2).map(w=>w[0]).join(' ');
+    const g1 = document.getElementById('dash-greeting'); if(g1) g1.textContent = 'أهلًا، ' + firstName + ' 👋';
+    const g2 = document.getElementById('dash-greeting-s'); if(g2) g2.textContent = 'أهلًا، ' + firstName + ' 👋';
+    const a1 = document.getElementById('dash-avatar'); if(a1) a1.textContent = initials;
+    const a2 = document.getElementById('dash-avatar-s'); if(a2) a2.textContent = initials;
+  }
+  refreshUpgradeView('free');
+  showView(role === 'teacher' ? 't-dash' : 's-home', document.querySelector((role === 'teacher' ? '#nav-teacher' : '#nav-student') + ' .nav-item'));
+  loadLessons(); loadPracticalTips(); loadResearchVideos(); loadMyResearch();
+}
+function showView(id, btn){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const parent = btn.closest('#nav-teacher') || btn.closest('#nav-student');
+  if(parent){ parent.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); }
+  btn.classList.add('active');
+}
+function switchRole(){
+  document.getElementById('screen-app').style.display = 'none';
+  document.getElementById('screen-role').style.display = 'flex';
+}
+function fakePublish(){
+  const hint = document.getElementById('publish-hint');
+  hint.textContent = '✓ تم إرسال الكورس بنجاح، في انتظار موافقة الأدمن.';
+  hint.style.color = 'var(--sage)'; hint.style.fontWeight = '700';
+}
+function answerQuiz(btn, isCorrect){
+  document.querySelectorAll('.quiz-opt').forEach(o => o.disabled = true);
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  const fb = document.getElementById('quiz-feedback');
+  fb.style.display = 'block'; fb.style.color = isCorrect ? 'var(--sage)' : 'var(--brick)';
+  fb.textContent = isCorrect ? '✓ إجابة صحيحة! تحديد الهدف هو حجر الأساس لأي درس.' : '✗ مش الإجابة الأدق — الهدف الواضح هو الأهم دايمًا قبل أي حاجة تانية.';
+}
+
+/* ---------- Firestore content: lessons / tips / videos / my research ---------- */
+/* المحتوى ده هيتضاف من داشبورد الأدمن (admin-dashboard.html) — الشاشات دي بتقرأ بس */
+
+async function loadLessons(){
+  const el = document.getElementById('learn-list'); if(!el) return;
+  try{
+    const snap = await db.collection('lessons').orderBy('createdAt','desc').limit(20).get();
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش دروس مرفوعة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
+    el.innerHTML = snap.docs.map(d => {
+      const l = d.data();
+      return `<div class="content-item"><div><div class="ci-title">${escapeHtml(l.title||'')}</div><div class="ci-desc">${escapeHtml(l.description||'')}</div></div>${l.videoUrl ? `<a class="ci-link" href="${escapeAttr(l.videoUrl)}" target="_blank">شاهد الدرس</a>` : ''}</div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الدروس الآن.</div>'; console.warn(err); }
+}
+async function loadPracticalTips(){
+  const el = document.getElementById('practical-list'); if(!el) return;
+  try{
+    const snap = await db.collection('practicalTips').orderBy('createdAt','desc').limit(20).get();
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش نصائح مضافة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
+    el.innerHTML = snap.docs.map(d => { const t = d.data();
+      return `<div class="content-item"><div><div class="ci-title">${escapeHtml(t.title||'')}</div><div class="ci-desc">${escapeHtml(t.content||'')}</div></div></div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل النصائح الآن.</div>'; console.warn(err); }
+}
+async function loadResearchVideos(){
+  const el = document.getElementById('research-list'); if(!el) return;
+  try{
+    const snap = await db.collection('actionResearchVideos').orderBy('createdAt','desc').limit(20).get();
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش فيديوهات مضافة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
+    el.innerHTML = snap.docs.map(d => { const v = d.data();
+      return `<div class="content-item"><div class="ci-title">${escapeHtml(v.title||'')}</div>${v.videoUrl ? `<a class="ci-link" href="${escapeAttr(v.videoUrl)}" target="_blank">مشاهدة</a>` : ''}</div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الفيديوهات الآن.</div>'; console.warn(err); }
+}
+async function loadMyResearch(){
+  const el = document.getElementById('myres-list'); if(!el || !currentUid) return;
+  try{
+    const snap = await db.collection('research').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه معملتش أي بحث. ضيف أول بحث من الفورم فوق.</div>'; return; }
+    el.innerHTML = snap.docs.map(d => { const r = d.data();
+      return `<div class="content-item"><div class="ci-title">${escapeHtml(r.title||'')}</div>${r.link ? `<a class="ci-link" href="${escapeAttr(r.link)}" target="_blank">فتح</a>` : ''}</div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل أبحاثك الآن.</div>'; console.warn(err); }
+}
+async function addMyResearch(){
+  const title = document.getElementById('myres-title').value.trim();
+  const link = document.getElementById('myres-link').value.trim();
+  const status = document.getElementById('myres-status');
+  if(!title){ status.className='auth-status err'; status.textContent='اكتب عنوان البحث.'; return; }
+  try{
+    await db.collection('research').add({
+      title, link, ownerUid: currentUid, ownerName: pendingUser.name,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('myres-title').value=''; document.getElementById('myres-link').value='';
+    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة.';
+    loadMyResearch();
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+async function sendContactMessage(){
+  const subject = document.getElementById('contact-subject').value.trim();
+  const message = document.getElementById('contact-message').value.trim();
+  const status = document.getElementById('contact-status');
+  if(!subject || !message){ status.className='auth-status err'; status.textContent='من فضلك املأ الموضوع والرسالة.'; return; }
+  status.className='auth-status pending'; status.textContent='جاري الإرسال...';
+  try{
+    await db.collection('supportMessages').add({
+      subject, message, name: pendingUser.name, email: pendingUser.email, phone: pendingUser.phone,
+      role: pendingRole, ownerUid: currentUid, status:'open',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    status.className='auth-status ok'; status.textContent='✓ تم إرسال رسالتك، هيتم الرد عليك قريبًا.';
+    document.getElementById('contact-subject').value=''; document.getElementById('contact-message').value='';
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
