@@ -8,48 +8,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1B2A41;
-    --ink-soft:#3A4B66;
-    --paper:#FBF8F2;
-    --paper-dim:#F1ECE1;
-    --brick:#B8532E;
-    --brick-dark:#94411F;
-    --sage:#5C8368;
-    --gold:#C79A2B;
-    --line:#E4DDD0;
-    --white:#FFFFFF;
+    --ink:#1B2A41; --ink-soft:#3A4B66; --paper:#FBF8F2; --paper-dim:#F1ECE1;
+    --brick:#B8532E; --brick-dark:#94411F; --sage:#5C8368; --gold:#C79A2B; --line:#E4DDD0; --white:#FFFFFF;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  body{
-    font-family:'Almarai', sans-serif;
-    background:var(--paper);
-    color:var(--ink);
-    min-height:100vh;
-    overflow-x:hidden;
-  }
+  body{font-family:'Almarai', sans-serif; background:var(--paper); color:var(--ink); min-height:100vh; overflow-x:hidden;}
   h1,h2,h3,.display{font-family:'Cairo', sans-serif;}
   button{font-family:inherit; cursor:pointer; border:none;}
   a{color:var(--brick);}
   ::selection{background:var(--gold); color:var(--ink);}
 
-  /* ---------- ROLE SELECT SCREEN ---------- */
-  #screen-role{
-    min-height:100vh; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; padding:32px 20px; position:relative;
-    background:
-      radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%),
-      var(--paper);
-  }
+  #screen-role{min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; position:relative;
+    background: radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%), radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%), var(--paper);}
   .brand{text-align:center; margin-bottom:40px;}
   .brand-mark{font-family:'Cairo', sans-serif; font-weight:900; font-size:38px; color:var(--ink); letter-spacing:-0.5px;}
   .brand-mark span{color:var(--brick);}
   .brand-tag{margin-top:10px; font-size:15px; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:10px; display:inline-block;}
   .role-cards{display:flex; gap:20px; flex-wrap:wrap; justify-content:center; max-width:640px;}
-  .role-card{
-    background:var(--white); border:1px solid var(--line); border-radius:6px; padding:26px 24px;
-    width:270px; text-align:right; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; position:relative;
-  }
+  .role-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:26px 24px; width:270px; text-align:right; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; position:relative;}
   .role-card::before{content:''; position:absolute; top:0; right:0; width:100%; height:4px; background:var(--role-color, var(--brick)); border-radius:6px 6px 0 0;}
   .role-card:hover{transform:translateY(-4px); box-shadow:0 14px 28px rgba(27,42,65,0.1); border-color:transparent;}
   .role-card .icon{font-size:30px; display:inline-block; margin-bottom:14px;}
@@ -58,65 +34,91 @@
   .role-card button{background:var(--role-color, var(--brick)); color:var(--white); padding:10px 18px; border-radius:4px; font-weight:800; font-size:14px; width:100%;}
   .role-card.student{ --role-color:var(--sage); }
 
-  /* ---------- SIGNUP & PLANS SCREENS ---------- */
-  #screen-signup, #screen-plans{
+  #screen-signup, #screen-plans, #screen-verify, #screen-payment, #screen-login, #screen-google-complete{
     min-height:100vh; display:none; align-items:center; justify-content:center; padding:32px 20px;
-    background:
-      radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%),
-      var(--paper);
-  }
-  .auth-panel{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:32px 30px; width:100%; max-width:400px;}
-  .auth-panel .brand-mark{font-size:22px; margin-bottom:4px;}
+    background: radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%), radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%), var(--paper);}
+  .auth-panel{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:34px 30px; width:100%; max-width:400px; box-shadow:0 20px 45px rgba(27,42,65,0.08);}
+  .auth-logo{width:52px; height:52px; border-radius:50%; background:var(--paper-dim); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 14px;}
+  .auth-panel .brand-mark{font-size:21px; margin-bottom:4px;}
   .auth-panel .step-tag{font-size:12.5px; color:var(--ink-soft); margin-bottom:22px; border-bottom:1px dashed var(--line); padding-bottom:14px;}
   .field{margin-bottom:14px;}
   .field label{display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:var(--ink-soft);}
-  .field input, .field select, .field textarea{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:14px; background:var(--paper);}
+  .field input, .field select, .field textarea{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:5px; font-family:inherit; font-size:14px; background:var(--paper); transition:border-color .15s ease, box-shadow .15s ease;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--brick); box-shadow:0 0 0 3px rgba(184,83,46,0.1); background:var(--white);}
   .field-row{display:flex; gap:14px;}
   .field-row .field{flex:1;}
+  .pw-wrap{position:relative;}
+  .pw-wrap input{padding-left:64px;}
+  .pw-toggle{position:absolute; left:6px; top:50%; transform:translateY(-50%); background:none; font-size:11.5px; font-weight:700; color:var(--brick); padding:6px 8px;}
+  .divider{display:flex; align-items:center; gap:10px; margin:16px 0; font-size:11.5px; color:var(--ink-soft);}
+  .divider::before, .divider::after{content:''; flex:1; height:1px; background:var(--line);}
+  .btn-google{width:100%; background:var(--white); border:1px solid var(--line); color:var(--ink); padding:11px; border-radius:5px; font-weight:800; font-size:13.5px; display:flex; align-items:center; justify-content:center; gap:10px; transition:background .15s ease, border-color .15s ease;}
+  .btn-google:hover{background:var(--paper-dim); border-color:var(--ink-soft);}
+  .btn-google:disabled{opacity:.6;}
+  .g-circle{width:20px; height:20px; border-radius:50%; background:var(--ink); color:var(--white); font-family:'Cairo'; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center;}
   .auth-status{font-size:12.5px; margin-top:12px; min-height:16px;}
   .auth-status.ok{color:var(--sage); font-weight:700;}
   .auth-status.err{color:var(--brick); font-weight:700;}
   .auth-status.pending{color:var(--ink-soft);}
-  .btn-primary{background:var(--brick); color:var(--white); padding:11px 24px; border-radius:4px; font-weight:800; font-size:14.5px;}
+  .btn-primary{background:var(--brick); color:var(--white); padding:11px 24px; border-radius:5px; font-weight:800; font-size:14.5px; transition:background .15s ease, transform .1s ease;}
   .btn-primary:hover{background:var(--brick-dark);}
+  .btn-primary:active{transform:scale(.98);}
+  .btn-primary:disabled{opacity:.65;}
   .btn-block{width:100%;}
+  .btn-secondary{background:var(--paper-dim); color:var(--ink); padding:11px 24px; border-radius:5px; font-weight:800; font-size:14px;}
   .back-link{background:transparent; color:var(--ink-soft); font-size:12.5px; text-decoration:underline; margin-top:14px; display:block; text-align:center; width:100%;}
+  .code-input{letter-spacing:8px; text-align:center; font-size:22px; font-family:'Cairo'; font-weight:800;}
 
-  .plans-wrap{width:100%; max-width:960px;}
+  .plans-wrap, .pay-wrap{width:100%; max-width:960px;}
   .plans-head{text-align:center; margin-bottom:28px;}
   .plans-head h1{font-size:24px; margin-bottom:6px;}
   .plans-head p{font-size:13.5px; color:var(--ink-soft);}
-  .plans-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px;}
+  .plans-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px;}
   .plan-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:22px 18px; text-align:center; display:flex; flex-direction:column;}
   .plan-card.featured{border-color:var(--gold); box-shadow:0 10px 24px rgba(199,154,43,0.16);}
-  .plan-name{font-family:'Cairo'; font-weight:800; font-size:16px; margin-bottom:4px;}
+  .plan-name{font-family:'Cairo'; font-weight:800; font-size:15.5px; margin-bottom:4px;}
   .plan-duration{font-size:12px; color:var(--ink-soft); margin-bottom:14px;}
   .plan-price{margin-bottom:16px;}
-  .plan-price .old{font-size:13px; color:var(--ink-soft); text-decoration:line-through; display:block;}
-  .plan-price .new{font-family:'Cairo'; font-weight:900; font-size:26px; color:var(--brick);}
+  .plan-price .new{font-family:'Cairo'; font-weight:900; font-size:24px; color:var(--brick);}
   .plan-price .new small{font-size:13px; font-weight:700;}
   .plan-card button{background:var(--ink); color:var(--white); padding:10px 14px; border-radius:4px; font-weight:800; font-size:13.5px; margin-top:auto;}
   .plan-card.featured button{background:var(--brick);}
-  .plan-note{font-size:11px; color:var(--ink-soft); margin-top:10px; line-height:1.6;}
+  .plan-note{font-size:11px; color:var(--ink-soft); margin-top:10px; line-height:1.6; min-height:14px;}
 
-  /* ---------- APP SHELL ---------- */
+  .pay-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:28px; max-width:460px; margin:0 auto;}
+  .pay-card h2{font-size:18px; margin-bottom:6px;}
+  .pay-card .pay-sub{font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+  .pay-method{background:var(--paper); border:1px solid var(--line); border-radius:5px; padding:14px 16px; margin-bottom:12px;}
+  .pay-method .pm-title{font-weight:800; font-size:13.5px; margin-bottom:4px;}
+  .pay-method .pm-num{font-family:'Cairo'; font-weight:800; font-size:17px; color:var(--brick); direction:ltr; text-align:right;}
+  .wa-btn{display:block; text-align:center; background:#25D366; color:#fff; padding:11px; border-radius:4px; font-weight:800; font-size:14px; text-decoration:none; margin-top:16px;}
+  .pay-confirm-btn{margin-top:14px;}
+
   #screen-app{ display:none; min-height:100vh; }
   .shell{display:flex; min-height:100vh;}
   .sidebar{width:250px; flex-shrink:0; background:var(--ink); color:var(--paper); padding:24px 18px; display:flex; flex-direction:column;}
   .sidebar .brand-mark{font-size:21px; color:var(--paper); margin-bottom:4px;}
   .sidebar .brand-mark span{color:var(--gold);}
-  .sidebar .role-pill{font-size:11.5px; color:var(--paper); opacity:.65; margin-bottom:28px;}
+  .sidebar .role-pill{font-size:11.5px; color:var(--paper); opacity:.65; margin-bottom:22px;}
   .nav-item{display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:5px; color:var(--paper); opacity:.72; font-size:14px; font-weight:700; background:transparent; text-align:right; width:100%; margin-bottom:2px; transition:background .15s ease, opacity .15s ease;}
   .nav-item:hover{opacity:1; background:rgba(255,255,255,0.06);}
   .nav-item.active{opacity:1; background:rgba(184,83,46,0.28); border-right:3px solid var(--brick);}
-  .sidebar-foot{margin-top:auto; padding-top:16px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; opacity:.6;}
+  .sidebar-foot{margin-top:auto; padding-top:14px; border-top:1px solid rgba(255,255,255,0.12); font-size:12px; opacity:.85; line-height:1.7;}
+  .status-badge{display:inline-block; padding:2px 9px; border-radius:10px; font-size:10.5px; font-weight:800; margin-top:4px;}
+  .status-badge.active{background:rgba(92,131,104,0.3); color:#B7D6BF;}
+  .status-badge.pending{background:rgba(199,154,43,0.3); color:#EFD79A;}
+  .status-badge.free{background:rgba(255,255,255,0.12); color:#fff;}
 
   .main{flex:1; padding:32px 40px; max-width:1100px;}
-  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;}
+  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
   .topbar h1{font-size:24px;}
   .topbar .sub{font-size:13.5px; color:var(--ink-soft); margin-top:4px;}
   .avatar{width:40px; height:40px; border-radius:50%; background:var(--sage); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'Cairo'; font-weight:800; font-size:15px;}
+
+  .top-banner{border-radius:6px; padding:12px 16px; font-size:13px; font-weight:700; margin-bottom:24px; display:none;}
+  .top-banner.trial{background:rgba(199,154,43,0.14); border:1px solid var(--gold); color:var(--brick-dark);}
+  .top-banner.pending{background:rgba(184,83,46,0.1); border:1px solid var(--brick); color:var(--brick-dark);}
+  .top-banner.active{background:rgba(92,131,104,0.12); border:1px solid var(--sage); color:#2f4a37;}
 
   .view{display:none;}
   .view.active{display:block;}
@@ -127,7 +129,7 @@
   .stat .lbl{font-size:12.5px; color:var(--ink-soft); margin-top:4px;}
 
   .section-title{font-size:16px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px dashed var(--line); display:flex; justify-content:space-between; align-items:center;}
-  .section-title a, .section-title button.linklike{font-size:12.5px; color:var(--brick); background:none; text-decoration:underline;}
+  .section-title button.linklike{font-size:12.5px; color:var(--brick); background:none; text-decoration:underline; font-weight:700;}
 
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px; margin-bottom:32px;}
   .course-card{background:var(--white); border:1px solid var(--line); border-radius:6px; overflow:hidden;}
@@ -157,17 +159,18 @@
   .post-head .mini-avatar{width:32px; height:32px; border-radius:50%; background:var(--brick); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Cairo'; font-weight:800; font-size:13px;}
   .post-head .who{font-size:13.5px; font-weight:800;}
   .post-head .tag{font-size:11px; background:var(--paper-dim); color:var(--ink-soft); padding:2px 9px; border-radius:10px; margin-right:auto;}
-  .post p{font-size:14px; line-height:1.8; margin-bottom:10px;}
+  .post p{font-size:14px; line-height:1.8; margin-bottom:10px; white-space:pre-wrap;}
   .post-actions{display:flex; gap:16px; font-size:12.5px; color:var(--ink-soft);}
-  .post-actions span{cursor:pointer;}
+  .post-actions button{background:none; color:var(--ink-soft); font-size:12.5px; font-weight:700; cursor:pointer;}
+  .post-actions button.liked{color:var(--brick);}
+  .comments-box{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line); display:none;}
+  .comments-box.open{display:block;}
+  .comment-item{font-size:12.5px; background:var(--paper); border-radius:5px; padding:8px 10px; margin-bottom:6px;}
+  .comment-item b{font-weight:800;}
+  .comment-add{display:flex; gap:8px; margin-top:8px;}
+  .comment-add input{flex:1; padding:8px 10px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:12.5px;}
+  .comment-add button{background:var(--ink); color:#fff; padding:8px 14px; border-radius:4px; font-size:12px; font-weight:700;}
 
-  /* new: link-out cards for امتحانك بسهولة / سبورة الكترونية */
-  .link-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:28px; max-width:480px; text-align:center;}
-  .link-card .emoji{font-size:34px; margin-bottom:12px;}
-  .link-card h3{font-size:18px; margin-bottom:8px;}
-  .link-card p{font-size:13.5px; color:var(--ink-soft); margin-bottom:18px; line-height:1.7;}
-
-  /* content list (lessons / tips / videos) */
   .content-list{display:flex; flex-direction:column; gap:12px; max-width:640px;}
   .content-item{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px;}
   .content-item .ci-title{font-weight:800; font-size:14.5px; margin-bottom:4px;}
@@ -175,10 +178,22 @@
   .content-item a.ci-link{font-size:12.5px; font-weight:700; white-space:nowrap; text-decoration:none; background:var(--paper-dim); padding:7px 12px; border-radius:4px;}
   .empty-state{background:var(--white); border:1px dashed var(--line); border-radius:6px; padding:26px; text-align:center; color:var(--ink-soft); font-size:13.5px; max-width:560px;}
 
-  /* upgrade card */
   .upgrade-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:24px; max-width:400px;}
   .upgrade-card .cur-plan{font-family:'Cairo'; font-weight:800; font-size:19px; margin-bottom:4px;}
   .upgrade-card .cur-note{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px;}
+
+  .quick-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:14px; margin-bottom:30px;}
+  .quick-card{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:22px 10px 18px; text-align:center; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+  .quick-card:hover{transform:translateY(-3px); box-shadow:0 12px 26px rgba(27,42,65,0.09); border-color:transparent;}
+  .quick-card .qc-icon{width:56px; height:56px; border-radius:50%; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 12px;}
+  .quick-card .qc-label{display:block; font-weight:800; font-size:13px; color:var(--ink);}
+
+  .stepper{display:flex; align-items:flex-start; justify-content:space-between; gap:4px; margin-bottom:28px; overflow-x:auto; padding:8px 2px;}
+  .step{display:flex; flex-direction:column; align-items:center; gap:8px; flex-shrink:0; min-width:76px;}
+  .step-circle{width:54px; height:54px; border-radius:50%; border:2px solid var(--sage); display:flex; align-items:center; justify-content:center; font-size:22px; background:var(--white); position:relative;}
+  .step-circle .step-num{position:absolute; top:-6px; left:-6px; background:var(--brick); color:#fff; width:19px; height:19px; border-radius:50%; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center;}
+  .step-label{font-size:11px; font-weight:700; text-align:center; color:var(--ink-soft); max-width:80px;}
+  .step-arrow{color:var(--line); font-size:20px; flex-shrink:0; margin-top:14px;}
 
   @media (max-width:760px){
     .shell{flex-direction:column;}
@@ -202,7 +217,7 @@
     <div class="role-card">
       <div class="icon">👨‍🏫</div>
       <h3>أنا معلم</h3>
-      <p>أدير كورساتي، طلابي، واختباراتي في مكان واحد، وأتواصل مع مجتمع المعلمين.</p>
+      <p>أطوّر أدواتي وخبرتي في التدريس، وأتواصل مع مجتمع المعلمين.</p>
       <button onclick="startSignup('teacher')">ابدأ كمعلم</button>
     </div>
     <div class="role-card student">
@@ -212,20 +227,74 @@
       <button onclick="startSignup('student')">ابدأ كطالب معلم</button>
     </div>
   </div>
+  <button class="back-link" style="margin-top:26px;" onclick="showLogin()">عندك حساب بالفعل؟ سجّل دخول</button>
 </div>
 
 <!-- ========== SIGNUP SCREEN ========== -->
 <div id="screen-signup">
   <div class="auth-panel">
-    <div class="brand-mark">نُدرس <span>معًا</span></div>
-    <div class="step-tag" id="signup-step-tag">إنشاء حساب — معلم</div>
+    <div class="auth-logo">🎓</div>
+    <div class="brand-mark" style="text-align:center;">نُدرس <span>معًا</span></div>
+    <div class="step-tag" id="signup-step-tag" style="text-align:center;">إنشاء حساب — معلم</div>
+
+    <button class="btn-google" onclick="googleAuth()" id="su-google-btn"><span class="g-circle">G</span> تسجيل سريع بحساب جوجل</button>
+    <div class="divider">أو بالإيميل</div>
+
     <div class="field"><label>الاسم الكامل</label><input type="text" id="su-name" placeholder="مثال: مهدي حسن"></div>
     <div class="field"><label>البريد الإلكتروني</label><input type="email" id="su-email" placeholder="name@example.com"></div>
     <div class="field"><label>رقم الموبايل</label><input type="tel" id="su-phone" placeholder="01xxxxxxxxx"></div>
-    <div class="field"><label>كلمة المرور</label><input type="password" id="su-pass" placeholder="6 أحرف على الأقل"></div>
-    <button class="btn-primary btn-block" onclick="goToPlans()" id="su-submit-btn">متابعة لاختيار الخطة</button>
+    <div class="field"><label>كلمة المرور</label>
+      <div class="pw-wrap"><input type="password" id="su-pass" placeholder="6 أحرف على الأقل"><button type="button" class="pw-toggle" onclick="togglePw('su-pass', this)">إظهار</button></div>
+    </div>
+    <button class="btn-primary btn-block" onclick="createAccountAndSendCode()" id="su-submit-btn">متابعة</button>
     <div class="auth-status" id="signup-status"></div>
     <button class="back-link" onclick="backToRole('screen-signup')">رجوع</button>
+  </div>
+</div>
+
+<!-- ========== LOGIN SCREEN ========== -->
+<div id="screen-login">
+  <div class="auth-panel">
+    <div class="auth-logo">👋</div>
+    <div class="brand-mark" style="text-align:center;">نُدرس <span>معًا</span></div>
+    <div class="step-tag" style="text-align:center;">تسجيل الدخول</div>
+
+    <button class="btn-google" onclick="googleAuth()" id="li-google-btn"><span class="g-circle">G</span> الدخول بحساب جوجل</button>
+    <div class="divider">أو بالإيميل</div>
+
+    <div class="field"><label>البريد الإلكتروني</label><input type="email" id="li-email" placeholder="name@example.com"></div>
+    <div class="field"><label>كلمة المرور</label>
+      <div class="pw-wrap"><input type="password" id="li-pass" placeholder="كلمة المرور"><button type="button" class="pw-toggle" onclick="togglePw('li-pass', this)">إظهار</button></div>
+    </div>
+    <button class="btn-primary btn-block" onclick="loginUser()" id="li-submit-btn">دخول</button>
+    <div class="auth-status" id="login-status"></div>
+    <button class="back-link" onclick="forgotPassword()" style="margin-top:6px;">نسيت كلمة المرور؟</button>
+    <button class="back-link" onclick="backToRole('screen-login')">رجوع</button>
+  </div>
+</div>
+
+<!-- ========== GOOGLE: COMPLETE PROFILE (لو حساب جديد) ========== -->
+<div id="screen-google-complete">
+  <div class="auth-panel">
+    <div class="auth-logo">✨</div>
+    <div class="brand-mark" style="text-align:center;">نُدرس <span>معًا</span></div>
+    <div class="step-tag" style="text-align:center;">خطوة أخيرة — أكمل بياناتك</div>
+    <div class="field"><label>رقم الموبايل</label><input type="tel" id="gc-phone" placeholder="01xxxxxxxxx"></div>
+    <button class="btn-primary btn-block" onclick="completeGoogleSignup()" id="gc-submit-btn">متابعة</button>
+    <div class="auth-status" id="gc-status"></div>
+  </div>
+</div>
+
+<!-- ========== VERIFY CODE SCREEN ========== -->
+<div id="screen-verify">
+  <div class="auth-panel">
+    <div class="brand-mark">نُدرس <span>معًا</span></div>
+    <div class="step-tag">تأكيد الحساب</div>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:16px;">بعتنالك كود مكوّن من 6 أرقام على إيميلك، اكتبه هنا:</p>
+    <div class="field"><input type="text" maxlength="6" id="verify-code" class="code-input" placeholder="------"></div>
+    <button class="btn-primary btn-block" onclick="confirmCode()">تأكيد</button>
+    <div class="auth-status" id="verify-status"></div>
+    <button class="back-link" onclick="resendCode()">إعادة إرسال الكود</button>
   </div>
 </div>
 
@@ -234,40 +303,36 @@
   <div class="plans-wrap">
     <div class="plans-head">
       <h1>اختر خطتك</h1>
-      <p>تقدر تبدأ بالخطة المجانية أو تشترك في إحدى الخطط المدفوعة</p>
+      <p>أول 20 يوم من انضمامك ببلاش، وبعدها اختار الخطة اللي تناسبك</p>
     </div>
-    <div class="plans-grid">
-      <div class="plan-card">
-        <div class="plan-name">الخطة المجانية</div>
-        <div class="plan-duration">20 يوم — غير متجددة تلقائيًا</div>
-        <div class="plan-price"><div class="new">مجانًا</div></div>
-        <div class="plan-note">بعد انتهاء المدة، التجديد بـ 100 جنيه</div>
-        <button onclick="selectPlan('free')">ابدأ مجانًا</button>
-      </div>
-      <div class="plan-card">
-        <div class="plan-name">الخطة البلس</div>
-        <div class="plan-duration">28 يوم</div>
-        <div class="plan-price"><span class="old">1500 جنيه</span><div class="new">500 <small>جنيه</small></div></div>
-        <div class="plan-note">&nbsp;</div>
-        <button onclick="selectPlan('plus')">اشترك الآن</button>
-      </div>
-      <div class="plan-card featured">
-        <div class="plan-name">الخطة البرايم</div>
-        <div class="plan-duration">35 يوم</div>
-        <div class="plan-price"><span class="old">3000 جنيه</span><div class="new">1500 <small>جنيه</small></div></div>
-        <div class="plan-note">الأكثر طلبًا</div>
-        <button onclick="selectPlan('prime')">اشترك الآن</button>
-      </div>
-      <div class="plan-card">
-        <div class="plan-name">الخطة برو بلس</div>
-        <div class="plan-duration">40 يوم</div>
-        <div class="plan-price"><span class="old">5500 جنيه</span><div class="new">2500 <small>جنيه</small></div></div>
-        <div class="plan-note">&nbsp;</div>
-        <button onclick="selectPlan('proplus')">اشترك الآن</button>
-      </div>
-    </div>
+    <div class="plans-grid" id="plans-grid"></div>
     <div class="auth-status" id="plans-status" style="text-align:center; margin-top:18px;"></div>
-    <button class="back-link" id="plans-back-btn" onclick="showSignupAgain()">رجوع لبيانات الحساب</button>
+    <button class="back-link" id="plans-back-btn" onclick="showAppOrRole()">رجوع</button>
+  </div>
+</div>
+
+<!-- ========== PAYMENT CONFIRM SCREEN ========== -->
+<div id="screen-payment">
+  <div class="pay-wrap">
+    <div class="pay-card">
+      <h2 id="pay-plan-title">تأكيد الاشتراك</h2>
+      <div class="pay-sub" id="pay-plan-sub"></div>
+
+      <div class="pay-method">
+        <div class="pm-title">💵 كاش / فودافون كاش</div>
+        <div class="pm-num">01153652279</div>
+      </div>
+      <div class="pay-method">
+        <div class="pm-title">💳 انستاباي</div>
+        <div class="pm-num">01007586279</div>
+      </div>
+
+      <a class="wa-btn" id="wa-confirm-link" href="#" target="_blank">تأكيد الدفع عبر واتساب</a>
+
+      <button class="btn-primary btn-block pay-confirm-btn" onclick="finalizePaidPlan()">لقد حوّلت المبلغ — فعّل حسابي</button>
+      <div class="auth-status" id="payment-status"></div>
+      <button class="back-link" onclick="backToPlansFromPayment()">رجوع لاختيار خطة تانية</button>
+    </div>
   </div>
 </div>
 
@@ -282,7 +347,8 @@
         <button class="nav-item active" onclick="showView('t-dash', this)">🏠 الصفحة الرئيسية</button>
         <button class="nav-item" onclick="switchRole()">🔁 تغيير المسار</button>
         <button class="nav-item" onclick="showView('v-learn', this)">📖 تعلم كيف</button>
-        <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/examform','_blank')">📝 امتحانك بسهولة</button>
+        <button class="nav-item" onclick="showView('v-notebooks', this)">📒 دفاتر تحضير</button>
+        <button class="nav-item" onclick="openExamform(this)">📝 امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')">🖊️ سبورة إلكترونية</button>
         <button class="nav-item" onclick="showView('v-upgrade', this)">⭐ طوّر خطتك</button>
         <button class="nav-item" onclick="showView('t-community', this)">🤝 المجتمع</button>
@@ -292,7 +358,8 @@
         <button class="nav-item active" onclick="showView('s-home', this)">🏠 الصفحة الرئيسية</button>
         <button class="nav-item" onclick="switchRole()">🔁 تغيير المسار</button>
         <button class="nav-item" onclick="showView('v-learn', this)">📖 تعلم كيف</button>
-        <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/examform','_blank')">📝 امتحانك بسهولة</button>
+        <button class="nav-item" onclick="showView('v-notebooks', this)">📒 دفاتر تحضير</button>
+        <button class="nav-item" onclick="openExamform(this)">📝 امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')">🖊️ سبورة إلكترونية</button>
         <button class="nav-item" onclick="showView('v-upgrade', this)">⭐ طوّر خطتك</button>
         <button class="nav-item" onclick="showView('s-contact', this)">💬 تواصل معنا</button>
@@ -302,89 +369,87 @@
         <button class="nav-item" onclick="showView('t-community', this)">🤝 المجتمع</button>
       </div>
 
-      <div class="sidebar-foot">نموذج أولي — نُدرس معًا</div>
+      <div class="sidebar-foot" id="sidebar-status">نموذج أولي — نُدرس معًا</div>
+      <button class="nav-item" style="opacity:.6; margin-top:8px;" onclick="logoutUser()">🚪 تسجيل خروج</button>
     </div>
 
     <div class="main">
 
+      <div class="top-banner" id="top-banner"></div>
+
       <!-- TEACHER HOME -->
       <div class="view active" id="t-dash">
         <div class="topbar">
-          <div><h1 id="dash-greeting">أهلًا 👋</h1><div class="sub">نظرة سريعة على نشاطك اليوم</div></div>
+          <div><h1 id="dash-greeting">أهلًا 👋</h1><div class="sub">نظرة سريعة</div></div>
           <div class="avatar" id="dash-avatar">م ح</div>
         </div>
-        <div class="stat-row">
-          <div class="stat"><div class="num">4</div><div class="lbl">كورسات منشورة</div></div>
-          <div class="stat"><div class="num">128</div><div class="lbl">طالب مسجّل</div></div>
-          <div class="stat"><div class="num">9</div><div class="lbl">اختبارات نشطة</div></div>
-          <div class="stat"><div class="num">86٪</div><div class="lbl">متوسط الإنجاز</div></div>
-        </div>
-        <div class="section-title">كورساتي<button class="linklike" onclick="showView('t-create', document.querySelector('#nav-teacher .nav-item'))">+ إنشاء كورس</button></div>
-        <div class="grid">
-          <div class="course-card">
-            <div class="course-cover" style="--cover:#B8532E;"><span>رياضيات · ثالثة ثانوي</span></div>
-            <div class="course-body"><h4>المعادلات والمتباينات</h4><div class="meta">18 درس · 42 طالب</div>
-              <div class="progress-track"><div class="progress-fill" style="width:72%;"></div></div><div class="progress-txt">72٪ متوسط إنجاز الطلاب</div>
-            </div>
-          </div>
-          <div class="course-card">
-            <div class="course-cover" style="--cover:#5C8368;"><span>رياضيات · أولى ثانوي</span></div>
-            <div class="course-body"><h4>مقدمة في الجبر</h4><div class="meta">12 درس · 31 طالب</div>
-              <div class="progress-track"><div class="progress-fill" style="width:54%;"></div></div><div class="progress-txt">54٪ متوسط إنجاز الطلاب</div>
-            </div>
-          </div>
-        </div>
-        <div class="section-title">آخر نشاط الطلاب</div>
-        <div class="post"><div class="post-head"><div class="mini-avatar">س ع</div><div class="who">سارة علي</div><span class="tag">أنهت درس "المعادلات"</span></div><p>حصلت على 9/10 في اختبار نهاية الدرس، منذ ساعتين.</p></div>
-      </div>
 
-      <!-- TEACHER: CREATE COURSE -->
-      <div class="view" id="t-create">
-        <div class="topbar"><div><h1>إنشاء كورس جديد</h1><div class="sub">هيتبعت الكورس لمراجعة الأدمن قبل النشر</div></div></div>
-        <div class="card-panel">
-          <div class="field"><label>عنوان الكورس</label><input type="text" placeholder="مثال: أساسيات التفاضل"></div>
-          <div class="field-row">
-            <div class="field"><label>المادة</label><select><option>رياضيات</option><option>عربي</option><option>إنجليزي</option><option>علوم</option></select></div>
-            <div class="field"><label>الصف الدراسي</label><select><option>الأول الثانوي</option><option>الثاني الثانوي</option><option>الثالث الثانوي</option></select></div>
-          </div>
-          <div class="field"><label>وصف مختصر</label><textarea rows="3" placeholder="عن ماذا يتحدث الكورس؟"></textarea></div>
-          <button class="btn-primary" onclick="fakePublish()">إرسال للمراجعة</button>
-          <div class="hint" id="publish-hint">بعد الموافقة، هيظهر الكورس في صفحتك وصفحة "اكتشف معلمك".</div>
+        <div class="quick-grid">
+          <button class="quick-card" onclick="showView('v-learn', document.querySelector('#nav-teacher .nav-item:nth-child(3)'))"><span class="qc-icon">📖</span><span class="qc-label">تعلم كيف</span></button>
+          <button class="quick-card" onclick="showView('v-notebooks', document.querySelector('#nav-teacher .nav-item:nth-child(4)'))"><span class="qc-icon">📒</span><span class="qc-label">دفاتر تحضير</span></button>
+          <button class="quick-card" onclick="openExamform(document.querySelector('#nav-teacher .nav-item:nth-child(5)'))"><span class="qc-icon">📝</span><span class="qc-label">امتحانك بسهولة</span></button>
+          <button class="quick-card" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><span class="qc-icon">🖊️</span><span class="qc-label">سبورة إلكترونية</span></button>
+          <button class="quick-card" onclick="showView('v-upgrade', document.querySelector('#nav-teacher .nav-item:nth-child(7)'))"><span class="qc-icon">⭐</span><span class="qc-label">طوّر خطتك</span></button>
+          <button class="quick-card" onclick="showView('t-community', document.querySelector('#nav-teacher .nav-item:nth-child(8)'))"><span class="qc-icon">🤝</span><span class="qc-label">المجتمع</span></button>
         </div>
+
+        <div class="section-title">آخر منشورات المجتمع<button class="linklike" onclick="showView('t-community', document.querySelector('.nav-item[onclick*=t-community]'))">عرض الكل</button></div>
+        <div id="home-community-preview" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
 
       <!-- STUDENT-TEACHER HOME -->
       <div class="view" id="s-home">
         <div class="topbar">
-          <div><h1 id="dash-greeting-s">أهلًا 👋</h1><div class="sub">رحلتك: طالب معلم → متدرب → معلم مبتدئ → معلم محترف</div></div>
+          <div><h1 id="dash-greeting-s">أهلًا 👋</h1><div class="sub">رحلتك في التدريس</div></div>
           <div class="avatar" id="dash-avatar-s">ط م</div>
         </div>
-        <div class="grid">
-          <div class="course-card">
-            <div class="course-cover" style="--cover:#1B2A41;"><span>مسار تدريبي</span></div>
-            <div class="course-body"><h4>معلم مبتدئ — الأساسيات</h4><div class="meta">6 كورسات · اختبار ختامي</div>
-              <div class="progress-track"><div class="progress-fill" style="width:40%;"></div></div><div class="progress-txt">40٪ — استمر في المسار</div>
-            </div>
-          </div>
-          <div class="course-card">
-            <div class="course-cover" style="--cover:#5C8368;"><span>مسار تدريبي</span></div>
-            <div class="course-body"><h4>إدارة الفصل الدراسي</h4><div class="meta">4 كورسات · اختبار ختامي</div>
-              <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div><div class="progress-txt">لم يبدأ بعد</div>
-            </div>
-          </div>
+
+        <div class="stepper">
+          <div class="step"><div class="step-circle"><span class="step-num">1</span>🎓</div><div class="step-label">طالب معلم</div></div>
+          <div class="step-arrow">←</div>
+          <div class="step"><div class="step-circle"><span class="step-num">2</span>🧑‍🎓</div><div class="step-label">متدرب</div></div>
+          <div class="step-arrow">←</div>
+          <div class="step"><div class="step-circle"><span class="step-num">3</span>👨‍🏫</div><div class="step-label">معلم مبتدئ</div></div>
+          <div class="step-arrow">←</div>
+          <div class="step"><div class="step-circle"><span class="step-num">4</span>🏆</div><div class="step-label">معلم محترف</div></div>
         </div>
+
+        <div class="quick-grid">
+          <button class="quick-card" onclick="showView('v-learn', document.querySelector('#nav-student .nav-item:nth-child(3)'))"><span class="qc-icon">📖</span><span class="qc-label">تعلم كيف</span></button>
+          <button class="quick-card" onclick="showView('v-notebooks', document.querySelector('#nav-student .nav-item:nth-child(4)'))"><span class="qc-icon">📒</span><span class="qc-label">دفاتر تحضير</span></button>
+          <button class="quick-card" onclick="showView('s-practical', document.querySelector('#nav-student .nav-item:nth-child(9)'))"><span class="qc-icon">🧑‍🏫</span><span class="qc-label">التربية العملية</span></button>
+          <button class="quick-card" onclick="showView('s-research', document.querySelector('#nav-student .nav-item:nth-child(10)'))"><span class="qc-icon">🎥</span><span class="qc-label">بحوث الفعل</span></button>
+          <button class="quick-card" onclick="showView('s-myresearch', document.querySelector('#nav-student .nav-item:nth-child(11)'))"><span class="qc-icon">📁</span><span class="qc-label">أبحاثي</span></button>
+          <button class="quick-card" onclick="showView('t-community', document.querySelector('#nav-student .nav-item:nth-child(12)'))"><span class="qc-icon">🤝</span><span class="qc-label">المجتمع</span></button>
+        </div>
+
+        <div class="section-title">آخر منشورات المجتمع<button class="linklike" onclick="showView('t-community', document.querySelector('.nav-item[onclick*=t-community]'))">عرض الكل</button></div>
+        <div id="home-community-preview-s" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
 
-      <!-- SHARED: تعلم كيف (Firestore: lessons) -->
+      <!-- SHARED: دفاتر تحضير (مكتبة تعاونية) -->
+      <div class="view" id="v-notebooks">
+        <div class="topbar"><div><h1>دفاتر تحضير</h1><div class="sub">شارك دفتر تحضيرك أو استفد من دفاتر زملائك — رابط من Google Drive</div></div></div>
+        <div class="card-panel" style="margin-bottom:24px;">
+          <div class="field"><label>عنوان الدفتر</label><input type="text" id="nb-title" placeholder="مثال: تحضير وحدة الكسور — الصف الخامس"></div>
+          <div class="field"><label>المادة</label>
+            <select id="nb-subject"><option>رياضيات</option><option>عربي</option><option>إنجليزي</option><option>علوم</option><option>دراسات</option><option>لغات</option><option>عام</option></select>
+          </div>
+          <div class="field"><label>رابط الدفتر (Google Drive)</label><input type="text" id="nb-link" placeholder="الصق رابط المشاركة من درايف"></div>
+          <button class="btn-primary" onclick="addNotebook()">إضافة الدفتر</button>
+          <div class="auth-status" id="nb-status"></div>
+          <div class="hint">تأكد إن إعدادات المشاركة في درايف بتسمح لـ "أي شخص لديه الرابط" بالعرض.</div>
+        </div>
+        <div id="notebooks-list" class="content-list"><div class="empty-state">جاري تحميل الدفاتر...</div></div>
+      </div>
+
+      <!-- SHARED: تعلم كيف -->
       <div class="view" id="v-learn">
         <div class="topbar"><div><h1>تعلم كيف</h1><div class="sub">دروس مرفوعة من الداشبورد لاكتساب خبرة التدريس</div></div></div>
         <div id="learn-list" class="content-list"><div class="empty-state">جاري تحميل الدروس...</div></div>
-        <div style="margin-top:20px;">
-          <button class="btn-primary" onclick="showView('v-quiz', document.querySelector('.nav-item.active'))">جرّب اختبار قصير</button>
-        </div>
+        <div style="margin-top:20px;"><button class="btn-primary" onclick="showView('v-quiz', document.querySelector('.nav-item.active'))">جرّب اختبار قصير</button></div>
       </div>
 
-      <!-- shared quiz demo -->
       <div class="view" id="v-quiz">
         <div class="topbar"><div><h1>اختبار قصير</h1><div class="sub">تجربة سريعة على أسلوب الاختبارات في المنصة</div></div></div>
         <div class="quiz-box">
@@ -397,19 +462,15 @@
         </div>
       </div>
 
-      <!-- طور خطتك -->
       <div class="view" id="v-upgrade">
         <div class="topbar"><div><h1>طوّر خطتك</h1><div class="sub">تابع خطتك الحالية أو غيّرها</div></div></div>
         <div class="upgrade-card">
-          <div class="cur-plan" id="upgrade-current-plan">الخطة المجانية</div>
-          <div class="cur-note" id="upgrade-current-note">سارية حتى انتهاء الـ 20 يوم</div>
+          <div class="cur-plan" id="upgrade-current-plan">—</div>
+          <div class="cur-note" id="upgrade-current-note">—</div>
           <button class="btn-primary btn-block" onclick="openUpgrade()">تغيير الخطة</button>
         </div>
       </div>
 
-      <!-- امتحانك بسهولة / سبورة — بطاقات بديلة (النافبار بيفتح لينك مباشرة، الاتنين دول احتياطي لو حد وصل هنا) -->
-
-      <!-- STUDENT-TEACHER: تواصل معنا -->
       <div class="view" id="s-contact">
         <div class="topbar"><div><h1>تواصل معنا</h1><div class="sub">لو عندك أي مشكلة أو استفسار</div></div></div>
         <div class="card-panel">
@@ -420,19 +481,16 @@
         </div>
       </div>
 
-      <!-- STUDENT-TEACHER: التربية العملية (Firestore: practicalTips) -->
       <div class="view" id="s-practical">
         <div class="topbar"><div><h1>التربية العملية</h1><div class="sub">نصائح وإرشادات عملية من فريق نُدرس معًا</div></div></div>
         <div id="practical-list" class="content-list"><div class="empty-state">جاري تحميل النصائح...</div></div>
       </div>
 
-      <!-- STUDENT-TEACHER: بحوث الفعل (Firestore: actionResearchVideos) -->
       <div class="view" id="s-research">
         <div class="topbar"><div><h1>بحوث الفعل</h1><div class="sub">فيديوهات تدريبية مرفوعة من الداشبورد</div></div></div>
         <div id="research-list" class="content-list"><div class="empty-state">جاري تحميل الفيديوهات...</div></div>
       </div>
 
-      <!-- STUDENT-TEACHER: أبحاثي (Firestore: research, filtered by owner) -->
       <div class="view" id="s-myresearch">
         <div class="topbar"><div><h1>أبحاثي</h1><div class="sub">أضف أبحاثك الخاصة واحتفظ بها هنا</div></div></div>
         <div class="card-panel" style="margin-bottom:24px;">
@@ -444,24 +502,36 @@
         <div id="myres-list" class="content-list"></div>
       </div>
 
-      <!-- COMMUNITY (shared) -->
+      <!-- ========== COMMUNITY (حقيقي — Firestore) ========== -->
       <div class="view" id="t-community">
-        <div class="topbar"><div><h1>مجتمع المعلمين</h1><div class="sub">قسم: رياضيات</div></div></div>
-        <div class="post"><div class="post-head"><div class="mini-avatar">ن ك</div><div class="who">نور كامل</div><span class="tag">فكرة شرح</span></div><p>بستخدم قصة قصيرة عشان أشرح المتتاليات الحسابية للطلاب — بتفرق معاهم جدًا في الفهم.</p><div class="post-actions"><span>👍 24</span><span>💬 6 تعليقات</span><span>🔗 مشاركة</span></div></div>
-        <div class="post"><div class="post-head"><div class="mini-avatar">ط ح</div><div class="who">طارق حلمي</div><span class="tag">سؤال</span></div><p>حد عنده نموذج تحضير درس جاهز لدرس "التفاضل والتكامل"؟ محتاجه للأسبوع الجاي.</p><div class="post-actions"><span>👍 11</span><span>💬 3 تعليقات</span><span>🔗 مشاركة</span></div></div>
+        <div class="topbar"><div><h1>مجتمع المعلمين</h1><div class="sub">اسأل، شارك فكرة، أو ناقش زملاءك</div></div></div>
+
+        <div class="card-panel" style="margin-bottom:24px;">
+          <div class="field">
+            <label>القسم</label>
+            <select id="post-tag">
+              <option>رياضيات</option><option>عربي</option><option>إنجليزي</option><option>علوم</option>
+              <option>دراسات</option><option>لغات</option><option>تربية خاصة</option><option>عام</option>
+            </select>
+          </div>
+          <div class="field"><label>منشورك</label><textarea rows="3" id="post-content" placeholder="اسأل سؤال، شارك فكرة شرح، أو ابدأ نقاش..."></textarea></div>
+          <div class="field"><label>رابط ملف (اختياري — من Google Drive)</label><input type="text" id="post-drive-link" placeholder="الصق رابط المشاركة من درايف هنا"></div>
+          <button class="btn-primary" onclick="createPost()">نشر</button>
+          <div class="auth-status" id="post-status"></div>
+        </div>
+
+        <div id="community-list"><div class="empty-state">جاري تحميل المنشورات...</div></div>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- Firebase (compat SDK — no bundler needed) -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
-/* ---------- Firebase config (مشروعك: studytogether) ---------- */
 const firebaseConfig = {
   apiKey: "AIzaSyCM4lbv83xStvHDB31CqPTpb40ss9q04so",
   authDomain: "studytogether-e8108.firebaseapp.com",
@@ -475,40 +545,179 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* ---------- EmailJS config ---------- */
 const EMAILJS_PUBLIC_KEY = 'oxTulRj_SvhD_-rHR';
 const EMAILJS_SERVICE_ID = 'service_h61jmbn';
-const EMAILJS_TEMPLATE_AUTOREPLY = 'template_kt4qi3e';
+const EMAILJS_TEMPLATE_AUTOREPLY = 'template_kt4qi3e'; // بنستخدمه لإيميل الترحيب وكود التفعيل
 const EMAILJS_TEMPLATE_INVOICE   = 'template_n26245k';
 
+const PAY_CASH_NUMBER = '01153652279';
+const PAY_INSTAPAY_NUMBER = '01007586279';
+const WHATSAPP_NUMBER = '201153652279'; // نفس رقم الكاش
+
 const PLANS = {
-  free:    { name:'الخطة المجانية', price:0,    original:0,    duration:'20 يوم' },
-  plus:    { name:'الخطة البلس',    price:500,  original:1500, duration:'28 يوم' },
-  prime:   { name:'الخطة البرايم',  price:1500, original:3000, duration:'35 يوم' },
-  proplus: { name:'الخطة برو بلس',  price:2500, original:5500, duration:'40 يوم' },
+  free: { name:'الفترة التجريبية المجانية', price:0,    duration:'20 يوم', durationDays:20, paid:false },
+  sub1: { name:'الاشتراك الأول',            price:100,  duration:'20 يوم', durationDays:20, paid:true },
+  sub2: { name:'الاشتراك الثاني',           price:150,  duration:'45 يوم', durationDays:45, paid:true },
+  sub3: { name:'الاشتراك الثالث',           price:300,  duration:'95 يوم', durationDays:95, paid:true },
+  pro:  { name:'الاشتراك البرو',            price:1275, duration:'مدى الحياة', durationDays:null, paid:true },
 };
 
 let pendingRole = null;
 let pendingUser = { name:'', email:'', phone:'' };
 let currentUid = null;
 let plansMode = 'signup'; // 'signup' | 'upgrade'
+let selectedPlanKey = null;
+let userStatus = { plan:'free', status:'active' };
 
+function renderPlansGrid(){
+  const grid = document.getElementById('plans-grid');
+  grid.innerHTML = Object.keys(PLANS).map(key => {
+    const p = PLANS[key];
+    const featured = key === 'sub2';
+    return `<div class="plan-card ${featured?'featured':''}">
+      <div class="plan-name">${p.name}</div>
+      <div class="plan-duration">${p.duration}</div>
+      <div class="plan-price"><div class="new">${p.price === 0 ? 'مجانًا' : p.price + ' <small>جنيه</small>'}</div></div>
+      <div class="plan-note">${featured ? 'الأكثر طلبًا' : '&nbsp;'}</div>
+      <button onclick="selectPlan('${key}')">${p.price === 0 ? 'ابدأ مجانًا' : 'اشترك الآن'}</button>
+    </div>`;
+  }).join('');
+}
+renderPlansGrid();
+
+function friendlyAuthError(err){
+  const code = err && err.code;
+  const map = {
+    'auth/invalid-credential': 'الإيميل أو كلمة المرور غلط.',
+    'auth/wrong-password': 'الإيميل أو كلمة المرور غلط.',
+    'auth/user-not-found': 'مفيش حساب مسجّل بالإيميل ده — جرب تعمل حساب جديد.',
+    'auth/too-many-requests': 'محاولات كتير غلط، استنى شوية وجرب تاني.',
+    'auth/email-already-in-use': 'الإيميل ده مسجّل قبل كده — جرب تسجّل الدخول بدل ما تعمل حساب جديد.',
+    'auth/weak-password': 'كلمة المرور ضعيفة، اختار كلمة مرور أقوى.',
+    'auth/invalid-email': 'صيغة الإيميل مش صحيحة.',
+    'auth/popup-closed-by-user': 'اتقفلت نافذة جوجل قبل ما تكمل الدخول.',
+    'auth/network-request-failed': 'فيه مشكلة في الاتصال بالإنترنت.',
+  };
+  return map[code] || (err && err.message) || 'حصل خطأ غير متوقع.';
+}
+function togglePw(id, btn){
+  const el = document.getElementById(id);
+  if(el.type === 'password'){ el.type = 'text'; btn.textContent = 'إخفاء'; }
+  else{ el.type = 'password'; btn.textContent = 'إظهار'; }
+}
 function startSignup(role){
   pendingRole = role;
   document.getElementById('screen-role').style.display = 'none';
   document.getElementById('screen-signup').style.display = 'flex';
   document.getElementById('signup-step-tag').textContent = 'إنشاء حساب — ' + (role === 'teacher' ? 'معلم' : 'طالب معلم');
 }
-function showSignupAgain(){
-  document.getElementById('screen-plans').style.display = 'none';
-  document.getElementById('screen-signup').style.display = 'flex';
+function showLogin(){
+  document.getElementById('screen-role').style.display = 'none';
+  document.getElementById('screen-login').style.display = 'flex';
+}
+async function forgotPassword(){
+  const email = document.getElementById('li-email').value.trim();
+  const status = document.getElementById('login-status');
+  if(!email){ status.className='auth-status err'; status.textContent='اكتب إيميلك الأول في الحقل فوق، وبعدين دوس "نسيت كلمة المرور؟"'; return; }
+  try{
+    await auth.sendPasswordResetEmail(email);
+    status.className='auth-status ok'; status.textContent='✓ بعتنالك رابط إعادة تعيين كلمة المرور على إيميلك.';
+  }catch(err){ status.className='auth-status err'; status.textContent=friendlyAuthError(err); }
+}
+
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+async function googleAuth(){
+  // لو المستخدم مختارش دور لسه (جاي من شاشة الدخول)، هيتحدد بعد ما نشوف لو الحساب موجود
+  const isSignupFlow = document.getElementById('screen-signup').style.display === 'flex';
+  const btn = isSignupFlow ? document.getElementById('su-google-btn') : document.getElementById('li-google-btn');
+  const status = isSignupFlow ? document.getElementById('signup-status') : document.getElementById('login-status');
+  btn.disabled = true;
+  status.className = 'auth-status pending'; status.textContent = 'جاري الاتصال بجوجل...';
+  try{
+    const result = await auth.signInWithPopup(googleProvider);
+    const user = result.user;
+    currentUid = user.uid;
+    const doc = await db.collection('users').doc(currentUid).get();
+
+    if(doc.exists){
+      const d = doc.data();
+      pendingUser = { name: d.name, email: d.email, phone: d.phone };
+      pendingRole = d.role;
+      status.textContent = '';
+      document.getElementById('screen-signup').style.display = 'none';
+      document.getElementById('screen-login').style.display = 'none';
+      enterApp(pendingRole);
+    }else if(isSignupFlow){
+      pendingUser = { name: user.displayName || '', email: user.email || '', phone: '' };
+      status.textContent = '';
+      document.getElementById('screen-signup').style.display = 'none';
+      document.getElementById('screen-google-complete').style.display = 'flex';
+    }else{
+      status.className = 'auth-status err';
+      status.textContent = 'مفيش حساب مسجّل بالإيميل ده. ارجع لصفحة البداية واعمل حساب جديد الأول.';
+      await auth.signOut();
+    }
+  }catch(err){
+    status.className = 'auth-status err'; status.textContent = friendlyAuthError(err);
+  }finally{ btn.disabled = false; }
+}
+async function completeGoogleSignup(){
+  const phone = document.getElementById('gc-phone').value.trim();
+  const status = document.getElementById('gc-status');
+  const btn = document.getElementById('gc-submit-btn');
+  if(!phone){ status.className='auth-status err'; status.textContent='اكتب رقم موبايلك.'; return; }
+  btn.disabled = true;
+  status.className='auth-status pending'; status.textContent='جاري الحفظ...';
+  try{
+    pendingUser.phone = phone;
+    await db.collection('users').doc(currentUid).set({
+      name: pendingUser.name, email: pendingUser.email, phone, role: pendingRole,
+      plan:'free', status:'active', emailVerified:true,
+      trialEndsAt: Date.now() + 20*24*60*60*1000,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    status.textContent = '';
+    plansMode = 'signup';
+    document.getElementById('plans-back-btn').style.display = 'block';
+    document.getElementById('screen-google-complete').style.display = 'none';
+    document.getElementById('screen-plans').style.display = 'flex';
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+  finally{ btn.disabled = false; }
+}
+async function loginUser(){
+  const email = document.getElementById('li-email').value.trim();
+  const pass = document.getElementById('li-pass').value;
+  const status = document.getElementById('login-status');
+  const btn = document.getElementById('li-submit-btn');
+  if(!email || !pass){ status.className='auth-status err'; status.textContent='اكتب الإيميل وكلمة المرور.'; return; }
+
+  btn.disabled = true;
+  status.className='auth-status pending'; status.textContent='جاري الدخول...';
+  try{
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    currentUid = cred.user.uid;
+    const doc = await db.collection('users').doc(currentUid).get();
+    if(!doc.exists){
+      status.className='auth-status err'; status.textContent='الحساب ده مش موجود في قاعدة بياناتنا.'; return;
+    }
+    const d = doc.data();
+    pendingUser = { name: d.name, email: d.email, phone: d.phone };
+    pendingRole = d.role;
+    status.textContent = '';
+    document.getElementById('screen-login').style.display = 'none';
+    enterApp(pendingRole);
+  }catch(err){
+    status.className='auth-status err'; status.textContent = friendlyAuthError(err);
+  }finally{ btn.disabled = false; }
 }
 function backToRole(fromId){
   document.getElementById(fromId).style.display = 'none';
   document.getElementById('screen-role').style.display = 'flex';
 }
 
-async function goToPlans(){
+function genCode(){ return String(Math.floor(100000 + Math.random()*900000)); }
+
+async function createAccountAndSendCode(){
   const name = document.getElementById('su-name').value.trim();
   const email = document.getElementById('su-email').value.trim();
   const phone = document.getElementById('su-phone').value.trim();
@@ -516,12 +725,8 @@ async function goToPlans(){
   const status = document.getElementById('signup-status');
   const btn = document.getElementById('su-submit-btn');
 
-  if(!name || !email || !phone || !pass){
-    status.className = 'auth-status err'; status.textContent = 'من فضلك املأ كل الحقول.'; return;
-  }
-  if(pass.length < 6){
-    status.className = 'auth-status err'; status.textContent = 'كلمة المرور لازم تكون 6 أحرف على الأقل.'; return;
-  }
+  if(!name || !email || !phone || !pass){ status.className='auth-status err'; status.textContent='من فضلك املأ كل الحقول.'; return; }
+  if(pass.length < 6){ status.className='auth-status err'; status.textContent='كلمة المرور لازم تكون 6 أحرف على الأقل.'; return; }
 
   btn.disabled = true;
   status.className = 'auth-status pending'; status.textContent = 'جاري إنشاء الحساب...';
@@ -529,22 +734,65 @@ async function goToPlans(){
   try{
     const cred = await auth.createUserWithEmailAndPassword(email, pass);
     currentUid = cred.user.uid;
+    pendingUser = { name, email, phone };
+
+    const code = genCode();
+    const expiresAt = Date.now() + 10*60*1000;
+
     await db.collection('users').doc(currentUid).set({
-      name, email, phone, role: pendingRole, plan: 'free',
+      name, email, phone, role: pendingRole, plan:'free', status:'active',
+      verificationCode: code, verificationExpiresAt: expiresAt, emailVerified:false,
+      trialEndsAt: Date.now() + 20*24*60*60*1000,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    pendingUser = { name, email, phone };
-    plansMode = 'signup';
-    document.getElementById('plans-back-btn').style.display = 'block';
+
+    try{
+      await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, { verification_code: code, message: 'كود تفعيل حسابك: ' + code });
+    }catch(mailErr){ console.warn('EmailJS error:', mailErr); }
+
     status.textContent = '';
     document.getElementById('screen-signup').style.display = 'none';
-    document.getElementById('screen-plans').style.display = 'flex';
+    document.getElementById('screen-verify').style.display = 'flex';
   }catch(err){
-    status.className = 'auth-status err';
-    status.textContent = 'حصل خطأ: ' + (err.message || err.code);
-  }finally{
-    btn.disabled = false;
-  }
+    status.className = 'auth-status err'; status.textContent = friendlyAuthError(err);
+  }finally{ btn.disabled = false; }
+}
+
+async function resendCode(){
+  const status = document.getElementById('verify-status');
+  if(!currentUid){ return; }
+  const code = genCode();
+  const expiresAt = Date.now() + 10*60*1000;
+  try{
+    await db.collection('users').doc(currentUid).update({ verificationCode: code, verificationExpiresAt: expiresAt });
+    await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, { verification_code: code, message: 'كود تفعيل حسابك: ' + code });
+    status.className = 'auth-status ok'; status.textContent = '✓ اتبعت كود جديد على إيميلك.';
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ في إعادة الإرسال.'; }
+}
+
+async function confirmCode(){
+  const entered = document.getElementById('verify-code').value.trim();
+  const status = document.getElementById('verify-status');
+  if(!entered){ status.className='auth-status err'; status.textContent='اكتب الكود.'; return; }
+  status.className='auth-status pending'; status.textContent='جاري التحقق...';
+  try{
+    const doc = await db.collection('users').doc(currentUid).get();
+    const data = doc.data();
+    if(Date.now() > data.verificationExpiresAt){
+      status.className='auth-status err'; status.textContent='الكود انتهت صلاحيته، اطلب كود جديد.'; return;
+    }
+    if(entered !== data.verificationCode){
+      status.className='auth-status err'; status.textContent='الكود غلط، حاول تاني.'; return;
+    }
+    await db.collection('users').doc(currentUid).update({ emailVerified:true });
+    status.className='auth-status ok'; status.textContent='✓ تم التأكيد.';
+    plansMode = 'signup';
+    document.getElementById('plans-back-btn').style.display = 'block';
+    setTimeout(()=>{
+      document.getElementById('screen-verify').style.display = 'none';
+      document.getElementById('screen-plans').style.display = 'flex';
+    }, 500);
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
 
 async function sendEmailJS(templateId, extraParams){
@@ -561,47 +809,60 @@ async function sendEmailJS(templateId, extraParams){
   if(!res.ok){ const t = await res.text(); throw new Error(t || ('HTTP ' + res.status)); }
 }
 
-async function selectPlan(planKey){
+function selectPlan(planKey){
   const plan = PLANS[planKey];
+  selectedPlanKey = planKey;
+  if(plan.price === 0){ finalizeFreePlan(); return; }
+  document.getElementById('pay-plan-title').textContent = 'تأكيد اشتراك: ' + plan.name;
+  document.getElementById('pay-plan-sub').textContent = 'المدة: ' + plan.duration + ' — المبلغ: ' + plan.price + ' جنيه';
+  const msg = encodeURIComponent(`مرحبًا، أنا ${pendingUser.name || ''} حوّلت مبلغ ${plan.price} جنيه لخطة "${plan.name}" على نُدرس معًا، برجاء تفعيل الاشتراك.`);
+  document.getElementById('wa-confirm-link').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  document.getElementById('screen-plans').style.display = 'none';
+  document.getElementById('screen-payment').style.display = 'flex';
+}
+function backToPlansFromPayment(){
+  document.getElementById('screen-payment').style.display = 'none';
+  document.getElementById('screen-plans').style.display = 'flex';
+}
+
+async function finalizeFreePlan(){
   const status = document.getElementById('plans-status');
-  status.className = 'auth-status pending'; status.textContent = 'جاري الحفظ...';
-
-  const planParams = {
-    plan_name: plan.name,
-    plan_price: plan.price === 0 ? 'مجانًا' : (plan.price + ' جنيه'),
-    plan_original_price: plan.original ? (plan.original + ' جنيه') : '',
-    plan_duration: plan.duration,
-  };
-
+  status.className='auth-status pending'; status.textContent='جاري الحفظ...';
   try{
     if(currentUid){
       await db.collection('users').doc(currentUid).update({
-        plan: planKey, planSelectedAt: firebase.firestore.FieldValue.serverTimestamp()
+        plan:'free', status:'active', trialEndsAt: Date.now() + 20*24*60*60*1000
       });
     }
+    status.className='auth-status ok'; status.textContent='✓ تم.';
+    setTimeout(()=>{
+      document.getElementById('screen-plans').style.display = 'none';
+      if(plansMode === 'signup'){ enterApp(pendingRole); }
+      else{ document.getElementById('screen-app').style.display='block'; loadUserStatus(); }
+    }, 500);
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
 
-    if(plansMode === 'signup'){
-      try{
-        await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, planParams);
-        if(plan.price > 0) await sendEmailJS(EMAILJS_TEMPLATE_INVOICE, planParams);
-      }catch(mailErr){ console.warn('EmailJS error:', mailErr); }
-
-      status.className = 'auth-status ok'; status.textContent = '✓ تم إنشاء الحساب بنجاح.';
-      setTimeout(() => { document.getElementById('screen-plans').style.display = 'none'; enterApp(pendingRole); }, 800);
-    }else{
-      if(plan.price > 0){
-        try{ await sendEmailJS(EMAILJS_TEMPLATE_INVOICE, planParams); }catch(mailErr){ console.warn(mailErr); }
-      }
-      status.className = 'auth-status ok'; status.textContent = '✓ تم تحديث خطتك.';
-      setTimeout(() => {
-        document.getElementById('screen-plans').style.display = 'none';
-        document.getElementById('screen-app').style.display = 'block';
-        refreshUpgradeView(planKey);
-      }, 800);
+async function finalizePaidPlan(){
+  const plan = PLANS[selectedPlanKey];
+  const status = document.getElementById('payment-status');
+  status.className='auth-status pending'; status.textContent='جاري الحفظ...';
+  const planParams = { plan_name: plan.name, plan_price: plan.price + ' جنيه', plan_duration: plan.duration };
+  try{
+    if(currentUid){
+      await db.collection('users').doc(currentUid).update({
+        plan: selectedPlanKey, status:'pending_payment',
+        planRequestedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
     }
-  }catch(err){
-    status.className = 'auth-status err'; status.textContent = 'حصلت مشكلة: ' + err.message;
-  }
+    try{ await sendEmailJS(EMAILJS_TEMPLATE_INVOICE, planParams); }catch(mailErr){ console.warn(mailErr); }
+    status.className='auth-status ok'; status.textContent='✓ تم إرسال طلبك، هيتفعل خلال ساعات بعد تأكيد التحويل.';
+    setTimeout(()=>{
+      document.getElementById('screen-payment').style.display = 'none';
+      if(plansMode === 'signup'){ enterApp(pendingRole); }
+      else{ document.getElementById('screen-app').style.display='block'; loadUserStatus(); }
+    }, 1200);
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
 
 function openUpgrade(){
@@ -610,15 +871,59 @@ function openUpgrade(){
   document.getElementById('screen-app').style.display = 'none';
   document.getElementById('screen-plans').style.display = 'flex';
 }
-function refreshUpgradeView(planKey){
-  const plan = PLANS[planKey];
+function showAppOrRole(){
+  document.getElementById('screen-plans').style.display = 'none';
+  if(plansMode === 'upgrade'){ document.getElementById('screen-app').style.display = 'block'; }
+  else{ document.getElementById('screen-role').style.display = 'flex'; }
+}
+
+async function loadUserStatus(){
+  if(!currentUid) return;
+  try{
+    const doc = await db.collection('users').doc(currentUid).get();
+    const d = doc.data();
+    userStatus = { plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt };
+    renderStatusUI();
+  }catch(err){ console.warn(err); }
+}
+function renderStatusUI(){
+  const plan = PLANS[userStatus.plan] || PLANS.free;
+  const sidebarEl = document.getElementById('sidebar-status');
+  const banner = document.getElementById('top-banner');
   document.getElementById('upgrade-current-plan').textContent = plan.name;
   document.getElementById('upgrade-current-note').textContent = 'المدة: ' + plan.duration + (plan.price ? (' — ' + plan.price + ' جنيه') : ' — مجانية');
+
+  if(userStatus.status === 'pending_payment'){
+    sidebarEl.innerHTML = 'خطتك: ' + plan.name + '<span class="status-badge pending">قيد المراجعة</span>';
+    banner.className = 'top-banner pending'; banner.style.display='block';
+    banner.textContent = '⏳ حسابك قيد المراجعة — هيتفعل بعد تأكيد التحويل من فريقنا.';
+  }else if(userStatus.plan === 'free'){
+    const daysLeft = userStatus.trialEndsAt ? Math.max(0, Math.ceil((userStatus.trialEndsAt - Date.now())/(24*60*60*1000))) : 20;
+    sidebarEl.innerHTML = 'خطتك: تجربة مجانية<span class="status-badge free">' + daysLeft + ' يوم متبقي</span>';
+    banner.className = 'top-banner trial'; banner.style.display='block';
+    banner.textContent = '🎁 باقي ' + daysLeft + ' يوم على انتهاء تجربتك المجانية. طوّر خطتك من "⭐ طوّر خطتك".';
+  }else{
+    sidebarEl.innerHTML = 'خطتك: ' + plan.name + '<span class="status-badge active">نشط</span>';
+    banner.className = 'top-banner active'; banner.style.display='block';
+    banner.textContent = '✓ خطتك (' + plan.name + ') نشطة — استمتع بكل المميزات.';
+  }
+}
+function openExamform(btn){
+  showView('v-upgrade', btn); // fallback selection state
+  if(userStatus.status === 'active' && userStatus.plan !== 'free'){
+    window.open('https://plusinmath.vercel.app/x/examform','_blank');
+  }else{
+    alert('امتحانك بلس متاحة للمشتركين في الخطط المدفوعة بس. تقدر تشترك من "طوّر خطتك".');
+    showView('v-upgrade', btn);
+  }
 }
 
 function enterApp(role){
   document.getElementById('screen-role').style.display = 'none';
   document.getElementById('screen-signup').style.display = 'none';
+  document.getElementById('screen-verify').style.display = 'none';
+  document.getElementById('screen-login').style.display = 'none';
+  document.getElementById('screen-google-complete').style.display = 'none';
   document.getElementById('screen-app').style.display = 'block';
   document.getElementById('nav-teacher').style.display = role === 'teacher' ? 'block' : 'none';
   document.getElementById('nav-student').style.display = role === 'student' ? 'block' : 'none';
@@ -632,9 +937,9 @@ function enterApp(role){
     const a1 = document.getElementById('dash-avatar'); if(a1) a1.textContent = initials;
     const a2 = document.getElementById('dash-avatar-s'); if(a2) a2.textContent = initials;
   }
-  refreshUpgradeView('free');
+  loadUserStatus();
   showView(role === 'teacher' ? 't-dash' : 's-home', document.querySelector((role === 'teacher' ? '#nav-teacher' : '#nav-student') + ' .nav-item'));
-  loadLessons(); loadPracticalTips(); loadResearchVideos(); loadMyResearch();
+  loadLessons(); loadPracticalTips(); loadResearchVideos(); loadMyResearch(); loadCommunity(); loadNotebooks();
 }
 function showView(id, btn){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -643,14 +948,22 @@ function showView(id, btn){
   if(parent){ parent.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); }
   btn.classList.add('active');
 }
-function switchRole(){
+async function switchRole(){
+  if(!currentUid){ document.getElementById('screen-app').style.display = 'none'; document.getElementById('screen-role').style.display = 'flex'; return; }
+  const newRole = pendingRole === 'teacher' ? 'student' : 'teacher';
+  const label = newRole === 'teacher' ? 'معلم' : 'طالب معلم';
+  if(!confirm('تأكيد التحويل إلى مسار "' + label + '"؟')) return;
+  try{
+    await db.collection('users').doc(currentUid).update({ role: newRole });
+    pendingRole = newRole;
+    enterApp(newRole);
+  }catch(err){ alert('حصل خطأ: ' + err.message); }
+}
+function logoutUser(){
+  auth.signOut();
+  currentUid = null; pendingUser = { name:'', email:'', phone:'' }; pendingRole = null;
   document.getElementById('screen-app').style.display = 'none';
   document.getElementById('screen-role').style.display = 'flex';
-}
-function fakePublish(){
-  const hint = document.getElementById('publish-hint');
-  hint.textContent = '✓ تم إرسال الكورس بنجاح، في انتظار موافقة الأدمن.';
-  hint.style.color = 'var(--sage)'; hint.style.fontWeight = '700';
 }
 function answerQuiz(btn, isCorrect){
   document.querySelectorAll('.quiz-opt').forEach(o => o.disabled = true);
@@ -660,16 +973,12 @@ function answerQuiz(btn, isCorrect){
   fb.textContent = isCorrect ? '✓ إجابة صحيحة! تحديد الهدف هو حجر الأساس لأي درس.' : '✗ مش الإجابة الأدق — الهدف الواضح هو الأهم دايمًا قبل أي حاجة تانية.';
 }
 
-/* ---------- Firestore content: lessons / tips / videos / my research ---------- */
-/* المحتوى ده هيتضاف من داشبورد الأدمن (admin-dashboard.html) — الشاشات دي بتقرأ بس */
-
 async function loadLessons(){
   const el = document.getElementById('learn-list'); if(!el) return;
   try{
     const snap = await db.collection('lessons').orderBy('createdAt','desc').limit(20).get();
     if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش دروس مرفوعة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
-    el.innerHTML = snap.docs.map(d => {
-      const l = d.data();
+    el.innerHTML = snap.docs.map(d => { const l = d.data();
       return `<div class="content-item"><div><div class="ci-title">${escapeHtml(l.title||'')}</div><div class="ci-desc">${escapeHtml(l.description||'')}</div></div>${l.videoUrl ? `<a class="ci-link" href="${escapeAttr(l.videoUrl)}" target="_blank">شاهد الدرس</a>` : ''}</div>`;
     }).join('');
   }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الدروس الآن.</div>'; console.warn(err); }
@@ -710,10 +1019,7 @@ async function addMyResearch(){
   const status = document.getElementById('myres-status');
   if(!title){ status.className='auth-status err'; status.textContent='اكتب عنوان البحث.'; return; }
   try{
-    await db.collection('research').add({
-      title, link, ownerUid: currentUid, ownerName: pendingUser.name,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await db.collection('research').add({ title, link, ownerUid: currentUid, ownerName: pendingUser.name, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
     document.getElementById('myres-title').value=''; document.getElementById('myres-link').value='';
     status.className='auth-status ok'; status.textContent='✓ تمت الإضافة.';
     loadMyResearch();
@@ -726,16 +1032,185 @@ async function sendContactMessage(){
   if(!subject || !message){ status.className='auth-status err'; status.textContent='من فضلك املأ الموضوع والرسالة.'; return; }
   status.className='auth-status pending'; status.textContent='جاري الإرسال...';
   try{
-    await db.collection('supportMessages').add({
-      subject, message, name: pendingUser.name, email: pendingUser.email, phone: pendingUser.phone,
-      role: pendingRole, ownerUid: currentUid, status:'open',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await db.collection('supportMessages').add({ subject, message, name: pendingUser.name, email: pendingUser.email, phone: pendingUser.phone, role: pendingRole, ownerUid: currentUid, status:'open', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
     status.className='auth-status ok'; status.textContent='✓ تم إرسال رسالتك، هيتم الرد عليك قريبًا.';
     document.getElementById('contact-subject').value=''; document.getElementById('contact-message').value='';
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- مجتمع حقيقي (Firestore) ---------- */
+const likedPosts = new Set();
+
+async function createPost(){
+  const tag = document.getElementById('post-tag').value;
+  const content = document.getElementById('post-content').value.trim();
+  const driveLink = document.getElementById('post-drive-link').value.trim();
+  const status = document.getElementById('post-status');
+  if(!content){ status.className='auth-status err'; status.textContent='اكتب محتوى المنشور.'; return; }
+  status.className='auth-status pending'; status.textContent='جاري النشر...';
+  try{
+    await db.collection('communityPosts').add({
+      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', tag, content,
+      driveLink: driveLink || null,
+      likesCount: 0, commentsCount: 0,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('post-content').value = '';
+    document.getElementById('post-drive-link').value = '';
+    status.className='auth-status ok'; status.textContent='✓ تم النشر.';
+    loadCommunity();
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+
+function initials(name){ return (name||'؟').trim().split(' ').slice(0,2).map(w=>w[0]).join(' '); }
+
+async function loadCommunity(){
+  const el = document.getElementById('community-list');
+  const prevT = document.getElementById('home-community-preview');
+  const prevS = document.getElementById('home-community-preview-s');
+  try{
+    const snap = await db.collection('communityPosts').orderBy('createdAt','desc').limit(30).get();
+    if(snap.empty){
+      if(el) el.innerHTML = '<div class="empty-state">لسه مفيش منشورات — كن أول من ينشر في المجتمع!</div>';
+      if(prevT) prevT.innerHTML = '<div class="empty-state">لسه مفيش منشورات.</div>';
+      if(prevS) prevS.innerHTML = '<div class="empty-state">لسه مفيش منشورات.</div>';
+      return;
+    }
+    const renderPost = (id, p) => `
+      <div class="post" id="post-${id}">
+        <div class="post-head"><div class="mini-avatar">${escapeHtml(initials(p.authorName))}</div><div class="who">${escapeHtml(p.authorName||'مستخدم')}</div><span class="tag">${escapeHtml(p.tag||'عام')}</span></div>
+        <p>${escapeHtml(p.content||'')}</p>
+        ${p.driveLink ? `<a class="ci-link" style="display:inline-block; margin-bottom:10px;" href="${escapeAttr(p.driveLink)}" target="_blank">📎 فتح الملف المرفق</a>` : ''}
+        <div class="post-actions">
+          <button class="${likedPosts.has(id)?'liked':''}" id="like-${id}" onclick="likePost('${id}')">👍 <span id="likecount-${id}">${p.likesCount||0}</span></button>
+          <button onclick="toggleComments('${id}')">💬 <span id="commentcount-${id}">${p.commentsCount||0}</span> تعليقات</button>
+          <button onclick="sharePost('${id}')">🔗 مشاركة</button>
+          ${p.authorUid === currentUid ? `<button onclick="deletePost('${id}')" style="color:var(--brick);">🗑️ حذف</button>` : ''}
+        </div>
+        <div class="comments-box" id="comments-${id}">
+          <div id="commentslist-${id}"></div>
+          <div class="comment-add">
+            <input type="text" id="commentinput-${id}" placeholder="اكتب تعليق..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addComment('${id}');}">
+            <button onclick="addComment('${id}')">إرسال</button>
+          </div>
+        </div>
+      </div>`;
+    const full = snap.docs.map(d => renderPost(d.id, d.data())).join('');
+    if(el) el.innerHTML = full;
+    const previewHtml = snap.docs.slice(0,3).map(d => renderPost(d.id, d.data())).join('') || '<div class="empty-state">لسه مفيش منشورات.</div>';
+    if(prevT) prevT.innerHTML = previewHtml;
+    if(prevS) prevS.innerHTML = previewHtml;
+  }catch(err){
+    if(el) el.innerHTML = '<div class="empty-state">تعذّر تحميل المجتمع الآن.</div>';
+    console.warn(err);
+  }
+}
+async function likePost(id){
+  if(likedPosts.has(id)) return;
+  likedPosts.add(id);
+  const btn = document.getElementById('like-'+id); if(btn) btn.classList.add('liked');
+  try{
+    await db.collection('communityPosts').doc(id).update({ likesCount: firebase.firestore.FieldValue.increment(1) });
+    const el = document.getElementById('likecount-'+id);
+    if(el) el.textContent = String(Number(el.textContent||0) + 1);
+  }catch(err){ console.warn(err); }
+}
+function toggleComments(id){
+  const box = document.getElementById('comments-'+id);
+  box.classList.toggle('open');
+  if(box.classList.contains('open')) loadComments(id);
+}
+async function loadComments(id){
+  const el = document.getElementById('commentslist-'+id);
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('communityPosts').doc(id).collection('comments').orderBy('createdAt','asc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div style="font-size:12px; color:var(--ink-soft);">لسه مفيش تعليقات — اكتب أول تعليق.</div>'; return; }
+    el.innerHTML = snap.docs.map(d => { const c = d.data();
+      return `<div class="comment-item"><b>${escapeHtml(c.authorName||'مستخدم')}:</b> ${escapeHtml(c.content||'')}</div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div style="font-size:12px; color:var(--brick);">تعذّر تحميل التعليقات.</div>'; console.warn(err); }
+}
+async function addComment(id){
+  const input = document.getElementById('commentinput-'+id);
+  const content = input.value.trim();
+  if(!content) return;
+  input.disabled = true;
+  try{
+    await db.collection('communityPosts').doc(id).collection('comments').add({
+      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', content,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await db.collection('communityPosts').doc(id).update({ commentsCount: firebase.firestore.FieldValue.increment(1) });
+    input.value = '';
+    const cc = document.getElementById('commentcount-'+id);
+    if(cc) cc.textContent = String(Number(cc.textContent||0) + 1);
+    loadComments(id);
+  }catch(err){ console.warn(err); alert('تعذّر إرسال التعليق: ' + err.message); }
+  finally{ input.disabled = false; input.focus(); }
+}
+async function sharePost(id){
+  const url = window.location.href.split('#')[0] + '#post-' + id;
+  const postEl = document.getElementById('post-'+id);
+  const text = postEl ? postEl.querySelector('p').textContent : '';
+  try{
+    if(navigator.share){
+      await navigator.share({ title: 'منشور من نُدرس معًا', text, url });
+    }else{
+      await navigator.clipboard.writeText(url);
+      alert('✓ اتنسخ رابط المنشور.');
+    }
+  }catch(err){ /* المستخدم لغى المشاركة - تجاهل */ }
+}
+async function deletePost(id){
+  if(!confirm('متأكد إنك عايز تحذف المنشور ده؟')) return;
+  try{
+    await db.collection('communityPosts').doc(id).delete();
+    loadCommunity();
+  }catch(err){ alert('تعذّر الحذف: ' + err.message); }
+}
+
+/* ---------- دفاتر تحضير (مكتبة تعاونية) ---------- */
+async function addNotebook(){
+  const title = document.getElementById('nb-title').value.trim();
+  const subject = document.getElementById('nb-subject').value;
+  const link = document.getElementById('nb-link').value.trim();
+  const status = document.getElementById('nb-status');
+  if(!title || !link){ status.className='auth-status err'; status.textContent='اكتب العنوان والرابط.'; return; }
+  status.className='auth-status pending'; status.textContent='جاري الإضافة...';
+  try{
+    await db.collection('prepNotebooks').add({
+      title, subject, link, ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('nb-title').value=''; document.getElementById('nb-link').value='';
+    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة.';
+    loadNotebooks();
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+async function loadNotebooks(){
+  const el = document.getElementById('notebooks-list'); if(!el) return;
+  try{
+    const snap = await db.collection('prepNotebooks').orderBy('createdAt','desc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش دفاتر — كن أول من يضيف دفتر تحضير!</div>'; return; }
+    el.innerHTML = snap.docs.map(d => { const n = d.data();
+      const mine = n.ownerUid === currentUid;
+      return `<div class="content-item">
+        <div><div class="ci-title">${escapeHtml(n.title||'')}</div><div class="ci-desc">${escapeHtml(n.subject||'')} — بواسطة ${escapeHtml(n.ownerName||'مستخدم')}</div></div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <a class="ci-link" href="${escapeAttr(n.link)}" target="_blank">فتح الدفتر</a>
+          ${mine ? `<button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deleteNotebook('${d.id}')">حذف</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الدفاتر الآن.</div>'; console.warn(err); }
+}
+async function deleteNotebook(id){
+  if(!confirm('متأكد من حذف الدفتر ده؟')) return;
+  try{ await db.collection('prepNotebooks').doc(id).delete(); loadNotebooks(); }
+  catch(err){ alert('تعذّر الحذف: ' + err.message); }
+}
 function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
 </script>
 </body>
