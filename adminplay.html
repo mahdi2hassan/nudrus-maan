@@ -13,7 +13,8 @@
   h1,h2{font-family:'Cairo',sans-serif;}
   button{font-family:inherit; cursor:pointer; border:none;}
 
-  #gate{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+  #gate, #localgate{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+  #gate{display:none;}
   .gate-box{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:30px; width:100%; max-width:360px; text-align:center;}
   .gate-box h1{font-size:20px; margin-bottom:6px;}
   .gate-box p{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px;}
@@ -53,14 +54,161 @@
   .badge.active{background:#E3EFE6; color:#3d6b47;}
   .badge.pending_payment{background:#FBEFE0; color:#94411F;}
   .badge.expired, .badge.rejected{background:#F1ECE1; color:#8a8478;}
+
+  /* ---------- icon system ---------- */
+  .icon{width:1em; height:1em; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-0.15em; flex-shrink:0;}
+  .tab{display:inline-flex; align-items:center; gap:7px;}
+  .tab .icon{width:15px; height:15px;}
+  .btn{display:inline-flex; align-items:center; gap:6px;}
+  .item, .urow, .card{transition:box-shadow .15s ease;}
+  .del{display:inline-flex; align-items:center; gap:5px;}
+
+  /* ---------- professional polish ---------- */
+  body{-webkit-font-smoothing:antialiased; min-height:100vh;}
+  #dash{max-width:960px;}
+  .panel{animation:panelIn .2s ease;}
+  @keyframes panelIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .card, .item, .urow{box-shadow:0 1px 2px rgba(27,42,65,0.04);}
+  .card:hover{box-shadow:0 4px 14px rgba(27,42,65,0.06);}
+  .btn:hover{background:var(--brick-dark);}
+  .btn:disabled{opacity:.55; cursor:default;}
+  .head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .head-actions{display:flex; gap:8px;}
+  .icon-btn{background:var(--paper-dim); color:var(--ink-soft); padding:8px 12px; border-radius:5px; font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:6px;}
+  .icon-btn:hover{background:var(--line); color:var(--ink);}
+  .edit-btn{background:var(--paper-dim); color:var(--ink-soft); padding:6px 12px; border-radius:4px; font-size:12px; font-weight:700; display:inline-flex; align-items:center; gap:5px;}
+  .edit-btn:hover{background:var(--line); color:var(--ink);}
+  .item{align-items:flex-start;}
+  .item .actions{display:flex; gap:6px; flex-shrink:0;}
+  .item .edit-form{width:100%;}
+  .item .edit-form input, .item .edit-form textarea{width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:13px; margin-bottom:8px; background:var(--paper);}
+  .item .edit-form .actions-row{display:flex; gap:8px;}
+  .save-sm{background:var(--sage); color:#fff; padding:7px 14px; border-radius:4px; font-size:12px; font-weight:700;}
+  .cancel-sm{background:var(--paper-dim); color:var(--ink-soft); padding:7px 14px; border-radius:4px; font-size:12px; font-weight:700;}
+
+  /* toast notifications */
+  #toast-stack{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; gap:8px; z-index:999; width:min(92vw,380px);}
+  .toast{background:var(--ink); color:var(--paper); border-radius:7px; padding:11px 14px; font-size:13px; display:flex; align-items:center; gap:10px; box-shadow:0 12px 28px rgba(27,42,65,0.28); animation:toastIn .2s ease;}
+  .toast.err{background:var(--brick-dark);}
+  .toast .toast-msg{flex:1; line-height:1.5;}
+  .toast .toast-undo{background:none; color:var(--gold); font-weight:800; font-size:12.5px; text-decoration:underline; flex-shrink:0;}
+  @keyframes toastIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- local device lock ---------- */
+  #localgate .gate-box{max-width:380px;}
+  .pw-row{position:relative;}
+  .pw-row .pw-toggle{position:absolute; left:8px; top:9px; background:none; color:var(--ink-soft); padding:4px;}
+  .lg-tag{font-size:11.5px; color:var(--ink-soft); background:var(--paper-dim); border-radius:5px; padding:8px 10px; margin-bottom:14px; line-height:1.7; text-align:right;}
+  .lg-switch{background:none; color:var(--brick); font-size:12px; text-decoration:underline; margin-top:10px;}
+
+  /* community moderation */
+  .mod-post{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:14px 16px; margin-bottom:10px;}
+  .mod-post .mp-head{display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-soft); margin-bottom:8px;}
+  .mod-post .mp-body{font-size:13.5px; line-height:1.7; margin-bottom:8px; white-space:pre-wrap;}
+  .mod-post img{max-width:220px; border-radius:5px; display:block; margin-bottom:8px;}
+
+  /* ---------- admin support chat ---------- */
+  .chat-shell{display:flex; border:1px solid var(--line); border-radius:12px; overflow:hidden; height:min(600px,72vh); background:var(--white);}
+  .chat-list-pane{width:280px; flex-shrink:0; border-left:1px solid var(--line); overflow-y:auto;}
+  .conv-item{display:flex; align-items:center; gap:10px; padding:11px 12px; cursor:pointer; border-bottom:1px solid var(--paper-dim);}
+  .conv-item:hover{background:var(--paper-dim);}
+  .conv-item.active{background:rgba(184,83,46,0.08);}
+  .conv-item .conv-info{flex:1; min-width:0;}
+  .conv-item .conv-name{font-weight:800; font-size:13px; color:var(--ink);}
+  .conv-item .conv-preview{font-size:11.5px; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .conv-item .conv-badge{background:var(--brick); color:#fff; font-size:10px; font-weight:800; min-width:17px; height:17px; padding:0 4px; border-radius:9px; display:flex; align-items:center; justify-content:center;}
+  .mini-avatar{width:32px; height:32px; border-radius:50%; background:var(--brick); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;}
+  .chat-thread-pane{flex:1; display:flex; flex-direction:column; min-width:0;}
+  .chat-thread-empty{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--ink-soft); font-size:13px; text-align:center; padding:20px;}
+  .chat-thread-active{flex:1; display:flex; flex-direction:column; min-height:0;}
+  .chat-thread-head{display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line);}
+  .chat-back-btn{display:none; background:var(--paper-dim); border-radius:50%; width:30px; height:30px; align-items:center; justify-content:center; flex-shrink:0;}
+  .chat-thread-name{font-weight:800; font-size:13.5px; color:var(--ink);}
+  .chat-messages{flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:8px; background:var(--paper-dim);}
+  .msg-bubble{max-width:72%; padding:9px 13px; border-radius:14px; font-size:13px; line-height:1.6; word-break:break-word;}
+  .msg-bubble.mine{align-self:flex-end; background:var(--brick); color:#fff; border-bottom-left-radius:4px;}
+  .msg-bubble.theirs{align-self:flex-start; background:var(--white); color:var(--ink); border:1px solid var(--line); border-bottom-right-radius:4px;}
+  .msg-time{font-size:9.5px; opacity:.7; margin-top:3px; display:block;}
+  .chat-input-row{display:flex; gap:8px; padding:12px; border-top:1px solid var(--line); align-items:center;}
+  .chat-input-row input{flex:1; padding:10px 14px; border:1px solid var(--line); border-radius:20px; font-family:inherit; font-size:13px;}
+  .chat-input-row button{background:var(--brick); color:#fff; width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  @media (max-width:760px){
+    .chat-shell{position:relative;}
+    .chat-list-pane{position:absolute; inset:0; width:100%; z-index:1; border-left:none; transition:transform .2s ease;}
+    .chat-list-pane.hide-mobile{transform:translateX(105%);}
+    .chat-thread-pane{position:absolute; inset:0; width:100%;}
+    .chat-back-btn{display:flex;}
+  }
 </style>
 </head>
 <body>
+<svg style="display:none" aria-hidden="true">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+<symbol id="i-notebook" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+<symbol id="i-chat-square" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-chat-circle" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 3 3 6 3s6-1.3 6-3v-5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="18" rx="2"/><path d="M9 2h6a1 1 0 0 1 1 1v2H8V3a1 1 0 0 1 1-1z"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/></symbol>
+<symbol id="i-thumb" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
+<symbol id="i-paperclip" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+<symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2z"/><path d="M19 15l.9 2.6L22 18.5l-2.1.9L19 22l-.9-2.6-2.1-.9 2.1-.9L19 15z"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12.5V6a1.5 1.5 0 0 1 3 0v8"/><path d="M17 14v-2a1.5 1.5 0 0 1 3 0v3a6 6 0 0 1-6 6h-2a7 7 0 0 1-6-3.5L4 14.8a1.3 1.3 0 0 1 2.1-1.5L8 15"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+<symbol id="i-check-double" viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 13 19 11 17"/></symbol>
+</svg>
+
+<div id="toast-stack"></div>
+
+<!-- ========== LOCAL DEVICE LOCK (يوز وباسورد محلي) ========== -->
+<div id="localgate">
+  <div class="gate-box">
+    <div class="auth-logo" style="width:48px; height:48px; border-radius:50%; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; color:var(--brick);"><svg class="icon" style="width:22px; height:22px;"><use href="#i-lock"></use></svg></div>
+    <h1 id="lg-title">قفل الجهاز</h1>
+    <p id="lg-sub">اليوزر والباسورد بتوعك متخزنين على الجهاز ده بس</p>
+    <div class="lg-tag" id="lg-setup-tag">أول مرة بتفتح اللوحة من الجهاز ده — اختار يوزر وباسورد محليين لقفل الشاشة دي (منفصلين عن حساب الأدمن على Firebase اللي جاي بعد كده).</div>
+    <input type="text" id="lg-user" placeholder="اليوزر" autocomplete="off">
+    <div class="pw-row">
+      <input type="password" id="lg-pass" placeholder="الباسورد" autocomplete="off">
+      <button type="button" class="pw-toggle" onclick="toggleLgPw()"><svg class="icon" id="lg-pw-icon"><use href="#i-eye"></use></svg></button>
+    </div>
+    <input type="password" id="lg-pass-confirm" placeholder="تأكيد الباسورد" autocomplete="off" style="display:none">
+    <button onclick="submitLocalGate()" id="lg-submit-btn">حفظ وتأمين الجهاز</button>
+    <div class="gate-err" id="lg-err"></div>
+    <button class="lg-switch" id="lg-reset-btn" onclick="resetLocalGate()" style="display:none">نسيت الباسورد؟ إعادة ضبط قفل الجهاز</button>
+  </div>
+</div>
 
 <div id="gate">
   <div class="gate-box">
     <h1>لوحة تحكم نُدرس معًا</h1>
-    <p>دخول الأدمن فقط (حساب Firebase حقيقي)</p>
+    <p>دخول الأدمن (حساب Firebase حقيقي)</p>
     <input type="email" id="gate-email" placeholder="إيميل الأدمن">
     <input type="password" id="gate-pass" placeholder="كلمة المرور">
     <button onclick="checkGate()">دخول</button>
@@ -70,19 +218,27 @@
 
 <div id="dash">
   <div class="head">
-    <h1>لوحة تحكم نُدرس معًا</h1>
-    <p>إدارة محتوى "تعلم كيف" و"التربية العملية" و"بحوث الفعل"</p>
+    <div><h1>لوحة تحكم نُدرس معًا</h1>
+    <p>تحكم كامل في المنصة — محتوى، مستخدمين، مجتمع، ودفاتر تحضير</p></div>
+    <div class="head-actions">
+      <button class="icon-btn" onclick="lockDeviceNow()"><svg class="icon"><use href="#i-lock"></use></svg> قفل الجهاز</button>
+      <button class="icon-btn" onclick="adminLogout()"><svg class="icon"><use href="#i-logout"></use></svg> خروج</button>
+    </div>
   </div>
 
-  <div class="warn">
-    ⚠️ الدخول هنا بقى بحساب Firebase حقيقي، لكن لازم تكون سجّلت بيه من المنصة الأساسية الأول (نفس الإيميل وكلمة المرور)، وبعدين تضيف الـ uid بتاعه يدويًا في كولكشن <b>admins</b> من Firebase Console — غير كده هيدخلّك يقولك "معندوش صلاحية أدمن" حتى لو الإيميل والباسورد صح.
+  <div class="warn"><svg class="icon" style="margin-left:6px;"><use href="#i-alert"></use></svg>
+    الدخول هنا بحساب Firebase حقيقي، لكن لازم تكون سجّلت بيه من المنصة الأساسية الأول (نفس الإيميل وكلمة المرور)، وبعدين تضيف الـ uid بتاعه يدويًا في كولكشن <b>admins</b> من Firebase Console — غير كده هيدخلّك يقولك "معندوش صلاحية أدمن" حتى لو الإيميل والباسورد صح. قفل الجهاز اللي قبل الشاشة دي طبقة إضافية بسيطة على نفس الجهاز، مش بديل عن حساب Firebase.
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('lessons', this)">📖 تعلم كيف</button>
-    <button class="tab" onclick="switchTab('tips', this)">🧑‍🏫 التربية العملية</button>
-    <button class="tab" onclick="switchTab('videos', this)">🎥 بحوث الفعل</button>
-    <button class="tab" onclick="switchTab('users', this)">👥 المستخدمين</button>
+    <button class="tab active" onclick="switchTab('lessons', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
+    <button class="tab" onclick="switchTab('tips', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التربية العملية</button>
+    <button class="tab" onclick="switchTab('videos', this)"><svg class="icon"><use href="#i-video"></use></svg> بحوث الفعل</button>
+    <button class="tab" onclick="switchTab('community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
+    <button class="tab" onclick="switchTab('notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر التحضير</button>
+    <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
+    <button class="tab" onclick="switchTab('support', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> دردشات الدعم</button>
+    <button class="tab" onclick="switchTab('settings', this)"><svg class="icon"><use href="#i-settings"></use></svg> الإعدادات</button>
   </div>
 
   <div class="panel active" id="panel-lessons">
@@ -92,10 +248,10 @@
       <div class="field"><label>رابط الفيديو</label>
         <div style="display:flex; gap:8px;">
           <input type="text" id="l-video" placeholder="يوتيوب / درايف...">
-          <button type="button" class="btn" style="background:var(--ink); white-space:nowrap;" onclick="openDrivePicker('l-video')">📂 من Drive</button>
+          <button type="button" class="btn" style="background:var(--ink); white-space:nowrap;" onclick="openDrivePicker('l-video')"><svg class="icon"><use href="#i-folder"></use></svg> من Drive</button>
         </div>
       </div>
-      <button class="btn" onclick="addItem('lessons', ['title:l-title','description:l-desc','videoUrl:l-video'])">إضافة درس</button>
+      <button class="btn" onclick="addItem('lessons', ['title:l-title','description:l-desc','videoUrl:l-video'])"><svg class="icon"><use href="#i-check"></use></svg> إضافة درس</button>
       <div class="status" id="lessons-status"></div>
     </div>
     <div id="lessons-list"></div>
@@ -105,7 +261,7 @@
     <div class="card">
       <div class="field"><label>عنوان النصيحة</label><input type="text" id="t-title"></div>
       <div class="field"><label>المحتوى</label><textarea rows="3" id="t-content"></textarea></div>
-      <button class="btn" onclick="addItem('practicalTips', ['title:t-title','content:t-content'])">إضافة نصيحة</button>
+      <button class="btn" onclick="addItem('practicalTips', ['title:t-title','content:t-content'])"><svg class="icon"><use href="#i-check"></use></svg> إضافة نصيحة</button>
       <div class="status" id="tips-status"></div>
     </div>
     <div id="tips-list"></div>
@@ -117,18 +273,66 @@
       <div class="field"><label>رابط الفيديو</label>
         <div style="display:flex; gap:8px;">
           <input type="text" id="v-video">
-          <button type="button" class="btn" style="background:var(--ink); white-space:nowrap;" onclick="openDrivePicker('v-video')">📂 من Drive</button>
+          <button type="button" class="btn" style="background:var(--ink); white-space:nowrap;" onclick="openDrivePicker('v-video')"><svg class="icon"><use href="#i-folder"></use></svg> من Drive</button>
         </div>
       </div>
-      <button class="btn" onclick="addItem('actionResearchVideos', ['title:v-title','videoUrl:v-video'])">إضافة فيديو</button>
+      <button class="btn" onclick="addItem('actionResearchVideos', ['title:v-title','videoUrl:v-video'])"><svg class="icon"><use href="#i-check"></use></svg> إضافة فيديو</button>
       <div class="status" id="videos-status"></div>
     </div>
     <div id="videos-list"></div>
   </div>
 
+  <div class="panel" id="panel-community">
+    <div class="status" id="community-status" style="margin-bottom:10px;"></div>
+    <div id="community-mod-list"></div>
+  </div>
+
+  <div class="panel" id="panel-notebooks">
+    <div class="status" id="notebooks-status" style="margin-bottom:10px;"></div>
+    <div id="notebooks-mod-list"></div>
+  </div>
+
   <div class="panel" id="panel-users">
     <div class="status" id="users-status" style="margin-bottom:10px;"></div>
     <div id="users-list"></div>
+  </div>
+
+  <div class="panel" id="panel-support">
+    <div class="chat-shell" id="admin-chat-shell">
+      <div class="chat-list-pane" id="admin-chat-list-pane">
+        <div id="admin-conv-list"><div class="empty-state" style="padding:16px;">جاري تحميل المحادثات...</div></div>
+      </div>
+      <div class="chat-thread-pane" id="admin-chat-thread-pane">
+        <div class="chat-thread-empty" id="admin-chat-thread-empty">
+          <svg class="icon" style="width:40px; height:40px; color:var(--line); margin-bottom:10px;"><use href="#i-chat-circle"></use></svg>
+          اختار محادثة من القائمة عشان ترد كـ "فريق الدعم الفني"
+        </div>
+        <div class="chat-thread-active" id="admin-chat-thread-active" style="display:none;">
+          <div class="chat-thread-head">
+            <button class="chat-back-btn" onclick="closeAdminChatThread()"><svg class="icon"><use href="#i-chevron" style="transform:scaleX(-1)"></use></svg></button>
+            <div class="mini-avatar" id="admin-chat-thread-avatar"></div>
+            <div class="chat-thread-name" id="admin-chat-thread-name"></div>
+          </div>
+          <div class="chat-messages" id="admin-chat-messages"></div>
+          <div class="chat-input-row">
+            <input type="text" id="admin-chat-input" placeholder="اكتب رد كفريق الدعم..." onkeydown="if(event.key==='Enter'){event.preventDefault(); sendAdminChatMessage();}">
+            <button onclick="sendAdminChatMessage()"><svg class="icon"><use href="#i-send"></use></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-settings">
+    <div class="card">
+      <div class="field"><label>رقم واتساب (بالصيغة الدولية بدون +، مثال: 201234567890)</label><input type="text" id="set-whatsapp"></div>
+      <div class="field"><label>رقم هاتف للاتصال</label><input type="text" id="set-phone"></div>
+      <div class="field"><label>إيميل التواصل</label><input type="text" id="set-email"></div>
+      <div class="field"><label>رابط جروب فيسبوك</label><input type="text" id="set-fb"></div>
+      <div class="field"><label>رابط تليجرام</label><input type="text" id="set-tg"></div>
+      <button class="btn" onclick="saveContactSettings()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعدادات التواصل</button>
+      <div class="status" id="settings-status"></div>
+    </div>
   </div>
 </div>
 
@@ -138,6 +342,120 @@
 <script src="https://apis.google.com/js/api.js"></script>
 <script src="https://accounts.google.com/gsi/client"></script>
 <script>
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+function ic(name){ return `<svg class="icon"><use href="#i-${name}"></use></svg>`; }
+
+/* ---------- toast notifications (replaces alert/confirm) ---------- */
+function toast(msg, opts){
+  opts = opts || {};
+  const stack = document.getElementById('toast-stack');
+  const el = document.createElement('div');
+  el.className = 'toast ' + (opts.type === 'err' ? 'err' : 'ok');
+  const iconName = opts.type === 'err' ? 'alert' : 'check';
+  el.innerHTML = `${ic(iconName)}<span class="toast-msg">${escapeHtml(msg)}</span>` +
+    (opts.undo ? `<button class="toast-undo">تراجع</button>` : '');
+  stack.appendChild(el);
+  let removed = false;
+  const remove = () => { if(removed) return; removed = true; el.remove(); };
+  if(opts.undo){ el.querySelector('.toast-undo').onclick = () => { opts.undo(); remove(); }; }
+  setTimeout(remove, opts.duration || (opts.undo ? 5000 : 3200));
+  return remove;
+}
+
+/* ================= LOCAL DEVICE LOCK (يوز وباسورد محلي) =================
+   ده قفل بسيط على مستوى الجهاز نفسه: بيتخزن في localStorage بتاع المتصفح ده بس،
+   والباسورد بيتخزن كـ hash (SHA-256 + salt) مش نص صريح. مهم: القفل ده طبقة
+   حماية إضافية على جهازك (يمنع حد يفتح اللوحة لو حصل على اللابتوب/الموبايل)،
+   لكنه مش بديل عن أمان Firebase الحقيقي اللي بيتحقق منه بعد كده — أي حد يمسح
+   بيانات المتصفح أو يفتح من جهاز تاني هيحتاج يعمل الإعداد من الأول برضو. */
+const LOCK_KEY = 'ndm_admin_local_lock';
+
+function bufToHex(buf){ return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+async function hashPass(pass, salt){
+  const enc = new TextEncoder();
+  const data = enc.encode(salt + ':' + pass);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return bufToHex(digest);
+}
+function randomSalt(){ return bufToHex(crypto.getRandomValues(new Uint8Array(16)).buffer); }
+function getLocalLock(){ try{ return JSON.parse(localStorage.getItem(LOCK_KEY) || 'null'); }catch(e){ return null; } }
+
+let lgMode = 'setup'; // 'setup' | 'unlock'
+function initLocalGate(){
+  const lock = getLocalLock();
+  const setupTag = document.getElementById('lg-setup-tag');
+  const confirmInput = document.getElementById('lg-pass-confirm');
+  const resetBtn = document.getElementById('lg-reset-btn');
+  if(lock){
+    lgMode = 'unlock';
+    document.getElementById('lg-title').textContent = 'قفل الجهاز';
+    document.getElementById('lg-sub').textContent = 'ادخل يوزر وباسورد الجهاز عشان تكمل';
+    setupTag.style.display = 'none';
+    confirmInput.style.display = 'none';
+    document.getElementById('lg-submit-btn').textContent = 'فتح القفل';
+    document.getElementById('lg-user').value = lock.user || '';
+    resetBtn.style.display = 'block';
+  }else{
+    lgMode = 'setup';
+    document.getElementById('lg-title').textContent = 'أول استخدام — أمّن الجهاز';
+    document.getElementById('lg-sub').textContent = 'اختار يوزر وباسورد محليين لقفل الشاشة دي';
+    setupTag.style.display = 'block';
+    confirmInput.style.display = 'block';
+    document.getElementById('lg-submit-btn').textContent = 'حفظ وتأمين الجهاز';
+    resetBtn.style.display = 'none';
+  }
+}
+function toggleLgPw(){
+  const inp = document.getElementById('lg-pass');
+  const icon = document.getElementById('lg-pw-icon');
+  if(inp.type === 'password'){ inp.type = 'text'; icon.innerHTML = '<use href="#i-eye-off"></use>'; }
+  else{ inp.type = 'password'; icon.innerHTML = '<use href="#i-eye"></use>'; }
+}
+async function submitLocalGate(){
+  const user = document.getElementById('lg-user').value.trim();
+  const pass = document.getElementById('lg-pass').value;
+  const err = document.getElementById('lg-err');
+  err.textContent = '';
+  if(!user || !pass){ err.textContent = 'اكتب اليوزر والباسورد.'; return; }
+  if(lgMode === 'setup'){
+    const confirmPass = document.getElementById('lg-pass-confirm').value;
+    if(pass.length < 4){ err.textContent = 'الباسورد لازم يكون 4 حروف/أرقام على الأقل.'; return; }
+    if(pass !== confirmPass){ err.textContent = 'تأكيد الباسورد مش مطابق.'; return; }
+    const salt = randomSalt();
+    const hash = await hashPass(pass, salt);
+    localStorage.setItem(LOCK_KEY, JSON.stringify({ user, salt, hash }));
+    unlockToGate();
+  }else{
+    const lock = getLocalLock();
+    if(!lock || lock.user !== user){ err.textContent = 'اليوزر غلط.'; return; }
+    const hash = await hashPass(pass, lock.salt);
+    if(hash !== lock.hash){ err.textContent = 'الباسورد غلط.'; return; }
+    unlockToGate();
+  }
+}
+function unlockToGate(){
+  document.getElementById('localgate').style.display = 'none';
+  document.getElementById('gate').style.display = 'flex';
+  document.getElementById('gate-email').focus();
+}
+function lockDeviceNow(){
+  document.getElementById('dash').style.display = 'none';
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('lg-user').value = ''; document.getElementById('lg-pass').value = '';
+  initLocalGate();
+  document.getElementById('localgate').style.display = 'flex';
+}
+function resetLocalGate(){
+  localStorage.removeItem(LOCK_KEY);
+  document.getElementById('lg-user').value = ''; document.getElementById('lg-pass').value = '';
+  document.getElementById('lg-err').textContent = '';
+  initLocalGate();
+  toast('اتمسح قفل الجهاز — اعمل إعداد جديد.');
+}
+initLocalGate();
+
+/* ================= Firebase ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyCM4lbv83xStvHDB31CqPTpb40ss9q04so",
   authDomain: "studytogether-e8108.firebaseapp.com",
@@ -171,9 +489,18 @@ async function checkGate(){
     loadList('practicalTips','tips-list',['title','content']);
     loadList('actionResearchVideos','videos-list',['title','videoUrl']);
     loadUsers();
+    loadCommunityMod();
+    loadNotebooksMod();
+    subscribeAdminConvList();
+    loadContactSettings();
   }catch(e){
     err.textContent = 'دخول فشل: ' + (e.message || e.code);
   }
+}
+function adminLogout(){
+  auth.signOut();
+  document.getElementById('dash').style.display = 'none';
+  document.getElementById('gate').style.display = 'flex';
 }
 function switchTab(name, btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -181,23 +508,28 @@ function switchTab(name, btn){
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
 }
+
+/* ================= لسه كيف / التربية العملية / بحوث الفعل ================= */
+const COLLECTION_META = {
+  lessons: { listId:'lessons-list', statusId:'lessons-status', fields:['title','description'], labels:['العنوان','الوصف'], types:['text','textarea'] },
+  practicalTips: { listId:'tips-list', statusId:'tips-status', fields:['title','content'], labels:['العنوان','المحتوى'], types:['text','textarea'] },
+  actionResearchVideos: { listId:'videos-list', statusId:'videos-status', fields:['title','videoUrl'], labels:['العنوان','رابط الفيديو'], types:['text','text'] },
+};
 async function addItem(collection, fieldMap){
   const data = {};
   fieldMap.forEach(pair=>{
     const [key, elId] = pair.split(':');
     data[key] = document.getElementById(elId).value.trim();
   });
-  const statusId = collection==='lessons' ? 'lessons-status' : collection==='practicalTips' ? 'tips-status' : 'videos-status';
-  const status = document.getElementById(statusId);
+  const meta = COLLECTION_META[collection];
+  const status = document.getElementById(meta.statusId);
   if(!data.title){ status.className='status err'; status.textContent='اكتب العنوان.'; return; }
   try{
     data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
     await db.collection(collection).add(data);
     status.className='status ok'; status.textContent='✓ تمت الإضافة.';
     fieldMap.forEach(pair=>{ document.getElementById(pair.split(':')[1]).value=''; });
-    const listId = collection==='lessons' ? 'lessons-list' : collection==='practicalTips' ? 'tips-list' : 'videos-list';
-    const fields = collection==='lessons' ? ['title','description'] : collection==='practicalTips' ? ['title','content'] : ['title','videoUrl'];
-    loadList(collection, listId, fields);
+    loadList(collection, meta.listId, meta.fields);
   }catch(err){ status.className='status err'; status.textContent='حصل خطأ: '+err.message; }
 }
 async function loadList(collection, listId, fields){
@@ -208,17 +540,232 @@ async function loadList(collection, listId, fields){
     if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">لسه مفيش عناصر.</div></div>'; return; }
     el.innerHTML = snap.docs.map(d=>{
       const it = d.data();
-      return `<div class="item"><div><div class="t">${escapeHtml(it[fields[0]]||'')}</div><div class="d">${escapeHtml((it[fields[1]]||'').toString().slice(0,80))}</div></div><button class="del" onclick="deleteItem('${collection}','${d.id}','${listId}',['${fields[0]}','${fields[1]}'])">حذف</button></div>`;
+      return `<div class="item" id="row-${collection}-${d.id}">
+        <div><div class="t">${escapeHtml(it[fields[0]]||'')}</div><div class="d">${escapeHtml((it[fields[1]]||'').toString().slice(0,90))}</div></div>
+        <div class="actions">
+          <button class="edit-btn" onclick="startEditItem('${collection}','${d.id}')">${ic('edit')} تعديل</button>
+          <button class="del" onclick="deleteItem('${collection}','${d.id}','${listId}')">${ic('trash')} حذف</button>
+        </div>
+      </div>`;
     }).join('');
   }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
 }
-async function deleteItem(collection, id, listId, fields){
-  if(!confirm('متأكد من الحذف؟')) return;
+async function startEditItem(collection, id){
+  const meta = COLLECTION_META[collection];
+  const row = document.getElementById(`row-${collection}-${id}`);
+  if(!row) return;
+  row.innerHTML = '<div class="edit-form">جاري التحميل...</div>';
+  try{
+    const doc = await db.collection(collection).doc(id).get();
+    const it = doc.data() || {};
+    const f0 = meta.fields[0], f1 = meta.fields[1];
+    const field1Html = meta.types[1] === 'textarea'
+      ? `<textarea rows="3" id="ed-${f1}-${id}">${escapeHtml(it[f1]||'')}</textarea>`
+      : `<input type="text" id="ed-${f1}-${id}" value="${escapeAttr(it[f1]||'')}">`;
+    row.innerHTML = `<div class="edit-form">
+      <input type="text" id="ed-${f0}-${id}" value="${escapeAttr(it[f0]||'')}" placeholder="${meta.labels[0]}">
+      ${field1Html}
+      <div class="actions-row">
+        <button class="save-sm" onclick="saveEditItem('${collection}','${id}')">${ic('check')} حفظ</button>
+        <button class="cancel-sm" onclick="loadList('${collection}','${meta.listId}',['${f0}','${f1}'])">إلغاء</button>
+      </div>
+    </div>`;
+  }catch(err){ row.innerHTML = `<div class="d">تعذّر التحميل: ${escapeHtml(err.message)}</div>`; }
+}
+async function saveEditItem(collection, id){
+  const meta = COLLECTION_META[collection];
+  const f0 = meta.fields[0], f1 = meta.fields[1];
+  const v0 = document.getElementById(`ed-${f0}-${id}`).value.trim();
+  const v1 = document.getElementById(`ed-${f1}-${id}`).value.trim();
+  if(!v0){ toast('اكتب العنوان.', {type:'err'}); return; }
+  try{
+    await db.collection(collection).doc(id).update({ [f0]: v0, [f1]: v1 });
+    toast('تم حفظ التعديل.');
+    loadList(collection, meta.listId, meta.fields);
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function deleteItem(collection, id, listId){
+  const meta = COLLECTION_META[collection];
+  let snapshotData = null;
+  try{ const doc = await db.collection(collection).doc(id).get(); snapshotData = doc.data(); }catch(e){}
   try{
     await db.collection(collection).doc(id).delete();
-    loadList(collection, listId, fields);
-  }catch(err){ alert('حصل خطأ: '+err.message); }
+    loadList(collection, listId, meta.fields);
+    toast('تم الحذف.', { undo: async () => {
+      if(!snapshotData) return;
+      try{ await db.collection(collection).doc(id).set(snapshotData); loadList(collection, listId, meta.fields); toast('اترجع العنصر.'); }
+      catch(e){ toast('تعذّر التراجع.', {type:'err'}); }
+    }});
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
 }
+
+/* ================= مجتمع المعلمين — إشراف كامل ================= */
+async function loadCommunityMod(){
+  const el = document.getElementById('community-mod-list');
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('communityPosts').orderBy('createdAt','desc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div class="mod-post">لسه مفيش منشورات في المجتمع.</div>'; return; }
+    el.innerHTML = snap.docs.map(d=>{
+      const p = d.data();
+      return `<div class="mod-post" id="mp-${d.id}">
+        <div class="mp-head"><span>${escapeHtml(p.authorName||'مستخدم')} · ${escapeHtml(p.tag||'عام')}</span>
+          <button class="del" onclick="deleteCommunityPost('${d.id}')">${ic('trash')} حذف</button></div>
+        ${p.imageUrl ? `<img src="${escapeAttr(p.imageUrl)}" alt="">` : ''}
+        ${p.content ? `<div class="mp-body">${escapeHtml(p.content)}</div>` : ''}
+        <div style="font-size:11.5px; color:var(--ink-soft);">${ic('thumb')} ${p.likesCount||0} · ${ic('chat-circle')} ${p.commentsCount||0}</div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="mod-post">تعذّر التحميل: '+escapeHtml(err.message)+'</div>'; }
+}
+async function deleteCommunityPost(id){
+  let snapshotData = null;
+  try{ const doc = await db.collection('communityPosts').doc(id).get(); snapshotData = doc.data(); }catch(e){}
+  const row = document.getElementById('mp-'+id);
+  if(row) row.style.display = 'none';
+  try{
+    await db.collection('communityPosts').doc(id).delete();
+    toast('تم حذف المنشور.', { undo: async () => {
+      if(!snapshotData) return;
+      try{ await db.collection('communityPosts').doc(id).set(snapshotData); loadCommunityMod(); toast('اترجع المنشور.'); }
+      catch(e){ toast('تعذّر التراجع.', {type:'err'}); }
+    }});
+  }catch(err){ if(row) row.style.display=''; toast('تعذّر الحذف: '+err.message, {type:'err'}); }
+}
+
+/* ================= دفاتر التحضير — إشراف ================= */
+async function loadNotebooksMod(){
+  const el = document.getElementById('notebooks-mod-list');
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('prepNotebooks').orderBy('createdAt','desc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">لسه مفيش دفاتر.</div></div>'; return; }
+    el.innerHTML = snap.docs.map(d=>{
+      const n = d.data();
+      return `<div class="item" id="nb-${d.id}">
+        <div><div class="t">${escapeHtml(n.title||'')}</div><div class="d">${escapeHtml(n.subject||'')} — بواسطة ${escapeHtml(n.ownerName||'مستخدم')}</div></div>
+        <div class="actions">
+          <a class="edit-btn" href="${escapeAttr(n.link)}" target="_blank">فتح</a>
+          <button class="del" onclick="deleteNotebookMod('${d.id}')">${ic('trash')} حذف</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function deleteNotebookMod(id){
+  let snapshotData = null;
+  try{ const doc = await db.collection('prepNotebooks').doc(id).get(); snapshotData = doc.data(); }catch(e){}
+  try{
+    await db.collection('prepNotebooks').doc(id).delete();
+    loadNotebooksMod();
+    toast('تم حذف الدفتر.', { undo: async () => {
+      if(!snapshotData) return;
+      try{ await db.collection('prepNotebooks').doc(id).set(snapshotData); loadNotebooksMod(); toast('اترجع الدفتر.'); }
+      catch(e){ toast('تعذّر التراجع.', {type:'err'}); }
+    }});
+  }catch(err){ toast('تعذّر الحذف: '+err.message, {type:'err'}); }
+}
+
+/* ================= دردشات الدعم الفني — الأدمن بيرد كـ "فريق الدعم الفني" ================= */
+const SUPPORT_UID = 'support-team';
+const SUPPORT_NAME = 'فريق الدعم الفني — نُدرس معًا';
+let adminActiveConvId = null;
+let adminConvListUnsub = null;
+let adminMsgUnsub = null;
+function initials(name){ return (name||'؟').trim().split(' ').slice(0,2).map(w=>w[0]).join(' '); }
+
+function subscribeAdminConvList(){
+  if(adminConvListUnsub) adminConvListUnsub();
+  adminConvListUnsub = db.collection('conversations')
+    .where('participants', 'array-contains', SUPPORT_UID)
+    .orderBy('lastMessageAt', 'desc')
+    .onSnapshot(snap => {
+      const el = document.getElementById('admin-conv-list');
+      if(!el) return;
+      if(snap.empty){ el.innerHTML = '<div class="empty-state" style="padding:16px;">لسه مفيش محادثات دعم.</div>'; return; }
+      el.innerHTML = snap.docs.map(d => {
+        const c = d.data();
+        const otherUid = (c.participants || []).find(u => u !== SUPPORT_UID) || '';
+        const otherName = (c.participantNames && c.participantNames[otherUid]) || 'مستخدم';
+        const unread = (c.unread && c.unread[SUPPORT_UID]) || 0;
+        return `<div class="conv-item ${d.id===adminActiveConvId?'active':''}" onclick="openAdminChat('${d.id}','${escapeAttr(otherUid)}','${escapeAttr(otherName)}')">
+          <div class="mini-avatar">${escapeHtml(initials(otherName))}</div>
+          <div class="conv-info"><div class="conv-name">${escapeHtml(otherName)}</div><div class="conv-preview">${escapeHtml(c.lastMessage||'')}</div></div>
+          ${unread>0 ? `<span class="conv-badge">${unread}</span>` : ''}
+        </div>`;
+      }).join('');
+    }, err => console.warn(err));
+}
+async function openAdminChat(convId, otherUid, otherName){
+  adminActiveConvId = convId;
+  document.getElementById('admin-chat-thread-empty').style.display = 'none';
+  document.getElementById('admin-chat-thread-active').style.display = 'flex';
+  document.getElementById('admin-chat-thread-name').textContent = otherName;
+  document.getElementById('admin-chat-thread-avatar').textContent = initials(otherName);
+  document.getElementById('admin-chat-list-pane').classList.add('hide-mobile');
+  try{ await db.collection('conversations').doc(convId).update({ [`unread.${SUPPORT_UID}`]: 0 }); }catch(e){}
+  if(adminMsgUnsub) adminMsgUnsub();
+  adminMsgUnsub = db.collection('conversations').doc(convId).collection('messages')
+    .orderBy('createdAt','asc').limit(200)
+    .onSnapshot(snap => {
+      const el = document.getElementById('admin-chat-messages');
+      if(!el) return;
+      el.innerHTML = snap.docs.map(d => {
+        const m = d.data();
+        const mine = m.senderUid === SUPPORT_UID;
+        const time = m.createdAt && m.createdAt.toDate ? m.createdAt.toDate().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}) : '';
+        return `<div class="msg-bubble ${mine?'mine':'theirs'}">${escapeHtml(m.text||'')}<span class="msg-time">${time}</span></div>`;
+      }).join('');
+      el.scrollTop = el.scrollHeight;
+    }, err => console.warn(err));
+}
+function closeAdminChatThread(){ document.getElementById('admin-chat-list-pane').classList.remove('hide-mobile'); }
+async function sendAdminChatMessage(){
+  const input = document.getElementById('admin-chat-input');
+  const text = input.value.trim();
+  if(!text || !adminActiveConvId) return;
+  const convId = adminActiveConvId;
+  const otherUid = convId.split('_').find(u => u !== SUPPORT_UID);
+  input.value = '';
+  try{
+    await db.collection('conversations').doc(convId).collection('messages').add({
+      senderUid: SUPPORT_UID, senderName: SUPPORT_NAME, text, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await db.collection('conversations').doc(convId).update({
+      lastMessage: text, lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(), lastSenderUid: SUPPORT_UID,
+      [`unread.${otherUid}`]: firebase.firestore.FieldValue.increment(1)
+    });
+  }catch(err){ toast('تعذّر إرسال الرسالة: '+err.message, {type:'err'}); }
+}
+
+/* ================= إعدادات التواصل (siteSettings/contact) ================= */
+async function loadContactSettings(){
+  try{
+    const doc = await db.collection('siteSettings').doc('contact').get();
+    const s = doc.exists ? doc.data() : {};
+    document.getElementById('set-whatsapp').value = s.whatsapp || '';
+    document.getElementById('set-phone').value = s.phone || '';
+    document.getElementById('set-email').value = s.email || '';
+    document.getElementById('set-fb').value = s.facebookGroup || '';
+    document.getElementById('set-tg').value = s.telegram || '';
+  }catch(err){ console.warn(err); }
+}
+async function saveContactSettings(){
+  const status = document.getElementById('settings-status');
+  const data = {
+    whatsapp: document.getElementById('set-whatsapp').value.trim(),
+    phone: document.getElementById('set-phone').value.trim(),
+    email: document.getElementById('set-email').value.trim(),
+    facebookGroup: document.getElementById('set-fb').value.trim(),
+    telegram: document.getElementById('set-tg').value.trim(),
+  };
+  try{
+    await db.collection('siteSettings').doc('contact').set(data, { merge: true });
+    status.className = 'status ok'; status.textContent = '✓ تم حفظ إعدادات التواصل.';
+    toast('اتحفظت إعدادات التواصل.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
 /* ---------- Google Drive Picker ----------
    لازم تحط بياناتك من Google Cloud Console (Credentials) قبل ما الزرار يشتغل:
    1) فعّل Google Picker API و Google Drive API في مشروعك على Google Cloud.
@@ -235,7 +782,7 @@ let gPickerTargetInput = null;
 function openDrivePicker(targetInputId){
   gPickerTargetInput = targetInputId;
   if(GOOGLE_API_KEY.startsWith('YOUR_') || GOOGLE_CLIENT_ID.startsWith('YOUR_')){
-    alert('لسه محتاج تظبط GOOGLE_API_KEY و GOOGLE_CLIENT_ID في أول ملف admin-dashboard.html عشان زرار Drive يشتغل.');
+    toast('لسه محتاج تظبط GOOGLE_API_KEY و GOOGLE_CLIENT_ID عشان زرار Drive يشتغل.', {type:'err', duration:5000});
     return;
   }
   if(!gTokenClient){
@@ -243,7 +790,7 @@ function openDrivePicker(targetInputId){
       client_id: GOOGLE_CLIENT_ID,
       scope: 'https://www.googleapis.com/auth/drive.readonly',
       callback: (resp) => {
-        if(resp.error){ alert('تعذّر الاتصال بجوجل درايف.'); return; }
+        if(resp.error){ toast('تعذّر الاتصال بجوجل درايف.', {type:'err'}); return; }
         gAccessToken = resp.access_token;
         showPicker();
       },
@@ -271,8 +818,6 @@ function pickerCallback(data){
   }
 }
 
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
 const PLAN_LABELS = { free:'تجربة مجانية', sub1:'الاشتراك الأول', sub2:'الاشتراك الثاني', sub3:'الاشتراك الثالث', pro:'البرو (مدى الحياة)' };
 const STATUS_LABELS = { active:'نشط', pending_payment:'قيد المراجعة', expired:'منتهي', rejected:'مرفوض' };
 
@@ -294,7 +839,7 @@ async function loadUsers(){
         <div class="u-controls">
           <select id="plan-${d.id}">${Object.keys(PLAN_LABELS).map(k=>`<option value="${k}" ${k===plan?'selected':''}>${PLAN_LABELS[k]}</option>`).join('')}</select>
           <select id="status-${d.id}">${Object.keys(STATUS_LABELS).map(k=>`<option value="${k}" ${k===status?'selected':''}>${STATUS_LABELS[k]}</option>`).join('')}</select>
-          <button class="save-btn" onclick="saveUser('${d.id}')">حفظ</button>
+          <button class="save-btn" onclick="saveUser('${d.id}')">${ic('check')} حفظ</button>
         </div>
       </div>`;
     }).join('');
@@ -307,8 +852,13 @@ async function saveUser(uid){
   try{
     await db.collection('users').doc(uid).update({ plan, status });
     statusEl.className = 'status ok'; statusEl.textContent = '✓ تم تحديث المستخدم.';
+    toast('تم تحديث بيانات المستخدم.');
+    db.collection('notifications').add({
+      recipientUid: uid, type: 'plan', text: 'تم تحديث خطتك/حالة اشتراكك من فريق الإدارة', viewId: null, read: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(()=>{});
     loadUsers();
-  }catch(err){ statusEl.className = 'status err'; statusEl.textContent = 'حصل خطأ: '+err.message; }
+  }catch(err){ statusEl.className = 'status err'; statusEl.textContent = 'حصل خطأ: '+err.message; toast('حصل خطأ: '+err.message, {type:'err'}); }
 }
 </script>
 </body>
