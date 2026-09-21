@@ -97,7 +97,16 @@
 
   #screen-app{ display:none; min-height:100vh; }
   .shell{display:flex; min-height:100vh;}
-  .sidebar{width:250px; flex-shrink:0; background:var(--ink); color:var(--paper); padding:24px 18px; display:flex; flex-direction:column;}
+  .sidebar{position:fixed; top:0; right:0; width:270px; max-width:82vw; height:100vh; flex-shrink:0; background:var(--ink); color:var(--paper); padding:24px 18px; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .25s ease; z-index:200; overflow-y:auto; box-shadow:-10px 0 30px rgba(0,0,0,0.2);}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay{position:fixed; inset:0; background:rgba(27,42,65,0.45); z-index:190; opacity:0; pointer-events:none; transition:opacity .2s ease;}
+  .sidebar-overlay.open{opacity:1; pointer-events:auto;}
+  .sidebar-close-btn{align-self:flex-start; background:none; color:var(--paper); opacity:.65; padding:4px; margin-bottom:10px;}
+  .sidebar-close-btn:hover{opacity:1;}
+  .sidebar-close-btn .icon{width:20px; height:20px;}
+  .menu-toggle-btn{width:40px; height:40px; border-radius:50%; background:var(--white); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-soft); flex-shrink:0;}
+  .menu-toggle-btn:hover{color:var(--brick); border-color:var(--brick);}
+  .menu-toggle-btn .icon{width:19px; height:19px;}
   .sidebar .brand-mark{font-size:21px; color:var(--paper); margin-bottom:4px;}
   .sidebar .brand-mark span{color:var(--gold);}
   .sidebar .role-pill{font-size:11.5px; color:var(--paper); opacity:.65; margin-bottom:22px;}
@@ -110,8 +119,10 @@
   .status-badge.pending{background:rgba(199,154,43,0.3); color:#EFD79A;}
   .status-badge.free{background:rgba(255,255,255,0.12); color:#fff;}
 
-  .main{flex:1; padding:32px 40px; max-width:1100px;}
-  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+  .nav-group-label{font-size:10px; font-weight:800; letter-spacing:.4px; color:var(--paper); opacity:.4; text-transform:uppercase; margin:16px 4px 6px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08);}
+  .nav-group-label:first-of-type{margin-top:6px; padding-top:0; border-top:none;}
+  .main{flex:1; width:100%; padding:24px 32px; max-width:1100px; margin:0 auto;}
+  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
   .topbar h1{font-size:24px;}
   .topbar .sub{font-size:13.5px; color:var(--ink-soft); margin-top:4px;}
   .avatar{width:40px; height:40px; border-radius:50%; background:var(--sage); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'Cairo'; font-weight:800; font-size:15px; overflow:hidden; position:relative; flex-shrink:0;}
@@ -120,8 +131,33 @@
   .avatar-wrap .cam-badge{position:absolute; bottom:-3px; left:-3px; width:20px; height:20px; border-radius:50%; background:var(--brick); color:#fff; display:flex; align-items:center; justify-content:center; border:2px solid var(--paper);}
   .avatar-wrap .cam-badge .icon{width:11px; height:11px;}
 
-  /* topbar actions (bell + avatar) */
-  .global-topbar{display:flex; justify-content:flex-end; align-items:center; gap:12px; margin-bottom:10px;}
+  /* global search */
+  .search-wrap{position:relative; flex:1; max-width:360px; min-width:0;}
+  .search-input-box{display:flex; align-items:center; gap:8px; background:var(--white); border:1px solid var(--line); border-radius:20px; padding:8px 14px; color:var(--ink-soft);}
+  .search-input-box .icon{width:16px; height:16px; flex-shrink:0;}
+  .search-input-box input{border:none; background:transparent; outline:none; font-family:inherit; font-size:13px; flex:1; min-width:0; color:var(--ink);}
+  .search-clear{background:none; color:var(--ink-soft); padding:2px; display:flex; flex-shrink:0;}
+  .search-clear .icon{width:14px; height:14px;}
+  .search-dropdown{position:absolute; top:46px; right:0; left:0; background:var(--white); border:1px solid var(--line); border-radius:10px; box-shadow:0 16px 34px rgba(27,42,65,0.14); z-index:150; max-height:380px; overflow-y:auto; display:none;}
+  .search-dropdown.open{display:block;}
+  .search-group-label{font-size:10.5px; font-weight:800; color:var(--ink-soft); opacity:.75; padding:10px 14px 4px;}
+  .search-result{display:flex; align-items:center; gap:10px; padding:9px 14px; cursor:pointer; font-size:13px;}
+  .search-result:hover{background:var(--paper-dim);}
+  .search-result .icon{width:15px; height:15px; color:var(--brick); flex-shrink:0;}
+  .search-result-title{font-weight:700; color:var(--ink);}
+  .search-result-sub{font-size:11px; color:var(--ink-soft); margin-top:2px;}
+
+  /* profile view */
+  .profile-head{display:flex; align-items:center; gap:16px; background:var(--white); border:1px solid var(--line); border-radius:10px; padding:22px 24px; margin-bottom:22px; flex-wrap:wrap;}
+  .profile-avatar-big{width:76px; height:76px; border-radius:50%; background:var(--sage); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Cairo'; font-weight:800; font-size:26px; flex-shrink:0; position:relative; overflow:hidden; cursor:pointer;}
+  .profile-avatar-big img{width:100%; height:100%; object-fit:cover;}
+  .profile-name{font-family:'Cairo'; font-weight:800; font-size:19px;}
+  .profile-meta{font-size:12.5px; color:var(--ink-soft); margin-top:4px; line-height:1.8;}
+  .profile-stats{display:flex; gap:14px; margin-right:auto; flex-wrap:wrap;}
+  .profile-stat{background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:10px 16px; text-align:center; min-width:84px;}
+  .profile-stat .num{font-family:'Cairo'; font-weight:800; font-size:19px; color:var(--brick);}
+  .profile-stat .lbl{font-size:11px; color:var(--ink-soft); margin-top:2px;}
+  .global-topbar{display:flex; justify-content:flex-end; align-items:center; gap:12px; margin-bottom:6px;}
   .topbar-actions{display:flex; align-items:center; gap:12px;}
   .bell-wrap{position:relative;}
   .bell-btn{width:40px; height:40px; border-radius:50%; background:var(--white); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-soft); position:relative;}
@@ -167,7 +203,7 @@
   .stat .num{font-family:'Cairo'; font-weight:800; font-size:26px; color:var(--ink);}
   .stat .lbl{font-size:12.5px; color:var(--ink-soft); margin-top:4px;}
 
-  .section-title{font-size:16px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px dashed var(--line); display:flex; justify-content:space-between; align-items:center;}
+  .section-title{font-size:16px; margin-top:22px; margin-bottom:10px; padding-bottom:6px; border-bottom:1px dashed var(--line); display:flex; justify-content:space-between; align-items:center;}
   .section-title button.linklike{font-size:12.5px; color:var(--brick); background:none; text-decoration:underline; font-weight:700;}
 
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px; margin-bottom:32px;}
@@ -221,11 +257,11 @@
   .upgrade-card .cur-plan{font-family:'Cairo'; font-weight:800; font-size:19px; margin-bottom:4px;}
   .upgrade-card .cur-note{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px;}
 
-  .quick-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:14px; margin-bottom:30px;}
-  .quick-card{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:22px 10px 18px; text-align:center; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+  .quick-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; margin-bottom:20px;}
+  .quick-card{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:16px 8px 14px; text-align:center; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
   .quick-card:hover{transform:translateY(-3px); box-shadow:0 12px 26px rgba(27,42,65,0.09); border-color:transparent;}
-  .quick-card .qc-icon{width:56px; height:56px; border-radius:50%; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 12px;}
-  .quick-card .qc-label{display:block; font-weight:800; font-size:13px; color:var(--ink);}
+  .quick-card .qc-icon{width:44px; height:44px; border-radius:50%; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 8px;}
+  .quick-card .qc-label{display:block; font-weight:800; font-size:12.5px; color:var(--ink);}
 
   .stepper{display:flex; align-items:flex-start; justify-content:space-between; gap:4px; margin-bottom:28px; padding:8px 2px;}
   .step{display:flex; flex-direction:column; align-items:center; gap:8px; flex-shrink:0; min-width:76px;}
@@ -240,10 +276,6 @@
   }
 
   @media (max-width:760px){
-    .shell{flex-direction:column;}
-    .sidebar{width:100%; flex-direction:row; overflow-x:auto; align-items:center; padding:14px;}
-    .sidebar .brand-mark, .sidebar .role-pill, .sidebar-foot{display:none;}
-    .nav-item{white-space:nowrap; width:auto;}
     .main{padding:22px 18px;}
     .role-cards{gap:16px;}
   }
@@ -388,6 +420,8 @@
 <symbol id="i-gift" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
 <symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
 <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2z"/><path d="M19 15l.9 2.6L22 18.5l-2.1.9L19 22l-.9-2.6-2.1-.9 2.1-.9L19 15z"/></symbol>
 <symbol id="i-wave" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12.5V6a1.5 1.5 0 0 1 3 0v8"/><path d="M17 14v-2a1.5 1.5 0 0 1 3 0v3a6 6 0 0 1-6 6h-2a7 7 0 0 1-6-3.5L4 14.8a1.3 1.3 0 0 1 2.1-1.5L8 15"/></symbol>
@@ -533,36 +567,58 @@
 <!-- ========== APP SHELL ========== -->
 <div id="screen-app">
   <div class="shell">
-    <div class="sidebar">
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar(false)"></div>
+    <div class="sidebar" id="app-sidebar">
+      <button class="sidebar-close-btn" onclick="toggleSidebar(false)"><svg class="icon"><use href="#i-x"></use></svg></button>
       <div class="brand-mark">نُدرس <span>معًا</span></div>
       <div class="role-pill" id="role-pill">معلم</div>
 
       <div id="nav-teacher" style="display:none;">
         <button class="nav-item active" onclick="showView('t-dash', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
-        <button class="nav-item" onclick="switchRole()"><svg class="icon"><use href="#i-refresh"></use></svg> تغيير المسار</button>
+
+        <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-t" onclick="showView('v-learn', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
         <button class="nav-item" id="navi-notebooks-t" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
         <button class="nav-item" id="navi-exam-t" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><svg class="icon"><use href="#i-monitor"></use></svg> سبورة إلكترونية</button>
-        <button class="nav-item" id="navi-upgrade-t" onclick="showView('v-upgrade', this)"><svg class="icon"><use href="#i-star"></use></svg> طوّر خطتك</button>
+
+        <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-t" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
+
+        <div class="nav-group-label">الحساب</div>
+        <button class="nav-item" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
+        <button class="nav-item" id="navi-upgrade-t" onclick="showView('v-upgrade', this)"><svg class="icon"><use href="#i-star"></use></svg> طوّر خطتك</button>
+        <button class="nav-item" onclick="switchRole()"><svg class="icon"><use href="#i-refresh"></use></svg> تغيير المسار</button>
+
+        <div class="nav-group-label">المساعدة</div>
         <button class="nav-item" onclick="showView('s-contact', this)"><svg class="icon"><use href="#i-chat-square"></use></svg> تواصل معنا</button>
       </div>
 
       <div id="nav-student" style="display:none;">
         <button class="nav-item active" onclick="showView('s-home', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
-        <button class="nav-item" onclick="switchRole()"><svg class="icon"><use href="#i-refresh"></use></svg> تغيير المسار</button>
+
+        <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-s" onclick="showView('v-learn', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
         <button class="nav-item" id="navi-notebooks-s" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
         <button class="nav-item" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><svg class="icon"><use href="#i-monitor"></use></svg> سبورة إلكترونية</button>
-        <button class="nav-item" onclick="showView('v-upgrade', this)"><svg class="icon"><use href="#i-star"></use></svg> طوّر خطتك</button>
+
+        <div class="nav-group-label">التربية</div>
         <button class="nav-item" id="navi-practical-s" onclick="showView('s-practical', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التربية العملية</button>
         <button class="nav-item" id="navi-research-s" onclick="showView('s-research', this)"><svg class="icon"><use href="#i-video"></use></svg> بحوث الفعل</button>
         <button class="nav-item" id="navi-myresearch-s" onclick="showView('s-myresearch', this)"><svg class="icon"><use href="#i-folder"></use></svg> أبحاثي</button>
+
+        <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-s" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-s" style="display:none;">0</span></button>
+
+        <div class="nav-group-label">الحساب</div>
+        <button class="nav-item" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
+        <button class="nav-item" onclick="showView('v-upgrade', this)"><svg class="icon"><use href="#i-star"></use></svg> طوّر خطتك</button>
+        <button class="nav-item" onclick="switchRole()"><svg class="icon"><use href="#i-refresh"></use></svg> تغيير المسار</button>
+
+        <div class="nav-group-label">المساعدة</div>
         <button class="nav-item" onclick="showView('s-contact', this)"><svg class="icon"><use href="#i-chat-square"></use></svg> تواصل معنا</button>
       </div>
 
@@ -572,7 +628,17 @@
 
     <div class="main">
 
-      <div class="global-topbar">
+      <div class="global-topbar" style="justify-content:space-between;">
+        <button class="menu-toggle-btn" onclick="toggleSidebar(true)"><svg class="icon"><use href="#i-menu"></use></svg></button>
+        <div class="search-wrap" id="search-wrap">
+          <div class="search-input-box">
+            <svg class="icon"><use href="#i-search"></use></svg>
+            <input type="text" id="global-search-input" placeholder="ابحث في المنصة..." oninput="runGlobalSearch(this.value)" onfocus="runGlobalSearch(this.value)">
+            <button class="search-clear" id="search-clear-btn" style="display:none;" onclick="clearGlobalSearch()"><svg class="icon"><use href="#i-x"></use></svg></button>
+          </div>
+          <div class="search-dropdown" id="search-dropdown"></div>
+        </div>
+        <div class="topbar-actions">
         <div class="bell-wrap">
           <button class="bell-btn" onclick="toggleNotifDropdown()"><svg class="icon"><use href="#i-bell"></use></svg><span class="bell-dot" id="bell-dot"></span></button>
           <div class="notif-dropdown" id="notif-dropdown">
@@ -580,11 +646,11 @@
             <div id="notif-list"><div class="empty-state" style="padding:16px;">جاري التحميل...</div></div>
           </div>
         </div>
-        <div class="avatar-wrap" onclick="document.getElementById('profile-photo-input').click()">
+        <div class="avatar-wrap" onclick="showView('v-profile')">
           <div class="avatar" id="global-avatar">؟</div>
-          <div class="cam-badge"><svg class="icon"><use href="#i-camera"></use></svg></div>
         </div>
         <input type="file" id="profile-photo-input" accept="image/*" style="display:none" onchange="onProfilePhotoSelected(event)">
+        </div>
       </div>
 
       <div class="top-banner" id="top-banner"></div>
@@ -606,9 +672,10 @@
 
         <div class="section-title">آخر منشورات المجتمع<button class="linklike" onclick="showView('t-community', document.querySelector('.nav-item[onclick*=t-community]'))">عرض الكل</button></div>
         <div id="home-community-preview" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
-      </div>
 
-      <!-- STUDENT-TEACHER HOME -->
+        <div class="section-title">آخر دفاتر التحضير<button class="linklike" onclick="showView('v-notebooks', document.getElementById('navi-notebooks-t'))">عرض الكل</button></div>
+        <div id="home-notebooks-preview" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
       <div class="view" id="s-home">
         <div class="topbar">
           <div><h1 id="dash-greeting-s">أهلًا <svg class="icon"><use href="#i-wave"></use></svg></h1><div class="sub">رحلتك في التدريس</div></div>
@@ -635,6 +702,9 @@
 
         <div class="section-title">آخر منشورات المجتمع<button class="linklike" onclick="showView('t-community', document.querySelector('.nav-item[onclick*=t-community]'))">عرض الكل</button></div>
         <div id="home-community-preview-s" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+
+        <div class="section-title">آخر دفاتر التحضير<button class="linklike" onclick="showView('v-notebooks', document.getElementById('navi-notebooks-s'))">عرض الكل</button></div>
+        <div id="home-notebooks-preview-s" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
 
       <!-- SHARED: دفاتر تحضير (مكتبة تعاونية) -->
@@ -669,6 +739,29 @@
           <button class="quiz-opt" onclick="answerQuiz(this,true)">تحديد هدف الدرس بوضوح</button>
           <button class="quiz-opt" onclick="answerQuiz(this,false)">تجهيز عرض تقديمي طويل</button>
           <div class="quiz-feedback" id="quiz-feedback"></div>
+        </div>
+      </div>
+
+      <div class="view" id="v-profile">
+        <div class="topbar"><div><h1>الملف الشخصي</h1><div class="sub">بياناتك ونشاطك على المنصة</div></div></div>
+
+        <div class="profile-head">
+          <div class="profile-avatar-big" id="profile-avatar-big" onclick="document.getElementById('profile-photo-input').click()">
+            <span>؟</span>
+          </div>
+          <div>
+            <div class="profile-name" id="profile-name-display">—</div>
+            <div class="profile-meta" id="profile-meta-display">—</div>
+          </div>
+          <div class="profile-stats" id="profile-stats"></div>
+        </div>
+
+        <div class="card-panel">
+          <h3 style="margin-bottom:14px;">تعديل البيانات</h3>
+          <div class="field"><label>الاسم</label><input type="text" id="profile-edit-name"></div>
+          <div class="field"><label>رقم الهاتف</label><input type="tel" id="profile-edit-phone"></div>
+          <button class="btn-primary" onclick="saveProfileEdits()">حفظ التعديلات</button>
+          <div class="auth-status" id="profile-edit-status"></div>
         </div>
       </div>
 
@@ -1222,10 +1315,140 @@ function renderGlobalAvatar(){
 function showView(id, btn){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  toggleSidebar(false);
+  if(id === 'v-profile') renderProfileView();
   if(!btn) return;
   const parent = btn.closest('#nav-teacher') || btn.closest('#nav-student');
   if(parent){ parent.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); }
   btn.classList.add('active');
+}
+function toggleSidebar(open){
+  const sb = document.getElementById('app-sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  if(!sb || !ov) return;
+  const shouldOpen = (typeof open === 'boolean') ? open : !sb.classList.contains('open');
+  sb.classList.toggle('open', shouldOpen);
+  ov.classList.toggle('open', shouldOpen);
+}
+document.querySelectorAll('#app-sidebar .nav-item').forEach(btn => btn.addEventListener('click', () => toggleSidebar(false)));
+
+/* ---------- البحث العام ---------- */
+function runGlobalSearch(q){
+  const dropdown = document.getElementById('search-dropdown');
+  const clearBtn = document.getElementById('search-clear-btn');
+  const query = (q||'').trim().toLowerCase();
+  if(clearBtn) clearBtn.style.display = query ? 'flex' : 'none';
+  if(!query){ dropdown.classList.remove('open'); dropdown.innerHTML=''; return; }
+
+  const groups = [];
+  const esc = escapeAttr(q);
+
+  const postMatches = communityPostsCache.filter(({data:p}) => (p.content||'').toLowerCase().includes(query) || (p.authorName||'').toLowerCase().includes(query)).slice(0,4);
+  if(postMatches.length) groups.push({label:'المجتمع', items: postMatches.map(({data:p}) => ({
+    icon:'users', title:(p.content||'').slice(0,60), sub:'بواسطة '+(p.authorName||'مستخدم'),
+    onclick:`goToCommunitySearch('${esc}')`
+  }))});
+
+  const nbMatches = notebooksCache.filter(({data:n}) => (n.title||'').toLowerCase().includes(query) || (n.subject||'').toLowerCase().includes(query)).slice(0,4);
+  if(nbMatches.length) groups.push({label:'دفاتر تحضير', items: nbMatches.map(({data:n}) => ({
+    icon:'notebook', title:n.title||'', sub:n.subject||'',
+    onclick:`window.open('${escapeAttr(n.link)}','_blank'); closeGlobalSearch();`
+  }))});
+
+  const lessonMatches = lessonsCache.filter(({data:l}) => (l.title||'').toLowerCase().includes(query) || (l.description||'').toLowerCase().includes(query)).slice(0,4);
+  if(lessonMatches.length) groups.push({label:'تعلم كيف', items: lessonMatches.map(({data:l}) => ({
+    icon:'book', title:l.title||'', sub:l.description||'',
+    onclick:`showView('v-learn'); closeGlobalSearch();`
+  }))});
+
+  const tipMatches = practicalTipsCache.filter(({data:t}) => (t.title||'').toLowerCase().includes(query) || (t.content||'').toLowerCase().includes(query)).slice(0,4);
+  if(tipMatches.length) groups.push({label:'التربية العملية', items: tipMatches.map(({data:t}) => ({
+    icon:'clipboard', title:t.title||'', sub:(t.content||'').slice(0,60),
+    onclick:`showView('s-practical'); closeGlobalSearch();`
+  }))});
+
+  const vidMatches = researchVideosCache.filter(({data:v}) => (v.title||'').toLowerCase().includes(query)).slice(0,4);
+  if(vidMatches.length) groups.push({label:'بحوث الفعل', items: vidMatches.map(({data:v}) => ({
+    icon:'video', title:v.title||'', sub:'',
+    onclick:`showView('s-research'); closeGlobalSearch();`
+  }))});
+
+  if(!groups.length){
+    dropdown.innerHTML = '<div class="empty-state" style="padding:20px; max-width:none; border:none;">مفيش نتائج مطابقة.</div>';
+    dropdown.classList.add('open');
+    return;
+  }
+  dropdown.innerHTML = groups.map(g => `
+    <div class="search-group-label">${escapeHtml(g.label)}</div>
+    ${g.items.map(it => `<div class="search-result" onclick="${it.onclick}"><svg class="icon"><use href="#i-${it.icon}"></use></svg><div><div class="search-result-title">${escapeHtml(it.title)}</div>${it.sub ? `<div class="search-result-sub">${escapeHtml(it.sub)}</div>` : ''}</div></div>`).join('')}
+  `).join('');
+  dropdown.classList.add('open');
+}
+function goToCommunitySearch(q){
+  showView('t-community', document.querySelector('.nav-item[onclick*=t-community]'));
+  const input = document.getElementById('community-search');
+  if(input){ input.value = q; applyCommunityFilter(); }
+  closeGlobalSearch();
+}
+function closeGlobalSearch(){
+  const dropdown = document.getElementById('search-dropdown');
+  const input = document.getElementById('global-search-input');
+  const clearBtn = document.getElementById('search-clear-btn');
+  if(dropdown) dropdown.classList.remove('open');
+  if(input) input.value = '';
+  if(clearBtn) clearBtn.style.display = 'none';
+}
+function clearGlobalSearch(){
+  const input = document.getElementById('global-search-input');
+  if(input){ input.value=''; input.focus(); }
+  runGlobalSearch('');
+}
+
+/* ---------- الملف الشخصي ---------- */
+function renderProfileView(){
+  const nameEl = document.getElementById('profile-name-display');
+  const metaEl = document.getElementById('profile-meta-display');
+  if(!nameEl) return;
+  nameEl.textContent = pendingUser.name || 'مستخدم';
+  const roleLabel = pendingRole === 'teacher' ? 'معلم' : 'طالب معلم';
+  const plan = PLANS[userStatus.plan] || PLANS.free;
+  metaEl.innerHTML = `${escapeHtml(roleLabel)} — ${escapeHtml(pendingUser.email||'')}${pendingUser.phone ? ' — '+escapeHtml(pendingUser.phone) : ''}<br>الخطة الحالية: ${escapeHtml(plan.name)}`;
+
+  const bigAvatar = document.getElementById('profile-avatar-big');
+  if(bigAvatar){
+    bigAvatar.innerHTML = pendingUser.photoURL
+      ? `<img src="${escapeAttr(pendingUser.photoURL)}" alt="">`
+      : `<span>${escapeHtml(initials(pendingUser.name))}</span>`;
+  }
+
+  const nameInput = document.getElementById('profile-edit-name');
+  const phoneInput = document.getElementById('profile-edit-phone');
+  if(nameInput) nameInput.value = pendingUser.name || '';
+  if(phoneInput) phoneInput.value = pendingUser.phone || '';
+
+  const myPosts = communityPostsCache.filter(({data:p}) => p.authorUid === currentUid).length;
+  const myNotebooks = notebooksCache.filter(({data:n}) => n.ownerUid === currentUid).length;
+  const stats = [
+    { num: myPosts, lbl: 'منشورات' },
+    { num: myNotebooks, lbl: 'دفاتر تحضير' },
+  ];
+  if(pendingRole === 'student') stats.push({ num: myResearchCache.length, lbl: 'أبحاثي' });
+  const statsEl = document.getElementById('profile-stats');
+  if(statsEl) statsEl.innerHTML = stats.map(s => `<div class="profile-stat"><div class="num">${s.num}</div><div class="lbl">${escapeHtml(s.lbl)}</div></div>`).join('');
+}
+async function saveProfileEdits(){
+  const name = document.getElementById('profile-edit-name').value.trim();
+  const phone = document.getElementById('profile-edit-phone').value.trim();
+  const status = document.getElementById('profile-edit-status');
+  if(!name){ status.className='auth-status err'; status.textContent='اكتب الاسم.'; return; }
+  status.className='auth-status pending'; status.textContent='جاري الحفظ...';
+  try{
+    await db.collection('users').doc(currentUid).update({ name, phone });
+    pendingUser.name = name; pendingUser.phone = phone;
+    status.className='auth-status ok'; status.textContent='✓ تم الحفظ.';
+    renderProfileView();
+    renderGlobalAvatar();
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
 async function switchRole(){
   if(!currentUid){ document.getElementById('screen-app').style.display = 'none'; document.getElementById('screen-role').style.display = 'flex'; return; }
@@ -1261,6 +1484,7 @@ async function loadLessons(){
   const el = document.getElementById('learn-list'); if(!el) return;
   try{
     const snap = await db.collection('lessons').orderBy('createdAt','desc').limit(20).get();
+    lessonsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش دروس مرفوعة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
     el.innerHTML = snap.docs.map(d => { const l = d.data();
       return `<div class="content-item"><div><div class="ci-title">${escapeHtml(l.title||'')}</div><div class="ci-desc">${escapeHtml(l.description||'')}</div></div>${l.videoUrl ? `<a class="ci-link" href="${escapeAttr(l.videoUrl)}" target="_blank">شاهد الدرس</a>` : ''}</div>`;
@@ -1271,6 +1495,7 @@ async function loadPracticalTips(){
   const el = document.getElementById('practical-list'); if(!el) return;
   try{
     const snap = await db.collection('practicalTips').orderBy('createdAt','desc').limit(20).get();
+    practicalTipsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش نصائح مضافة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
     el.innerHTML = snap.docs.map(d => { const t = d.data();
       return `<div class="content-item"><div><div class="ci-title">${escapeHtml(t.title||'')}</div><div class="ci-desc">${escapeHtml(t.content||'')}</div></div></div>`;
@@ -1281,6 +1506,7 @@ async function loadResearchVideos(){
   const el = document.getElementById('research-list'); if(!el) return;
   try{
     const snap = await db.collection('actionResearchVideos').orderBy('createdAt','desc').limit(20).get();
+    researchVideosCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش فيديوهات مضافة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
     el.innerHTML = snap.docs.map(d => { const v = d.data();
       return `<div class="content-item"><div class="ci-title">${escapeHtml(v.title||'')}</div>${v.videoUrl ? `<a class="ci-link" href="${escapeAttr(v.videoUrl)}" target="_blank">مشاهدة</a>` : ''}</div>`;
@@ -1288,14 +1514,16 @@ async function loadResearchVideos(){
   }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الفيديوهات الآن.</div>'; console.warn(err); }
 }
 async function loadMyResearch(){
-  const el = document.getElementById('myres-list'); if(!el || !currentUid) return;
+  const el = document.getElementById('myres-list'); if(!currentUid) return;
   try{
     const snap = await db.collection('research').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    myResearchCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    if(!el) return;
     if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه معملتش أي بحث. ضيف أول بحث من الفورم فوق.</div>'; return; }
     el.innerHTML = snap.docs.map(d => { const r = d.data();
       return `<div class="content-item"><div class="ci-title">${escapeHtml(r.title||'')}</div>${r.link ? `<a class="ci-link" href="${escapeAttr(r.link)}" target="_blank">فتح</a>` : ''}</div>`;
     }).join('');
-  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل أبحاثك الآن.</div>'; console.warn(err); }
+  }catch(err){ if(el) el.innerHTML = '<div class="empty-state">تعذّر تحميل أبحاثك الآن.</div>'; console.warn(err); }
 }
 async function addMyResearch(){
   const title = document.getElementById('myres-title').value.trim();
@@ -1575,6 +1803,7 @@ async function onProfilePhotoSelected(evt){
     await db.collection('users').doc(currentUid).set({ photoURL: url }, { merge: true });
     pendingUser.photoURL = url;
     renderGlobalAvatar();
+    renderProfileView();
     toast('تم تحديث صورة البروفايل.');
   }catch(err){ toast('تعذّر رفع الصورة: '+err.message, {type:'err'}); }
   finally{ evt.target.value = ''; }
@@ -1627,6 +1856,8 @@ function toggleNotifDropdown(){
 document.addEventListener('click', (e) => {
   const wrap = document.querySelector('.bell-wrap');
   if(wrap && !wrap.contains(e.target)) document.getElementById('notif-dropdown').classList.remove('open');
+  const searchWrap = document.getElementById('search-wrap');
+  if(searchWrap && !searchWrap.contains(e.target)) document.getElementById('search-dropdown').classList.remove('open');
 });
 async function markAllNotificationsRead(){
   try{
@@ -1785,6 +2016,11 @@ async function createPost(){
 function initials(name){ return (name||'؟').trim().split(' ').slice(0,2).map(w=>w[0]).join(' '); }
 
 let communityPostsCache = [];
+let notebooksCache = [];
+let lessonsCache = [];
+let practicalTipsCache = [];
+let researchVideosCache = [];
+let myResearchCache = [];
 
 function renderCommunityPost(id, p){
   const isMine = p.authorUid === currentUid;
@@ -1972,11 +2208,19 @@ async function addNotebook(){
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
 async function loadNotebooks(){
-  const el = document.getElementById('notebooks-list'); if(!el) return;
+  const el = document.getElementById('notebooks-list');
+  const prevT = document.getElementById('home-notebooks-preview');
+  const prevS = document.getElementById('home-notebooks-preview-s');
   try{
     const snap = await db.collection('prepNotebooks').orderBy('createdAt','desc').limit(50).get();
-    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش دفاتر — كن أول من يضيف دفتر تحضير!</div>'; return; }
-    el.innerHTML = snap.docs.map(d => { const n = d.data();
+    notebooksCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    if(snap.empty){
+      if(el) el.innerHTML = '<div class="empty-state">لسه مفيش دفاتر — كن أول من يضيف دفتر تحضير!</div>';
+      if(prevT) prevT.innerHTML = '<div class="empty-state">لسه مفيش دفاتر.</div>';
+      if(prevS) prevS.innerHTML = '<div class="empty-state">لسه مفيش دفاتر.</div>';
+      return;
+    }
+    const renderNotebook = (d) => { const n = d.data();
       const mine = n.ownerUid === currentUid;
       return `<div class="content-item">
         <div><div class="ci-title">${escapeHtml(n.title||'')}</div><div class="ci-desc">${escapeHtml(n.subject||'')} — بواسطة ${escapeHtml(n.ownerName||'مستخدم')}</div></div>
@@ -1985,8 +2229,17 @@ async function loadNotebooks(){
           ${mine ? `<button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deleteNotebook('${d.id}')">حذف</button>` : ''}
         </div>
       </div>`;
-    }).join('');
-  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الدفاتر الآن.</div>'; console.warn(err); }
+    };
+    if(el) el.innerHTML = snap.docs.map(renderNotebook).join('');
+    const previewHtml = snap.docs.slice(0,3).map(renderNotebook).join('') || '<div class="empty-state">لسه مفيش دفاتر.</div>';
+    if(prevT) prevT.innerHTML = previewHtml;
+    if(prevS) prevS.innerHTML = previewHtml;
+  }catch(err){
+    if(el) el.innerHTML = '<div class="empty-state">تعذّر تحميل الدفاتر الآن.</div>';
+    if(prevT) prevT.innerHTML = '<div class="empty-state">تعذّر التحميل الآن.</div>';
+    if(prevS) prevS.innerHTML = '<div class="empty-state">تعذّر التحميل الآن.</div>';
+    console.warn(err);
+  }
 }
 async function deleteNotebook(id){
   let snapshotData = null;
