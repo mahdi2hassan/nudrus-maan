@@ -147,6 +147,46 @@
   .search-result-title{font-weight:700; color:var(--ink);}
   .search-result-sub{font-size:11px; color:var(--ink-soft); margin-top:2px;}
 
+  /* Q&A + follow + expert + groups */
+  .expert-badge{display:inline-block; font-size:10.5px; font-weight:800; background:rgba(199,154,43,0.15); color:#8a6a1c; padding:2px 8px; border-radius:9px; margin-inline-start:4px;}
+  .question-badge{display:inline-block; font-size:10.5px; font-weight:800; background:rgba(184,83,46,0.12); color:var(--brick); padding:2px 8px; border-radius:9px; margin-inline-start:6px;}
+  .follow-btn{background:none; border:1px solid var(--line); border-radius:16px; padding:3px 12px; font-size:11.5px; font-weight:700; color:var(--ink-soft); margin-inline-start:8px;}
+  .follow-btn.following{color:var(--sage); border-color:var(--sage);}
+  .accepted-answer{background:rgba(92,131,104,0.08); border-radius:8px; padding:8px 10px; border-inline-start:3px solid var(--sage);}
+  .accept-answer-btn{background:none; color:var(--ink-soft); font-size:11px; padding:2px 6px;}
+  .accept-answer-btn.accepted{color:var(--sage); font-weight:800;}
+  .groups-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
+  .group-card{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:20px 14px; text-align:center; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+  .group-card:hover{transform:translateY(-3px); box-shadow:0 12px 26px rgba(27,42,65,0.09);}
+  .group-card .g-name{font-weight:800; font-size:14px; margin-bottom:4px;}
+  .group-card .g-count{font-size:11.5px; color:var(--ink-soft);}
+
+  /* filter tabs (library / question bank) */
+  .filter-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .filter-tab{padding:7px 16px; border-radius:20px; border:1px solid var(--line); background:var(--white); font-size:12.5px; font-weight:700; color:var(--ink-soft); transition:background .15s ease, color .15s ease, border-color .15s ease;}
+  .filter-tab.active{background:var(--brick); border-color:var(--brick); color:#fff;}
+  .filter-tab:not(.active):hover{border-color:var(--brick); color:var(--brick);}
+
+  .lib-item-type{display:inline-block; font-size:10px; font-weight:800; padding:2px 9px; border-radius:9px; background:var(--paper-dim); color:var(--ink-soft); margin-inline-start:8px;}
+  .bookmark-btn{background:none; color:var(--ink-soft); padding:3px; display:flex; flex-shrink:0;}
+  .bookmark-btn .icon{width:17px; height:17px;}
+  .bookmark-btn.saved{color:var(--gold);}
+  .bookmark-btn.saved .icon{fill:var(--gold);}
+
+  /* question bank */
+  .qb-form{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;}
+  .qb-form .field-full{grid-column:1 / -1;}
+  .question-card{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px;}
+  .question-card .q-text{font-weight:800; margin-bottom:8px;}
+  .question-card .q-opts{display:flex; flex-direction:column; gap:5px; font-size:13px; margin-bottom:8px;}
+  .question-card .q-opts .correct{color:var(--sage); font-weight:800;}
+  .q-tags{display:flex; gap:6px; flex-wrap:wrap;}
+  .q-tag{font-size:10.5px; font-weight:700; background:var(--paper); border:1px solid var(--line); color:var(--ink-soft); padding:2px 9px; border-radius:9px;}
+  .q-card-actions{display:flex; gap:8px; margin-top:10px;}
+
+  /* quiz builder */
+  .quiz-item{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:14px 18px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;}
+
   /* profile view */
   .profile-head{display:flex; align-items:center; gap:16px; background:var(--white); border:1px solid var(--line); border-radius:10px; padding:22px 24px; margin-bottom:22px; flex-wrap:wrap;}
   .profile-avatar-big{width:76px; height:76px; border-radius:50%; background:var(--sage); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Cairo'; font-weight:800; font-size:26px; flex-shrink:0; position:relative; overflow:hidden; cursor:pointer;}
@@ -422,6 +462,9 @@
 <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+<symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
 <symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
 <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2z"/><path d="M19 15l.9 2.6L22 18.5l-2.1.9L19 22l-.9-2.6-2.1-.9 2.1-.9L19 15z"/></symbol>
 <symbol id="i-wave" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12.5V6a1.5 1.5 0 0 1 3 0v8"/><path d="M17 14v-2a1.5 1.5 0 0 1 3 0v3a6 6 0 0 1-6 6h-2a7 7 0 0 1-6-3.5L4 14.8a1.3 1.3 0 0 1 2.1-1.5L8 15"/></symbol>
@@ -578,12 +621,18 @@
 
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-t" onclick="showView('v-learn', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
+        <button class="nav-item" id="navi-library-t" onclick="showView('v-library', this)"><svg class="icon"><use href="#i-layers"></use></svg> مكتبة الموارد</button>
         <button class="nav-item" id="navi-notebooks-t" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
+        <button class="nav-item" id="navi-questions-t" onclick="showView('v-questions', this)"><svg class="icon"><use href="#i-help"></use></svg> بنك الأسئلة</button>
+        <button class="nav-item" id="navi-quizzes-t" onclick="showView('v-quizzes', this)"><svg class="icon"><use href="#i-edit"></use></svg> الاختبارات</button>
         <button class="nav-item" id="navi-exam-t" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><svg class="icon"><use href="#i-monitor"></use></svg> سبورة إلكترونية</button>
+        <button class="nav-item" onclick="showView('v-saved', this)"><svg class="icon"><use href="#i-bookmark"></use></svg> المحفوظات</button>
 
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
+        <button class="nav-item" onclick="showView('v-qa', this)"><svg class="icon"><use href="#i-help"></use></svg> الأسئلة</button>
+        <button class="nav-item" onclick="showView('v-groups', this)"><svg class="icon"><use href="#i-layers"></use></svg> مجموعات التخصص</button>
         <button class="nav-item" id="navi-chats-t" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
 
         <div class="nav-group-label">الحساب</div>
@@ -600,9 +649,11 @@
 
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-s" onclick="showView('v-learn', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
+        <button class="nav-item" id="navi-library-s" onclick="showView('v-library', this)"><svg class="icon"><use href="#i-layers"></use></svg> مكتبة الموارد</button>
         <button class="nav-item" id="navi-notebooks-s" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
         <button class="nav-item" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><svg class="icon"><use href="#i-monitor"></use></svg> سبورة إلكترونية</button>
+        <button class="nav-item" onclick="showView('v-saved', this)"><svg class="icon"><use href="#i-bookmark"></use></svg> المحفوظات</button>
 
         <div class="nav-group-label">التربية</div>
         <button class="nav-item" id="navi-practical-s" onclick="showView('s-practical', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التربية العملية</button>
@@ -611,6 +662,8 @@
 
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
+        <button class="nav-item" onclick="showView('v-qa', this)"><svg class="icon"><use href="#i-help"></use></svg> الأسئلة</button>
+        <button class="nav-item" onclick="showView('v-groups', this)"><svg class="icon"><use href="#i-layers"></use></svg> مجموعات التخصص</button>
         <button class="nav-item" id="navi-chats-s" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-s" style="display:none;">0</span></button>
 
         <div class="nav-group-label">الحساب</div>
@@ -742,6 +795,93 @@
         </div>
       </div>
 
+      <div class="view" id="v-library">
+        <div class="topbar"><div><h1>مكتبة الموارد</h1><div class="sub">كل محتوى المنصة في مكان واحد — دروس، نصائح، فيديوهات، ودفاتر تحضير</div></div></div>
+        <div class="filter-tabs" id="library-filter-tabs">
+          <button class="filter-tab active" data-type="all" onclick="setLibraryFilter('all', this)">الكل</button>
+          <button class="filter-tab" data-type="lesson" onclick="setLibraryFilter('lesson', this)">دروس</button>
+          <button class="filter-tab" data-type="tip" onclick="setLibraryFilter('tip', this)">التربية العملية</button>
+          <button class="filter-tab" data-type="video" onclick="setLibraryFilter('video', this)">فيديوهات</button>
+          <button class="filter-tab" data-type="notebook" onclick="setLibraryFilter('notebook', this)">دفاتر تحضير</button>
+        </div>
+        <div id="library-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-saved">
+        <div class="topbar"><div><h1>المحفوظات</h1><div class="sub">كل حاجة حفظتها من المجتمع أو المكتبة</div></div></div>
+        <div id="saved-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-questions">
+        <div class="topbar"><div><h1>بنك الأسئلة</h1><div class="sub">أنشئ وصنّف أسئلتك عشان تستخدمها في أي اختبار بعدين</div></div></div>
+        <div class="card-panel">
+          <div class="qb-form">
+            <div class="field field-full"><label>نص السؤال</label><textarea id="q-text" rows="2" placeholder="اكتب السؤال هنا..."></textarea></div>
+            <div class="field"><label>المادة</label><input type="text" id="q-subject" placeholder="مثلاً: رياضيات"></div>
+            <div class="field"><label>الصف</label><input type="text" id="q-grade" placeholder="مثلاً: الصف الأول الإعدادي"></div>
+            <div class="field">
+              <label>نوع السؤال</label>
+              <select id="q-type" onchange="toggleQuestionOptionsField()">
+                <option value="mcq">اختيار من متعدد</option>
+                <option value="tf">صح وخطأ</option>
+                <option value="essay">مقالي</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>مستوى الصعوبة</label>
+              <select id="q-difficulty">
+                <option value="easy">سهل</option>
+                <option value="medium">متوسط</option>
+                <option value="hard">صعب</option>
+              </select>
+            </div>
+            <div class="field field-full" id="q-options-wrap">
+              <label>الاختيارات (سطر لكل اختيار)</label>
+              <textarea id="q-options" rows="3" placeholder="اكتب كل اختيار في سطر منفصل"></textarea>
+            </div>
+            <div class="field field-full"><label>الإجابة الصحيحة</label><input type="text" id="q-answer" placeholder="اكتب الإجابة الصحيحة كما كتبتها في الاختيارات"></div>
+          </div>
+          <button class="btn-primary" onclick="addQuestion()">إضافة السؤال للبنك</button>
+          <div class="auth-status" id="q-add-status"></div>
+        </div>
+
+        <div class="section-title" style="margin-top:26px;">أسئلتي</div>
+        <div class="filter-tabs" id="questions-filter-tabs">
+          <button class="filter-tab active" data-diff="all" onclick="setQuestionsFilter(this)">الكل</button>
+          <button class="filter-tab" data-diff="easy" onclick="setQuestionsFilter(this)">سهل</button>
+          <button class="filter-tab" data-diff="medium" onclick="setQuestionsFilter(this)">متوسط</button>
+          <button class="filter-tab" data-diff="hard" onclick="setQuestionsFilter(this)">صعب</button>
+        </div>
+        <div id="questions-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-quizzes">
+        <div class="topbar"><div><h1>الاختبارات</h1><div class="sub">اعمل اختبار جديد من أسئلة بنكك، أو راجع اختباراتك السابقة</div></div></div>
+        <div class="card-panel">
+          <div class="qb-form">
+            <div class="field field-full"><label>عنوان الاختبار</label><input type="text" id="qz-title" placeholder="مثلاً: اختبار الوحدة الأولى"></div>
+            <div class="field"><label>المادة (اختياري)</label><input type="text" id="qz-subject" placeholder="اتركه فاضي لكل المواد"></div>
+            <div class="field">
+              <label>مستوى الصعوبة</label>
+              <select id="qz-difficulty">
+                <option value="all">أي مستوى</option>
+                <option value="easy">سهل</option>
+                <option value="medium">متوسط</option>
+                <option value="hard">صعب</option>
+              </select>
+            </div>
+            <div class="field"><label>عدد الأسئلة</label><input type="number" id="qz-count" value="5" min="1" max="30"></div>
+          </div>
+          <button class="btn-primary" onclick="buildQuiz()">إنشاء الاختبار</button>
+          <div class="auth-status" id="qz-build-status"></div>
+        </div>
+
+        <div id="quiz-preview-wrap"></div>
+
+        <div class="section-title" style="margin-top:26px;">اختباراتي السابقة</div>
+        <div id="quizzes-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
       <div class="view" id="v-profile">
         <div class="topbar"><div><h1>الملف الشخصي</h1><div class="sub">بياناتك ونشاطك على المنصة</div></div></div>
 
@@ -861,6 +1001,7 @@
             </select>
           </div>
           <div class="field"><label>منشورك</label><textarea rows="3" id="post-content" placeholder="اسأل سؤال، شارك فكرة شرح، أو ابدأ نقاش..."></textarea></div>
+          <label style="display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;"><input type="checkbox" id="post-is-question" style="width:auto;"> ده سؤال محتاج إجابة من المجتمع</label>
           <div class="composer-image-preview" id="composer-image-preview">
             <img id="composer-image-img" src="" alt="">
             <button type="button" class="remove-img" onclick="removeComposerImage()"><svg class="icon"><use href="#i-x"></use></svg></button>
@@ -885,6 +1026,21 @@
         </div>
 
         <div id="community-list"><div class="empty-state">جاري تحميل المنشورات...</div></div>
+      </div>
+
+      <div class="view" id="v-qa">
+        <div class="topbar"><div><h1>الأسئلة</h1><div class="sub">اسأل مجتمع نُدرس معًا واستفيد من خبرة زمايلك</div></div></div>
+        <div class="filter-tabs" id="qa-filter-tabs">
+          <button class="filter-tab active" data-f="all" onclick="setQaFilter(this)">كل الأسئلة</button>
+          <button class="filter-tab" data-f="unanswered" onclick="setQaFilter(this)">محتاجة إجابة</button>
+          <button class="filter-tab" data-f="mine" onclick="setQaFilter(this)">أسئلتي</button>
+        </div>
+        <div id="qa-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-groups">
+        <div class="topbar"><div><h1>مجموعات التخصص</h1><div class="sub">تصفح منشورات كل تخصص لوحده</div></div></div>
+        <div class="groups-grid" id="groups-grid"></div>
       </div>
 
     </div>
@@ -1248,8 +1404,9 @@ async function loadUserStatus(){
   try{
     const doc = await db.collection('users').doc(currentUid).get();
     const d = doc.data();
-    userStatus = { plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt };
+    userStatus = { plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, isExpert: !!d.isExpert };
     renderStatusUI();
+    renderProfileView();
   }catch(err){ console.warn(err); }
 }
 function renderStatusUI(){
@@ -1304,6 +1461,7 @@ function enterApp(role){
   loadUserStatus();
   showView(role === 'teacher' ? 't-dash' : 's-home', document.querySelector((role === 'teacher' ? '#nav-teacher' : '#nav-student') + ' .nav-item'));
   loadLessons(); loadPracticalTips(); loadResearchVideos(); loadMyResearch(); loadCommunity(); loadNotebooks();
+  loadBookmarks(); loadQuestions(); loadQuizzes(); loadFollowing();
   loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce();
 }
 function renderGlobalAvatar(){
@@ -1409,7 +1567,7 @@ function renderProfileView(){
   const nameEl = document.getElementById('profile-name-display');
   const metaEl = document.getElementById('profile-meta-display');
   if(!nameEl) return;
-  nameEl.textContent = pendingUser.name || 'مستخدم';
+  nameEl.innerHTML = escapeHtml(pendingUser.name || 'مستخدم') + (userStatus.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : '');
   const roleLabel = pendingRole === 'teacher' ? 'معلم' : 'طالب معلم';
   const plan = PLANS[userStatus.plan] || PLANS.free;
   metaEl.innerHTML = `${escapeHtml(roleLabel)} — ${escapeHtml(pendingUser.email||'')}${pendingUser.phone ? ' — '+escapeHtml(pendingUser.phone) : ''}<br>الخطة الحالية: ${escapeHtml(plan.name)}`;
@@ -1431,6 +1589,7 @@ function renderProfileView(){
   const stats = [
     { num: myPosts, lbl: 'منشورات' },
     { num: myNotebooks, lbl: 'دفاتر تحضير' },
+    { num: followingCache.length, lbl: 'بتتابعهم' },
   ];
   if(pendingRole === 'student') stats.push({ num: myResearchCache.length, lbl: 'أبحاثي' });
   const statsEl = document.getElementById('profile-stats');
@@ -1485,10 +1644,11 @@ async function loadLessons(){
   try{
     const snap = await db.collection('lessons').orderBy('createdAt','desc').limit(20).get();
     lessonsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
-    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش دروس مرفوعة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش دروس مرفوعة — هتتضاف قريبًا من الداشبورد.</div>'; renderLibrary(); return; }
     el.innerHTML = snap.docs.map(d => { const l = d.data();
       return `<div class="content-item"><div><div class="ci-title">${escapeHtml(l.title||'')}</div><div class="ci-desc">${escapeHtml(l.description||'')}</div></div>${l.videoUrl ? `<a class="ci-link" href="${escapeAttr(l.videoUrl)}" target="_blank">شاهد الدرس</a>` : ''}</div>`;
     }).join('');
+    renderLibrary();
   }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الدروس الآن.</div>'; console.warn(err); }
 }
 async function loadPracticalTips(){
@@ -1496,10 +1656,11 @@ async function loadPracticalTips(){
   try{
     const snap = await db.collection('practicalTips').orderBy('createdAt','desc').limit(20).get();
     practicalTipsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
-    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش نصائح مضافة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش نصائح مضافة — هتتضاف قريبًا من الداشبورد.</div>'; renderLibrary(); return; }
     el.innerHTML = snap.docs.map(d => { const t = d.data();
       return `<div class="content-item"><div><div class="ci-title">${escapeHtml(t.title||'')}</div><div class="ci-desc">${escapeHtml(t.content||'')}</div></div></div>`;
     }).join('');
+    renderLibrary();
   }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل النصائح الآن.</div>'; console.warn(err); }
 }
 async function loadResearchVideos(){
@@ -1507,10 +1668,11 @@ async function loadResearchVideos(){
   try{
     const snap = await db.collection('actionResearchVideos').orderBy('createdAt','desc').limit(20).get();
     researchVideosCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
-    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش فيديوهات مضافة — هتتضاف قريبًا من الداشبورد.</div>'; return; }
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه مفيش فيديوهات مضافة — هتتضاف قريبًا من الداشبورد.</div>'; renderLibrary(); return; }
     el.innerHTML = snap.docs.map(d => { const v = d.data();
       return `<div class="content-item"><div class="ci-title">${escapeHtml(v.title||'')}</div>${v.videoUrl ? `<a class="ci-link" href="${escapeAttr(v.videoUrl)}" target="_blank">مشاهدة</a>` : ''}</div>`;
     }).join('');
+    renderLibrary();
   }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الفيديوهات الآن.</div>'; console.warn(err); }
 }
 async function loadMyResearch(){
@@ -1549,6 +1711,288 @@ async function sendContactMessage(){
     document.getElementById('contact-subject').value=''; document.getElementById('contact-message').value='';
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
+/* ================= المتابعة ================= */
+async function loadFollowing(){
+  if(!currentUid) return;
+  try{
+    const snap = await db.collection('users').doc(currentUid).collection('following').get();
+    followingCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    applyCommunityFilter();
+    renderProfileView();
+  }catch(err){ console.warn(err); }
+}
+function isFollowing(uid){ return followingCache.some(f => f.id === uid); }
+async function toggleFollow(uid, name){
+  if(!currentUid || uid === currentUid) return;
+  try{
+    if(isFollowing(uid)){
+      await db.collection('users').doc(currentUid).collection('following').doc(uid).delete();
+      followingCache = followingCache.filter(f => f.id !== uid);
+      toast('اتشال من المتابَعين.');
+    }else{
+      await db.collection('users').doc(currentUid).collection('following').doc(uid).set({ name: name||'مستخدم', followedAt: firebase.firestore.FieldValue.serverTimestamp() });
+      followingCache.push({ id: uid, data: { name } });
+      toast('بقيت بتتابعه.');
+    }
+  }catch(err){ toast('حصل خطأ، حاول تاني.'); console.warn(err); }
+  applyCommunityFilter();
+  renderProfileView();
+}
+
+/* ================= الأسئلة (Q&A) ================= */
+let currentQaFilter = 'all';
+function setQaFilter(btn){
+  currentQaFilter = btn.dataset.f;
+  document.querySelectorAll('#qa-filter-tabs .filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderQaList();
+}
+function renderQaList(){
+  const el = document.getElementById('qa-list'); if(!el) return;
+  let items = communityPostsCache.filter(({data:p}) => p.isQuestion);
+  if(currentQaFilter === 'unanswered') items = items.filter(({data:p}) => !p.commentsCount);
+  if(currentQaFilter === 'mine') items = items.filter(({data:p}) => p.authorUid === currentUid);
+  el.innerHTML = items.length ? items.map(({id,data}) => renderCommunityPost(id, data)).join('') : '<div class="empty-state">لا يوجد أسئلة هنا دلوقتي.</div>';
+}
+
+/* ================= مجموعات التخصص ================= */
+const SPECIALTY_TAGS = ['رياضيات','عربي','إنجليزي','علوم','دراسات','لغات','تربية خاصة','عام'];
+function renderGroupsView(){
+  const el = document.getElementById('groups-grid'); if(!el) return;
+  el.innerHTML = SPECIALTY_TAGS.map(tag => {
+    const count = communityPostsCache.filter(({data:p}) => (p.tag||'عام') === tag).length;
+    return `<div class="group-card" onclick="openGroup('${escapeAttr(tag)}')"><div class="g-name">${escapeHtml(tag)}</div><div class="g-count">${count} منشور</div></div>`;
+  }).join('');
+}
+function openGroup(tag){
+  showView('t-community', document.querySelector('.nav-item[onclick*=t-community]'));
+  const sel = document.getElementById('community-filter-tag');
+  if(sel){ sel.value = tag; applyCommunityFilter(); }
+}
+
+/* ================= المحفوظات ================= */
+async function loadBookmarks(){
+  if(!currentUid) return;
+  try{
+    const snap = await db.collection('users').doc(currentUid).collection('bookmarks').orderBy('createdAt','desc').get();
+    bookmarksCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    renderSavedView();
+    renderLibrary();
+    applyCommunityFilter();
+  }catch(err){ console.warn(err); }
+}
+function isBookmarked(type, refId){ return bookmarksCache.some(b => b.data.type===type && b.data.refId===refId); }
+function findLibraryItemMeta(type, id){
+  if(type==='lesson'){ const it = lessonsCache.find(x=>x.id===id); return it ? {title:it.data.title||'', sub:it.data.description||'', link:it.data.videoUrl||''} : null; }
+  if(type==='tip'){ const it = practicalTipsCache.find(x=>x.id===id); return it ? {title:it.data.title||'', sub:it.data.content||'', link:''} : null; }
+  if(type==='video'){ const it = researchVideosCache.find(x=>x.id===id); return it ? {title:it.data.title||'', sub:'', link:it.data.videoUrl||''} : null; }
+  if(type==='notebook'){ const it = notebooksCache.find(x=>x.id===id); return it ? {title:it.data.title||'', sub:it.data.subject||'', link:it.data.link||''} : null; }
+  if(type==='post'){ const it = communityPostsCache.find(x=>x.id===id); return it ? {title:(it.data.content||'').slice(0,80)||'منشور بدون نص', sub:'بواسطة '+(it.data.authorName||'مستخدم'), link:''} : null; }
+  return null;
+}
+async function toggleBookmark(type, id){
+  if(!currentUid) return;
+  const existing = bookmarksCache.find(b => b.data.type===type && b.data.refId===id);
+  try{
+    if(existing){
+      await db.collection('users').doc(currentUid).collection('bookmarks').doc(existing.id).delete();
+      bookmarksCache = bookmarksCache.filter(b => b.id !== existing.id);
+      toast('اتشال من المحفوظات.');
+    }else{
+      const meta = findLibraryItemMeta(type, id);
+      if(!meta) return;
+      const docRef = await db.collection('users').doc(currentUid).collection('bookmarks').add({
+        type, refId: id, title: meta.title, sub: meta.sub, link: meta.link,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      bookmarksCache.unshift({ id: docRef.id, data:{ type, refId:id, title:meta.title, sub:meta.sub, link:meta.link } });
+      toast('اتحفظ في المحفوظات.');
+    }
+  }catch(err){ toast('حصل خطأ، حاول تاني.'); console.warn(err); }
+  renderLibrary();
+  renderSavedView();
+  applyCommunityFilter();
+}
+function renderSavedView(){
+  const el = document.getElementById('saved-list'); if(!el) return;
+  if(!bookmarksCache.length){ el.innerHTML = '<div class="empty-state">لسه مفيش حاجة محفوظة. احفظ منشور أو مصدر من زر 🔖.</div>'; return; }
+  el.innerHTML = bookmarksCache.map(({id,data:b}) => `
+    <div class="content-item">
+      <div><div class="ci-title">${escapeHtml(b.title||'')}<span class="lib-item-type">${escapeHtml({lesson:'درس',tip:'تربية عملية',video:'فيديو',notebook:'دفتر تحضير',post:'منشور'}[b.type]||b.type)}</span></div>${b.sub ? `<div class="ci-desc">${escapeHtml(b.sub)}</div>` : ''}</div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        ${b.link ? `<a class="ci-link" href="${escapeAttr(b.link)}" target="_blank">فتح</a>` : ''}
+        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="toggleBookmark('${b.type}','${b.refId}')">إزالة</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ================= مكتبة الموارد ================= */
+function libraryItems(){
+  const items = [];
+  lessonsCache.forEach(({id,data}) => items.push({type:'lesson', id, title:data.title||'', sub:data.description||'', link:data.videoUrl||'', typeLabel:'درس', createdAt:data.createdAt}));
+  practicalTipsCache.forEach(({id,data}) => items.push({type:'tip', id, title:data.title||'', sub:data.content||'', link:'', typeLabel:'تربية عملية', createdAt:data.createdAt}));
+  researchVideosCache.forEach(({id,data}) => items.push({type:'video', id, title:data.title||'', sub:'', link:data.videoUrl||'', typeLabel:'فيديو', createdAt:data.createdAt}));
+  notebooksCache.forEach(({id,data}) => items.push({type:'notebook', id, title:data.title||'', sub:data.subject||'', link:data.link||'', typeLabel:'دفتر تحضير', createdAt:data.createdAt}));
+  items.sort((a,b) => ((b.createdAt&&b.createdAt.toMillis)?b.createdAt.toMillis():0) - ((a.createdAt&&a.createdAt.toMillis)?a.createdAt.toMillis():0));
+  return items;
+}
+function setLibraryFilter(type, btn){
+  currentLibraryFilter = type;
+  document.querySelectorAll('#library-filter-tabs .filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderLibrary();
+}
+function renderLibrary(){
+  const el = document.getElementById('library-list'); if(!el) return;
+  let items = libraryItems();
+  if(currentLibraryFilter !== 'all') items = items.filter(it => it.type === currentLibraryFilter);
+  if(!items.length){ el.innerHTML = '<div class="empty-state">لسه مفيش محتوى في القسم ده.</div>'; return; }
+  el.innerHTML = items.map(it => `
+    <div class="content-item">
+      <div><div class="ci-title">${escapeHtml(it.title)}<span class="lib-item-type">${escapeHtml(it.typeLabel)}</span></div>${it.sub ? `<div class="ci-desc">${escapeHtml(it.sub)}</div>` : ''}</div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        ${it.link ? `<a class="ci-link" href="${escapeAttr(it.link)}" target="_blank">فتح</a>` : ''}
+        <button class="bookmark-btn ${isBookmarked(it.type, it.id)?'saved':''}" onclick="toggleBookmark('${it.type}','${it.id}')"><svg class="icon"><use href="#i-bookmark"></use></svg></button>
+      </div>
+    </div>`).join('');
+}
+
+/* ================= بنك الأسئلة ================= */
+function toggleQuestionOptionsField(){
+  const type = document.getElementById('q-type').value;
+  document.getElementById('q-options-wrap').style.display = (type === 'essay') ? 'none' : '';
+}
+async function addQuestion(){
+  const text = document.getElementById('q-text').value.trim();
+  const subject = document.getElementById('q-subject').value.trim();
+  const grade = document.getElementById('q-grade').value.trim();
+  const type = document.getElementById('q-type').value;
+  const difficulty = document.getElementById('q-difficulty').value;
+  const optionsRaw = document.getElementById('q-options').value.trim();
+  const answer = document.getElementById('q-answer').value.trim();
+  const status = document.getElementById('q-add-status');
+  if(!text || !subject){ status.className='auth-status err'; status.textContent='اكتب نص السؤال والمادة على الأقل.'; return; }
+  const options = type === 'essay' ? [] : optionsRaw.split('\n').map(s=>s.trim()).filter(Boolean);
+  status.className='auth-status pending'; status.textContent='جاري الإضافة...';
+  try{
+    await db.collection('questions').add({
+      ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم',
+      text, subject, grade, type, difficulty, options, answer,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('q-text').value = '';
+    document.getElementById('q-options').value = '';
+    document.getElementById('q-answer').value = '';
+    status.className='auth-status ok'; status.textContent='✓ اتضاف السؤال.';
+    toast('اتضاف السؤال لبنك الأسئلة.');
+    loadQuestions();
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+async function loadQuestions(){
+  if(!currentUid) return;
+  try{
+    const snap = await db.collection('questions').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    questionsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    renderQuestions();
+  }catch(err){ console.warn(err); }
+}
+function setQuestionsFilter(btn){
+  currentQuestionsDifficulty = btn.dataset.diff;
+  document.querySelectorAll('#questions-filter-tabs .filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuestions();
+}
+const DIFF_LABEL = { easy:'سهل', medium:'متوسط', hard:'صعب' };
+const QTYPE_LABEL = { mcq:'اختيار من متعدد', tf:'صح وخطأ', essay:'مقالي' };
+function renderQuestions(){
+  const el = document.getElementById('questions-list'); if(!el) return;
+  let items = questionsCache;
+  if(currentQuestionsDifficulty !== 'all') items = items.filter(({data:q}) => q.difficulty === currentQuestionsDifficulty);
+  if(!items.length){ el.innerHTML = '<div class="empty-state">لسه معملتش أي سؤال. ضيف أول سؤال من الفورم فوق.</div>'; return; }
+  el.innerHTML = items.map(({id,data:q}) => `
+    <div class="question-card">
+      <div class="q-text">${escapeHtml(q.text||'')}</div>
+      ${(q.options||[]).length ? `<div class="q-opts">${q.options.map(o => `<div class="${o===q.answer?'correct':''}">${o===q.answer?'✓ ':'— '}${escapeHtml(o)}</div>`).join('')}</div>` : (q.answer ? `<div class="q-opts"><div class="correct">✓ ${escapeHtml(q.answer)}</div></div>` : '')}
+      <div class="q-tags">
+        <span class="q-tag">${escapeHtml(q.subject||'')}</span>
+        ${q.grade ? `<span class="q-tag">${escapeHtml(q.grade)}</span>` : ''}
+        <span class="q-tag">${escapeHtml(QTYPE_LABEL[q.type]||q.type)}</span>
+        <span class="q-tag">${escapeHtml(DIFF_LABEL[q.difficulty]||q.difficulty)}</span>
+      </div>
+      <div class="q-card-actions">
+        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deleteQuestion('${id}')">حذف</button>
+      </div>
+    </div>`).join('');
+}
+async function deleteQuestion(id){
+  try{ await db.collection('questions').doc(id).delete(); questionsCache = questionsCache.filter(q=>q.id!==id); renderQuestions(); toast('اتحذف السؤال.'); }
+  catch(err){ toast('تعذّر الحذف الآن.'); console.warn(err); }
+}
+
+/* ================= الاختبارات ================= */
+async function buildQuiz(){
+  const title = document.getElementById('qz-title').value.trim();
+  const subject = document.getElementById('qz-subject').value.trim();
+  const difficulty = document.getElementById('qz-difficulty').value;
+  const count = Math.max(1, Math.min(30, parseInt(document.getElementById('qz-count').value, 10) || 5));
+  const status = document.getElementById('qz-build-status');
+  if(!title){ status.className='auth-status err'; status.textContent='اكتب عنوان الاختبار.'; return; }
+  let pool = questionsCache.filter(({data:q}) => (!subject || q.subject===subject) && (difficulty==='all' || q.difficulty===difficulty));
+  if(!pool.length){ status.className='auth-status err'; status.textContent='مفيش أسئلة مطابقة في بنكك — ضيف أسئلة الأول أو وسّع الفلتر.'; return; }
+  pool = pool.slice().sort(()=>Math.random()-0.5).slice(0, count);
+  status.className='auth-status pending'; status.textContent='جاري إنشاء الاختبار...';
+  try{
+    const docRef = await db.collection('quizzes').add({
+      ownerUid: currentUid, title, subject: subject||null, difficulty,
+      questionIds: pool.map(p=>p.id),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    quizzesCache.unshift({ id: docRef.id, data:{ title, subject, difficulty, questionIds: pool.map(p=>p.id) } });
+    status.className='auth-status ok'; status.textContent='✓ اتعمل الاختبار.';
+    toast('اتعمل الاختبار وحُفظ.');
+    renderQuizPreview(pool);
+    renderQuizzesList();
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+function renderQuizPreview(questions){
+  const el = document.getElementById('quiz-preview-wrap'); if(!el) return;
+  el.innerHTML = `<div class="section-title" style="margin-top:22px;">معاينة الاختبار</div>` + questions.map(({data:q},i) => `
+    <div class="question-card">
+      <div class="q-text">${i+1}. ${escapeHtml(q.text||'')}</div>
+      ${(q.options||[]).length ? `<div class="q-opts">${q.options.map(o => `<div>${escapeHtml(o)}</div>`).join('')}</div>` : ''}
+    </div>`).join('');
+}
+async function loadQuizzes(){
+  if(!currentUid) return;
+  try{
+    const snap = await db.collection('quizzes').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    quizzesCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    renderQuizzesList();
+  }catch(err){ console.warn(err); }
+}
+function renderQuizzesList(){
+  const el = document.getElementById('quizzes-list'); if(!el) return;
+  if(!quizzesCache.length){ el.innerHTML = '<div class="empty-state">لسه معملتش أي اختبار.</div>'; return; }
+  el.innerHTML = quizzesCache.map(({id,data:qz}) => `
+    <div class="quiz-item">
+      <div><strong>${escapeHtml(qz.title||'')}</strong> <span class="lib-item-type">${qz.questionIds ? qz.questionIds.length : 0} سؤال</span></div>
+      <div style="display:flex; gap:8px;">
+        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="viewQuiz('${id}')">عرض</button>
+        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deleteQuiz('${id}')">حذف</button>
+      </div>
+    </div>`).join('');
+}
+function viewQuiz(id){
+  const qz = quizzesCache.find(x=>x.id===id); if(!qz) return;
+  const questions = (qz.data.questionIds||[]).map(qid => questionsCache.find(q=>q.id===qid)).filter(Boolean);
+  renderQuizPreview(questions);
+  document.getElementById('quiz-preview-wrap').scrollIntoView({behavior:'smooth'});
+}
+async function deleteQuiz(id){
+  try{ await db.collection('quizzes').doc(id).delete(); quizzesCache = quizzesCache.filter(q=>q.id!==id); renderQuizzesList(); toast('اتحذف الاختبار.'); }
+  catch(err){ toast('تعذّر الحذف الآن.'); console.warn(err); }
+}
+
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function ic(name){ return `<svg class="icon"><use href="#i-${name}"></use></svg>`; }
 
@@ -1975,6 +2419,7 @@ async function createPost(){
   const tag = document.getElementById('post-tag').value;
   const content = document.getElementById('post-content').value.trim();
   const driveLink = document.getElementById('post-drive-link').value.trim();
+  const isQuestion = document.getElementById('post-is-question').checked;
   const status = document.getElementById('post-status');
   const submitBtn = document.getElementById('post-submit-btn');
   const progress = document.getElementById('post-upload-progress');
@@ -1998,13 +2443,15 @@ async function createPost(){
       progress.textContent = '';
     }
     await db.collection('communityPosts').add({
-      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', tag, content,
+      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', authorIsExpert: !!userStatus.isExpert, tag, content,
       driveLink: driveLink || null, imageUrl: imageUrl || null,
+      isQuestion, acceptedCommentId: null,
       likesCount: 0, commentsCount: 0,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     document.getElementById('post-content').value = '';
     document.getElementById('post-drive-link').value = '';
+    document.getElementById('post-is-question').checked = false;
     removeComposerImage();
     status.className='auth-status ok'; status.textContent='✓ تم النشر.';
     toast('تم نشر منشورك في المجتمع.');
@@ -2021,27 +2468,35 @@ let lessonsCache = [];
 let practicalTipsCache = [];
 let researchVideosCache = [];
 let myResearchCache = [];
+let bookmarksCache = [];
+let questionsCache = [];
+let quizzesCache = [];
+let followingCache = [];
+let currentLibraryFilter = 'all';
+let currentQuestionsDifficulty = 'all';
 
 function renderCommunityPost(id, p){
   const isMine = p.authorUid === currentUid;
   return `
       <div class="post" id="post-${id}">
-        <div class="post-head"><div class="mini-avatar">${escapeHtml(initials(p.authorName))}</div><div class="who">${escapeHtml(p.authorName||'مستخدم')}</div>
-          ${!isMine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(p.authorUid)}','${escapeAttr(p.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>` : ''}
-          <span class="tag">${escapeHtml(p.tag||'عام')}</span></div>
+        <div class="post-head"><div class="mini-avatar">${escapeHtml(initials(p.authorName))}</div><div class="who">${escapeHtml(p.authorName||'مستخدم')}${p.authorIsExpert ? '<span class="expert-badge">⭐ خبير</span>' : ''}</div>
+          ${!isMine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(p.authorUid)}','${escapeAttr(p.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>
+          <button class="follow-btn ${isFollowing(p.authorUid)?'following':''}" onclick="toggleFollow('${escapeAttr(p.authorUid)}','${escapeAttr(p.authorName||'مستخدم')}')">${isFollowing(p.authorUid) ? '✓ بتتابعه' : '+ متابعة'}</button>` : ''}
+          <span class="tag">${escapeHtml(p.tag||'عام')}</span>${p.isQuestion ? '<span class="question-badge">❓ سؤال</span>' : ''}</div>
         ${p.content ? `<p>${escapeHtml(p.content)}</p>` : ''}
         ${p.imageUrl ? `<img class="post-image" src="${escapeAttr(p.imageUrl)}" alt="صورة المنشور" onclick="openLightbox('${escapeAttr(p.imageUrl)}')">` : ''}
         ${p.driveLink ? `<a class="ci-link" style="display:inline-block; margin-bottom:10px;" href="${escapeAttr(p.driveLink)}" target="_blank">${ic('paperclip')} فتح الملف المرفق</a>` : ''}
         <div class="post-actions">
           <button class="${likedPosts.has(id)?'liked':''}" id="like-${id}" onclick="likePost('${id}')">${ic('thumb')} <span id="likecount-${id}">${p.likesCount||0}</span></button>
-          <button onclick="toggleComments('${id}', true)">${ic('chat-circle')} <span id="commentcount-${id}">${p.commentsCount||0}</span> تعليقات</button>
+          <button onclick="toggleComments('${id}', true)">${ic('chat-circle')} <span id="commentcount-${id}">${p.commentsCount||0}</span> ${p.isQuestion ? 'إجابات' : 'تعليقات'}</button>
           <button onclick="sharePost('${id}')">${ic('share')} مشاركة</button>
+          <button class="bookmark-btn ${isBookmarked('post', id)?'saved':''}" id="bookmark-${id}" onclick="toggleBookmark('post','${id}')"><svg class="icon"><use href="#i-bookmark"></use></svg></button>
           ${isMine ? `<button onclick="deletePost('${id}')" style="color:var(--brick);">${ic('trash')} حذف</button>` : ''}
         </div>
         <div class="comments-box" id="comments-${id}">
           <div id="commentslist-${id}"></div>
           <div class="comment-add">
-            <input type="text" id="commentinput-${id}" placeholder="اكتب تعليق..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addComment('${id}');}">
+            <input type="text" id="commentinput-${id}" placeholder="${p.isQuestion ? 'اكتب إجابة...' : 'اكتب تعليق...'}" onkeydown="if(event.key==='Enter'){event.preventDefault(); addComment('${id}');}">
             <button onclick="addComment('${id}')">${ic('send')} إرسال</button>
           </div>
         </div>
@@ -2072,18 +2527,20 @@ async function loadCommunity(){
 }
 function applyCommunityFilter(){
   const el = document.getElementById('community-list');
-  if(!el) return;
-  const searchInput = document.getElementById('community-search');
-  const tagInput = document.getElementById('community-filter-tag');
-  const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
-  const tag = tagInput ? tagInput.value : '';
-  const filtered = communityPostsCache.filter(({data:p}) => {
-    if(tag && p.tag !== tag) return false;
-    if(q && !((p.content||'').toLowerCase().includes(q) || (p.authorName||'').toLowerCase().includes(q))) return false;
-    return true;
-  });
-  if(!filtered.length){ el.innerHTML = '<div class="empty-state">مفيش نتائج مطابقة.</div>'; return; }
-  el.innerHTML = filtered.map(({id,data}) => renderCommunityPost(id, data)).join('');
+  if(el){
+    const searchInput = document.getElementById('community-search');
+    const tagInput = document.getElementById('community-filter-tag');
+    const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    const tag = tagInput ? tagInput.value : '';
+    const filtered = communityPostsCache.filter(({data:p}) => {
+      if(tag && p.tag !== tag) return false;
+      if(q && !((p.content||'').toLowerCase().includes(q) || (p.authorName||'').toLowerCase().includes(q))) return false;
+      return true;
+    });
+    el.innerHTML = filtered.length ? filtered.map(({id,data}) => renderCommunityPost(id, data)).join('') : '<div class="empty-state">مفيش نتائج مطابقة.</div>';
+  }
+  renderQaList();
+  renderGroupsView();
 }
 async function likePost(id){
   if(likedPosts.has(id)) return;
@@ -2113,14 +2570,30 @@ function toggleComments(id, focusInput){
 async function loadComments(id){
   const el = document.getElementById('commentslist-'+id);
   el.innerHTML = 'جاري التحميل...';
+  const cachedPost = communityPostsCache.find(p => p.id === id);
+  const postData = cachedPost ? cachedPost.data : {};
+  const isOwner = postData.authorUid === currentUid;
   try{
     const snap = await db.collection('communityPosts').doc(id).collection('comments').orderBy('createdAt','asc').limit(50).get();
     if(snap.empty){ el.innerHTML = '<div style="font-size:12px; color:var(--ink-soft);">لسه مفيش تعليقات — اكتب أول تعليق.</div>'; return; }
     el.innerHTML = snap.docs.map(d => { const c = d.data();
       const mine = c.authorUid === currentUid;
-      return `<div class="comment-item" id="comment-${id}-${d.id}"><div><b>${escapeHtml(c.authorName||'مستخدم')}:</b> ${escapeHtml(c.content||'')}</div><div style="display:flex; gap:10px; margin-top:4px;">${!mine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(c.authorUid)}','${escapeAttr(c.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>` : ''}${mine ? `<button onclick="deleteComment('${id}','${d.id}')" style="background:none; color:var(--ink-soft); font-size:11px;">${ic('trash')} حذف</button>` : ''}</div></div>`;
+      const isAccepted = postData.acceptedCommentId === d.id;
+      const showAcceptBtn = postData.isQuestion && isOwner;
+      return `<div class="comment-item ${isAccepted ? 'accepted-answer' : ''}" id="comment-${id}-${d.id}"><div>${isAccepted ? '<span class="expert-badge">✓ إجابة معتمدة</span> ' : ''}<b>${escapeHtml(c.authorName||'مستخدم')}:</b> ${escapeHtml(c.content||'')}</div><div style="display:flex; gap:10px; margin-top:4px;">${!mine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(c.authorUid)}','${escapeAttr(c.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>` : ''}${showAcceptBtn ? `<button class="accept-answer-btn ${isAccepted?'accepted':''}" onclick="toggleAcceptedAnswer('${id}','${d.id}')">${isAccepted ? '✓ إجابة معتمدة' : 'اعتمد كإجابة'}</button>` : ''}${mine ? `<button onclick="deleteComment('${id}','${d.id}')" style="background:none; color:var(--ink-soft); font-size:11px;">${ic('trash')} حذف</button>` : ''}</div></div>`;
     }).join('');
   }catch(err){ el.innerHTML = '<div style="font-size:12px; color:var(--brick);">تعذّر تحميل التعليقات.</div>'; console.warn(err); }
+}
+async function toggleAcceptedAnswer(postId, commentId){
+  const cachedPost = communityPostsCache.find(p => p.id === postId);
+  if(!cachedPost) return;
+  const newValue = cachedPost.data.acceptedCommentId === commentId ? null : commentId;
+  try{
+    await db.collection('communityPosts').doc(postId).update({ acceptedCommentId: newValue });
+    cachedPost.data.acceptedCommentId = newValue;
+    loadComments(postId);
+    toast(newValue ? 'اتحددت الإجابة المعتمدة.' : 'اتشالت الإجابة المعتمدة.');
+  }catch(err){ toast('تعذّر الحفظ الآن.'); console.warn(err); }
 }
 async function addComment(id){
   const input = document.getElementById('commentinput-'+id);
@@ -2218,6 +2691,7 @@ async function loadNotebooks(){
       if(el) el.innerHTML = '<div class="empty-state">لسه مفيش دفاتر — كن أول من يضيف دفتر تحضير!</div>';
       if(prevT) prevT.innerHTML = '<div class="empty-state">لسه مفيش دفاتر.</div>';
       if(prevS) prevS.innerHTML = '<div class="empty-state">لسه مفيش دفاتر.</div>';
+      renderLibrary();
       return;
     }
     const renderNotebook = (d) => { const n = d.data();
@@ -2234,6 +2708,7 @@ async function loadNotebooks(){
     const previewHtml = snap.docs.slice(0,3).map(renderNotebook).join('') || '<div class="empty-state">لسه مفيش دفاتر.</div>';
     if(prevT) prevT.innerHTML = previewHtml;
     if(prevS) prevS.innerHTML = previewHtml;
+    renderLibrary();
   }catch(err){
     if(el) el.innerHTML = '<div class="empty-state">تعذّر تحميل الدفاتر الآن.</div>';
     if(prevT) prevT.innerHTML = '<div class="empty-state">تعذّر التحميل الآن.</div>';
