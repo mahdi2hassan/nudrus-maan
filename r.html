@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتيجة الطلاب - جامعة بني سويف</title>
+    
+    <!-- الخطوط والأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="style/images/results-icon-png-15.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================= CSS VARIABLES ================= */
+        :root {
+            --primary-color: #517668;
+            --primary-hover: #3d5a4e;
+            --bg-glass: rgba(255, 255, 255, 0.65);
+            --bg-dark-glass: rgba(0, 0, 0, 0.7);
+            --text-dark: #333;
+            --text-light: #fff;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        /* ================= GLOBAL ================= */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-image: url('style/images/back6.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ================= LOGOS ================= */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0 15px;
+            width: 100%;
+        }
+        .logo-container img {
+            height: 75px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            transition: transform var(--transition-speed);
+        }
+        .logo-container img:hover {
+            transform: translateY(-5px);
+        }
+
+        /* ================= MAIN CONTAINER (Glassmorphism) ================= */
+        .container {
+            width: 95%;
+            max-width: 800px;
+            margin: 15px auto;
+            padding: 30px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        .container h2 {
+            color: var(--primary-color);
+            font-weight: 900;
+            font-size: 26px;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        /* ================= FORM INPUTS ================= */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .input-control {
+            width: 100%;
+            max-width: 450px;
+            padding: 14px;
+            border: 2px solid rgba(81, 118, 104, 0.4);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            color: var(--text-dark);
+            text-align: center;
+            transition: all var(--transition-speed);
+        }
+
+        .input-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(81, 118, 104, 0.3);
+            background: #fff;
+        }
+
+        select.input-control {
+            appearance: none;
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23517668%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: left 15px top 50%;
+            background-size: 12px auto;
+        }
+
+        .btn-submit {
+            width: 100%;
+            max-width: 450px;
+            padding: 14px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background var(--transition-speed), transform 0.1s;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 5px 15px rgba(81, 118, 104, 0.4);
+        }
+        
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* ================= INFO WIDGETS (Counter & Footer) ================= */
+        .info-bar {
+            width: 95%;
+            max-width: 800px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-dark-glass);
+            color: var(--text-light);
+            font-weight: 800;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin: 20px auto 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .info-bar i { color: gold; }
+
+        .footer {
+            width: 95%;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-light);
+            background: var(--bg-dark-glass);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .footer p {
+            margin: 8px 0;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .footer a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #fff;
+            text-decoration: none;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: var(--transition-speed);
+        }
+        
+        .footer a:hover {
+            background: rgba(255,255,255,0.2);
+            color: gold;
+        }
+
+        .developer-credit {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .developer-credit span {
+            color: gold;
+            font-weight: bold;
+        }
+
+        /* ================= MEDIA QUERIES ================= */
+        @media (max-width: 768px) {
+            .logo-container img { height: 60px; }
+            .container { padding: 20px; }
+            .container h2 { font-size: 22px; }
+            .input-control, .btn-submit { font-size: 15px; padding: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .logo-container img { height: 45px; }
+            .container h2 { font-size: 20px; }
+            .info-bar, .footer { font-size: 12px; }
+        }
+    </style>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputField = document.getElementById('TextStudCode');
+            if(inputField) {
+                inputField.addEventListener("input", function () {
+                    this.value = this.value.replace(/\D/g, ''); // السماح بالأرقام فقط
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- تم الإبقاء على نموذج فورم ASP.NET بجميع خصائصه لتجنب تعطل النظام -->
+    <form method="post" action="./?fbclid=Iwb21leAUgZAljbGNrBSBj-3Bkb2YFZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMzUwNjg1NTMxNzI4AAEezzRCQUvmqvldnZLF0cqsCUofepZnlQBPpVsg1KnAIk2QgC_ivY4-3wX-iPU_aem_eUsumrg8V314_bH4tVybx" id="ctl00" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        
+        <div class="aspNetHidden">
+            <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="5v545afc2auX6Qpso+hy3LhyjwG+kQXs/wyi8wOs2xsYcJfQUQjxPS6OLYqw8CNcAKJloO0MAfWIXXIa/zS6qpRan5/84JlLCJ0XCjRZ1Q7ZWEDUBRZr3W9cBBySVuT5fkVBKZzD4sJ50Xpvm7rGcGe0MO14qAfJC5orZBDCBzZ0aL6qWW4lzeipSTHU/bXnWK2WmrYkw+KrVvuvHxLvdR0lrEvl/o27BDDkpUQgyH4EfjRBTzeFOqALW0zax4Oo6PzqQHmc/K+PWYYSSSaSXpGgGjvF8ec/zwyqE+5gX7arl72dPVOa12HF/6qJMqw+1flhOwn/XPUo0nUm6CCriYfyFz3mEMoeGJzKv8aXMFt4pYNIa36R8zFVFN4uclBDCpeDcLt5v6+pKbE2NWuWGblKA+/DKoQ3HCA1e7ZC+D8EKkynu0Qoj8w69HVrSBNynmQicnzkSro9izzqcyXsxDrlog0DAUJCpW1vGgp1kA5RrzOVPqD6edReN8E/PPBqZMnBHWlst3iSwKJBDB0tbWwGV8pzKn9+haodQV3KGAIisDHzcelp2gikA8n640/YuW7oxgGxYVtSPEVdbjeAJ5lW1RZ4ShnWiGU3hQBLrLgKNqsZDHd4SukrmggxDHbGVcn3gURa/dGPnrySf9VDTO7Dxo66magLznojapP6HEfOoAhnKLu7t/5PoXlh/prgZfM/tZ52k9GPOCdDk2SSZeIHBUF1dTKACIw4QLHwbLdnTjCqG4rjLcaUhFOLRM6gE1tGs9tZqqsYPBLTUoyGVaMJddpC3bl9H1NBR6kOxqQ0cgREjhcmAMLJF52yobL+WIpGKzwDhIDSyL87V4vzZqCSZgL5sHOAFd5B5/cFp/dToun682N10aXtk4j6us/5iqTqtvZNmAJM2ZkqBh5DCZwiGu1qmK78d4QSycmG2fU3JxVLc4LLSdGZ1f/Gx3vT/Fr2Tbpsf7Kp1n0WpwSYAw/SEvMgLAXr+M8RMU6//UX+t0qLq6SN0g1HyDJ07Qu7nHVpY9Db1TBfjAUD6OLhr/8Vlj8HI2zlgo6VivEIg6Vnm6xMBQMmJ7VkVkV2JXhDrkae01JRmlmnCTNa4A5dcs9JIf6xV33v21xjk7T9FQ+wEavKWJDzXS5dx5h/u6tKxLLZWICgX+lPhQW5yRoAi4om+OQRUPIhRWG9mNCiKp+w4Gmp7wsOmZMY1J4R6QxcycrD63WW5aPtxCbbhAMgujSyUIX8oi3C8vs2fn0DHrcM/WW8Wjn+Gnp7PJFZTpso4hfxyVZVzsuFBp8RigezJSslXJeIrBbKcIpCVNFx9OsxV7oEAOhbwTekVLwEkJWGLcMHI7z9q8r2bbQcW2VtJZ8OgIaxZF/m2bPg44P7mKvZOg7YyWs6q4TgsRl1OZUSmEzieyUwgz/mAIu4Z9GnwUZYITcNHtkDNv/ZcTZnQEMlQ5Oxv3qA2TX56NDiHE5FlkqkYN+K+/9B9AhSi3d4UoLR/iqaMetN6cm5mbDh59v2FP5JlryxWf36nhoABeLMVpLhVgwFvsvRSN2fHw4srriJr2tNJjD2d8mdTBWA2aX2Byt77gYrSIW7aZlEWccjvH6bd/OgwHNARAVmdPzzAjq+8J4uN3ZzpBFqUDEuuVcK3zbz6EY3+MJSPVgarEF0tUxNmbSPbDHe8OF0H6rOT7epqvU9S7mM4XSYq18p/yS2mYSfmnQphw420kQfdyKHmfRu7f1QPehK+TpxB3TGD0Ls5OUmKRviI/psmmmzdWagt7t+TjbuI/myYl1LSjooQbbxcDxMOqv3EcMLxBEU5/615s0WJmnG8bCWzJ0TFUz+w6yN+rzCAgBw7wh2Mh8O" />
+        </div>
+        <div class="aspNetHidden">
+            <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="9281FA45" />
+            <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="uJcLTxF0NdyRWFi01ZJExjn8l5DS2FMAd2VKxE21A6OSZkMzibysZs18CVYI2Jd2ojOEWEKas0zt441idTn6qNVeVrV23qhVVS4Z3mV8ZyyT0riq8cK8UqSQgCrjJwEJ3d8+dr3EgfPjNpJDSKa9KHNFAOGD7sALMF52LQODZnNol4adb4TLeKVAbTwbA8AUxa2QPv2aNXa9SwLPtrYOXzm8aprDN+XjnVs8tXtjxGuQy4nxK3OZwZCyXP1ZoFr0mivJl3SBvttF1G4EauiOdCKOsXr/RLUP58vOhrJikIG8EMFqPxgN6ipzPIdOeALXk6DJRMVIjX58lHBI7xYciwol7ExcaLpufOK7mrPbdA1+KwD6g00VoFxaWBcIzvYhfzlKHnG4TVE+Z08AlTtRj5BNJ/il9hW7Uz7y9P8ixvzfF2ndnUmt1naPQVhDyi6RCxDeT3ajm3vqAPueufmMu8N09w9da6x4o0RsIXHWrkBXqLpRP62Hwol5g6AvnTwoz366Y+HPEWem6L2TyyUStFwojiKXe6hk0q5B9UXVymvcFYnRnHv89Z5SdHNFGUdDPxbkI/GwlK6ya5dj21onwrZevKgDRd5T+lfiHnxtNRev+2rqPOLJY0yXNnBKEaaBXdJ6ssp2BRsmdSjoHtW6c+BDJ3+vru3ukUc5nono4p7UzwAJo9+yJCv/VdHGFstSF77fkSlWJvTrJIC9ZRgcIU/OyhE5yEvQM9MwbK6Dk+o=" />
+        </div>
+
+        <!-- الشعارات -->
+        <div class="logo-container">
+            <img src="style/images/mis.png" alt="شعار MIS">
+            <img src="style/images/bsu1.png" alt="شعار جامعة بني سويف">
+        </div>
+
+        <!-- الصندوق الرئيسي للبحث -->
+        <main class="container">
+            <h2>إسـتـعـلام نـتـائـج الـطـلاب</h2>
+            <div class="input-group">
+                <select name="ddl_faculty" id="ddl_faculty" class="input-control" aria-label="اختر الكلية">
+                    <option value="">-- إختر الكلية --</option>
+                    <option value="11">كلية الآداب</option>
+                    <option value="588">كلية الاعلام</option>
+                    <option value="609">كلية الالسن</option>
+                    <option value="1">كلية التربية</option>
+                    <option value="358">كلية التربية للطفولة المبكرة</option>
+                    <option value="2">كلية التكنولوجيا والتعليم</option>
+                    <option value="3">كلية التمريض</option>
+                    <option value="590">كلية الحاسبات والذكاء الاصطناعى</option>
+                    <option value="7">كلية الحقوق</option>
+                    <option value="607">كلية الخدمة الاجتماعية التنموية</option>
+                    <option value="603">كلية الزراعة</option>
+                    <option value="610">كلية السياحة والفنادق</option>
+                    <option value="579">كلية السياسة والاقتصاد</option>
+                    <option value="4">كلية الصيدله</option>
+                    <option value="8">كلية الطب</option>
+                    <option value="9">كلية الطب البيطرى</option>
+                    <option value="592">كلية العلاج الطبيعى</option>
+                    <option value="10">كلية العلوم</option>
+                    <option value="605">كلية الفنون التطبيقية</option>
+                    <option value="431">كلية الهندسة</option>
+                    <option value="604">كلية تكنولوجيا العلوم الصحية التطبيقية</option>
+                    <option value="591">كلية طب الاسنان</option>
+                    <option value="612">كلية علوم الارض</option>
+                    <option value="5">كلية علوم الرياضة</option>
+                    <option value="681">كلية علوم الملاحة و تكنولوجيا الفضاء</option>
+                    <option value="613">كلية علوم ذوى الاحتياجات الخاصة</option>
+                    <option value="625">معهد فنى تمريض</option>
+                </select>
+
+                <input name="TextStudCode" type="text" id="TextStudCode" class="input-control" placeholder="أدخل الرقم القومي / كود الطالب" aria-label="رقم الطالب" />
+                
+                <input type="submit" name="BtnSearch" value="بحــث" id="BtnSearch" class="btn-submit" />
+            </div>
+        </main>
+
+        <!-- عداد الزوار -->
+        <div class="info-bar">
+            <i class="fas fa-user-check"></i>
+            <span id="lblVisitorCount">عدد الزوار: 1,381,114</span>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <footer class="footer">
+            <p>جميع الحقوق محفوظة © نظم المعلومات الإدارية 2026 - جامعة بني سويف</p>
+            <p>تصميم وتطوير نظم المعلومات الإدارية</p>
+            
+            <a href="https://www.facebook.com/people/%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9-%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%D8%A9-%D9%84%D9%85%D8%B1%D9%83%D8%B2-%D9%86%D8%B8%D9%85-%D8%A7%D9%84%D9%85%D8%B9%D9%84%D9%88%D9%85%D8%A7%D8%AA-%D8%A7%D9%84%D8%A5%D8%AF%D8%A7%D8%B1%D9%8A%D8%A9-%D8%A8%D8%AC%D8%A7%D9%85%D8%B9%D8%A9-%D8%A8%D9%86%D9%89-%D8%B3%D9%88%D9%8A%D9%81/100054484554193/" target="_blank">
+                <i class="fab fa-facebook fa-lg"></i> تابعنا على فيسبوك
+            </a>
+
+            <!-- حقوق المطور مدمجة في الفوتر لتصميم أنظف -->
+            <div class="developer-credit">
+                <i class="fas fa-code"></i> تصميم وتطوير : مهندسة <span>&lt;&lt; منى جمال علي &gt;&gt;</span>
+            </div>
+        </footer>
+
+    </form>
+</body>
+</html>
