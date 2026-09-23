@@ -1429,7 +1429,7 @@ async function createAccountAndSendCode(){
     });
 
     try{
-      await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, { verification_code: code, message: 'كود تفعيل حسابك: ' + code });
+      await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, { otp_code: code });
     }catch(mailErr){ console.warn('EmailJS error:', mailErr); }
 
     status.textContent = '';
@@ -1447,7 +1447,7 @@ async function resendCode(){
   const expiresAt = Date.now() + 10*60*1000;
   try{
     await db.collection('users').doc(currentUid).update({ verificationCode: code, verificationExpiresAt: expiresAt });
-    await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, { verification_code: code, message: 'كود تفعيل حسابك: ' + code });
+    await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, { otp_code: code });
     status.className = 'auth-status ok'; status.textContent = '✓ اتبعت كود جديد على إيميلك.';
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ في إعادة الإرسال.'; }
 }
