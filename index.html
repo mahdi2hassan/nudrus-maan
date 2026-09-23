@@ -982,6 +982,7 @@
               <button class="btn-primary" style="width:auto; padding:9px 16px;" onclick="copyProfileLink()">نسخ الرابط</button>
             </div>
           </div>
+          <button class="btn-secondary" style="margin-top:12px;" onclick="exportCV()">تصدير سيرة ذاتية (CV)</button>
         </div>
 
         <div class="card-panel" style="margin-top:16px;">
@@ -1121,7 +1122,8 @@
 
       <div class="view" id="v-portfolio">
         <div class="topbar"><div><h1>ملف الإنجاز</h1><div class="sub">كل اللي حققته على المنصة في مكان واحد</div></div></div>
-        <button class="btn-primary" style="margin-bottom:18px;" onclick="window.print()">طباعة / حفظ كـ PDF</button>
+        <button class="btn-primary" style="margin-bottom:10px;" onclick="window.print()">طباعة الصفحة كاملة</button>
+        <button class="btn-secondary" style="margin-bottom:18px; margin-inline-start:8px;" onclick="exportCV()">تصدير سيرة ذاتية (CV)</button>
         <div id="portfolio-content"></div>
       </div>
 
@@ -1887,6 +1889,76 @@ function copyProfileLink(){
     toast('اتنسخ الرابط.');
   }
 }
+/* ---------- تصدير السيرة الذاتية (CV) ---------- */
+async function exportCV(){
+  if(!currentUid) return;
+  const win = window.open('', '_blank');
+  if(!win){ toast('المتصفح منع فتح نافذة جديدة — اسمح بالنوافذ المنبثقة وجرّب تاني.', {type:'err'}); return; }
+  win.document.write('<title>جاري التجهيز...</title><body style="font-family:sans-serif; padding:40px; text-align:center; color:#555;">جاري تجهيز السيرة الذاتية...</body>');
+  try{
+    const completedCourses = (typeof coursesCache !== 'undefined' ? coursesCache : []).filter(({id,data:c}) => {
+      const lessons = c.lessons || [];
+      const prog = getCourseProgress(id);
+      return lessons.length > 0 && (prog.completedLessonIds||[]).length >= lessons.length;
+    });
+    const myResearch = (typeof myResearchCache !== 'undefined' ? myResearchCache : []);
+    const myNotebooksOwn = (typeof notebooksCache !== 'undefined' ? notebooksCache : []).filter(({data:n}) => n.ownerUid === currentUid);
+    const myPostsCount = (typeof communityPostsCache !== 'undefined' ? communityPostsCache : []).filter(({data:p}) => p.authorUid === currentUid).length;
+    const agg = await ratingAggFor(currentUid);
+
+    const coursesHtml = completedCourses.length
+      ? completedCourses.map(({id,data:c}) => `<li>${escapeHtml(c.title||'')}${courseCompletionLabel(id) ? ` — اتمت في ${escapeHtml(courseCompletionLabel(id))}` : ''}</li>`).join('')
+      : '<li style="color:#888;">لا يوجد بعد</li>';
+    const researchHtml = myResearch.length
+      ? myResearch.map(({data:r}) => `<li>${escapeHtml(r.title||'')}</li>`).join('')
+      : '<li style="color:#888;">لا يوجد بعد</li>';
+    const badgesHtml = [
+      userStatus.isExpert ? '<span>⭐ معلم خبير</span>' : '',
+      userStatus.verified ? '<span>✓ حساب موثّق</span>' : '',
+      agg.count ? `<span>${agg.avg.toFixed(1)} ★ (${agg.count} تقييم مجتمعي)</span>` : ''
+    ].filter(Boolean).join('');
+    const contactLine = [pendingUser.phone, pendingUser.email].filter(Boolean).map(escapeHtml).join(' &nbsp;|&nbsp; ');
+    const eduExpLine = [
+      pendingUser.education ? escapeHtml(pendingUser.education) : '',
+      pendingUser.yearsExperience ? `${escapeHtml(String(pendingUser.yearsExperience))} سنوات خبرة` : ''
+    ].filter(Boolean).join(' — ') || 'غير مضاف';
+
+    const html = `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<title>السيرة الذاتية — ${escapeHtml(pendingUser.name||'')}</title>
+<style>
+  body{ font-family:'Segoe UI', Tahoma, Arial, sans-serif; max-width:760px; margin:40px auto; color:#1b2a41; line-height:1.7; padding:0 20px; }
+  h1{ font-size:26px; margin-bottom:2px; }
+  .role{ color:#555; font-size:15px; margin-bottom:14px; }
+  .badges span{ display:inline-block; font-size:11px; font-weight:700; background:#eef2f7; color:#1b2a41; padding:3px 10px; border-radius:10px; margin-inline-end:6px; }
+  .contact{ font-size:13px; color:#555; margin:10px 0 18px; }
+  h2{ font-size:16px; border-bottom:2px solid #1b2a41; padding-bottom:4px; margin-top:26px; }
+  ul{ margin:8px 0; padding-inline-start:20px; }
+  li{ margin-bottom:4px; }
+  @media print{ body{ margin:0 auto; } }
+</style></head>
+<body>
+  <h1>${escapeHtml(pendingUser.name||'')}</h1>
+  <div class="role">${escapeHtml(pendingUser.specialization || (pendingRole==='teacher'?'معلم':'طالب معلم'))}</div>
+  <div class="badges">${badgesHtml}</div>
+  <div class="contact">${contactLine}</div>
+  ${pendingUser.bio ? `<h2>نبذة</h2><p>${escapeHtml(pendingUser.bio)}</p>` : ''}
+  <h2>المؤهل والخبرة</h2>
+  <p>${eduExpLine}</p>
+  <h2>سجل التطور المهني (دورات مكتملة)</h2>
+  <ul>${coursesHtml}</ul>
+  <h2>الأبحاث والمنشورات</h2>
+  <ul>${researchHtml}</ul>
+  <p style="font-size:12px; color:#888; margin-top:10px;">دفاتر تحضير منشورة: ${myNotebooksOwn.length} · مشاركات مجتمع: ${myPostsCount}</p>
+  <p style="font-size:11px; color:#aaa; margin-top:30px;">اتولّدت من منصة نُدرس معًا — ${new Date().toLocaleDateString('ar-EG')}</p>
+</body></html>`;
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => { try{ win.focus(); win.print(); }catch(e){} }, 300);
+  }catch(err){
+    try{ win.document.body.innerHTML = 'تعذّر تجهيز السيرة الذاتية: ' + escapeHtml(err.message); }catch(e){}
+  }
+}
 /* ---------- مركز الخصوصية والأمان ---------- */
 async function downloadMyData(){
   if(!currentUid) return;
@@ -2143,6 +2215,11 @@ function printPracticalReport(){
 }
 
 /* ================= ملف الإنجاز ================= */
+function courseCompletionLabel(courseId){
+  const prog = getCourseProgress(courseId);
+  const d = prog.completedAt && prog.completedAt.toDate ? prog.completedAt.toDate() : null;
+  return d ? d.toLocaleDateString('ar-EG', { day:'numeric', month:'short', year:'numeric' }) : '';
+}
 function renderPortfolio(){
   const el = document.getElementById('portfolio-content'); if(!el) return;
   const myPosts = communityPostsCache.filter(({data:p}) => p.authorUid === currentUid);
@@ -2156,11 +2233,16 @@ function renderPortfolio(){
     <div class="section-title">${escapeHtml(title)} (${items.length})</div>
     <div class="content-list" style="margin-bottom:20px;">${items.length ? items.map(renderItem).join('') : '<div class="empty-state">لسه مفيش حاجة هنا.</div>'}</div>`;
   el.innerHTML = `
-    <div class="profile-head" style="margin-bottom:24px;">
+    <div class="profile-head" style="margin-bottom:10px;">
       <div class="profile-avatar-big">${pendingUser.photoURL ? `<img src="${escapeAttr(pendingUser.photoURL)}" alt="">` : `<span>${escapeHtml(initials(pendingUser.name))}</span>`}</div>
-      <div><div class="profile-name">${escapeHtml(pendingUser.name||'مستخدم')}</div><div class="profile-meta">${pendingRole==='teacher'?'معلم':'طالب معلم'}</div></div>
+      <div>
+        <div class="profile-name">${escapeHtml(pendingUser.name||'مستخدم')}${userStatus.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : ''}${userStatus.verified ? ' <span class="verified-badge" title="حساب موثّق">✓</span>' : ''}</div>
+        <div class="profile-meta">${pendingUser.specialization ? escapeHtml(pendingUser.specialization) : (pendingRole==='teacher'?'معلم':'طالب معلم')}</div>
+        ${pendingUser.bio ? `<div class="profile-meta" style="margin-top:4px;">${escapeHtml(pendingUser.bio)}</div>` : ''}
+      </div>
     </div>
-    ${section('🎓 دورات مكتملة (شهادات إتمام)', completedCourses, ({data:c}) => `<div class="content-item"><div class="ci-title">${escapeHtml(c.title||'')}<span class="course-complete-badge">مكتملة</span></div></div>`)}
+    <div class="sub" style="margin-bottom:24px;">${[pendingUser.yearsExperience ? `${escapeHtml(String(pendingUser.yearsExperience))} سنوات خبرة` : '', pendingUser.education ? escapeHtml(pendingUser.education) : ''].filter(Boolean).join(' · ') || '&nbsp;'}</div>
+    ${section('🎓 سجل التطور المهني (دورات مكتملة)', completedCourses, ({id,data:c}) => `<div class="content-item"><div class="ci-title">${escapeHtml(c.title||'')}<span class="course-complete-badge">مكتملة</span></div>${courseCompletionLabel(id) ? `<div style="font-size:11px; color:var(--ink-soft);">اتمت في ${courseCompletionLabel(id)}</div>` : ''}</div>`)}
     ${section('🔬 أبحاثي', myResearchCache, ({data:r}) => `<div class="content-item"><div class="ci-title">${escapeHtml(r.title||'')}</div>${r.link?`<a class="ci-link" href="${escapeAttr(r.link)}" target="_blank">فتح</a>`:''}</div>`)}
     ${section('📒 دفاتر التحضير', myNotebooksOwn, ({data:n}) => `<div class="content-item"><div class="ci-title">${escapeHtml(n.title||'')}</div><a class="ci-link" href="${escapeAttr(n.link)}" target="_blank">فتح</a></div>`)}
     ${section('📝 مشاركاتي في المجتمع', myPosts, ({data:p}) => `<div class="content-item"><div class="ci-title">${escapeHtml((p.content||'').slice(0,80))}</div></div>`)}
