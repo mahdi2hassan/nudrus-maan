@@ -178,6 +178,8 @@
 <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
 <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
 <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="3"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
 <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
@@ -239,6 +241,8 @@
     <button class="tab" onclick="switchTab('community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
     <button class="tab" onclick="switchTab('notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر التحضير</button>
     <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
+    <button class="tab" onclick="switchTab('reports', this)"><svg class="icon"><use href="#i-flag"></use></svg> البلاغات</button>
+    <button class="tab" onclick="switchTab('analytics', this)"><svg class="icon"><use href="#i-chart"></use></svg> الإحصائيات</button>
     <button class="tab" onclick="switchTab('support', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> دردشات الدعم</button>
     <button class="tab" onclick="switchTab('settings', this)"><svg class="icon"><use href="#i-settings"></use></svg> الإعدادات</button>
   </div>
@@ -307,6 +311,14 @@
   <div class="panel" id="panel-users">
     <div class="status" id="users-status" style="margin-bottom:10px;"></div>
     <div id="users-list"></div>
+  </div>
+
+  <div class="panel" id="panel-reports">
+    <div id="reports-list"></div>
+  </div>
+
+  <div class="panel" id="panel-analytics">
+    <div id="analytics-content"><div class="empty-state">جاري تحميل الإحصائيات...</div></div>
   </div>
 
   <div class="panel" id="panel-support">
@@ -502,6 +514,8 @@ async function checkGate(){
     loadList('actionResearchVideos','videos-list',['title','videoUrl']);
     loadCoursesAdmin();
     loadUsers();
+    loadReports();
+    loadAnalytics();
     loadCommunityMod();
     loadNotebooksMod();
     subscribeAdminConvList();
@@ -976,19 +990,95 @@ async function loadUsers(){
       const u = d.data();
       const plan = u.plan || 'free';
       const status = u.status || 'active';
+      const isExpert = !!u.isExpert;
       return `<div class="urow" id="urow-${d.id}">
         <div class="u-top">
-          <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span></div>
+          <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}</div>
           <div class="u-meta">${escapeHtml(u.email||'')} · ${escapeHtml(u.phone||'')} · ${u.role==='teacher'?'معلم':'طالب معلم'}</div></div>
         </div>
         <div class="u-controls">
           <select id="plan-${d.id}">${Object.keys(PLAN_LABELS).map(k=>`<option value="${k}" ${k===plan?'selected':''}>${PLAN_LABELS[k]}</option>`).join('')}</select>
           <select id="status-${d.id}">${Object.keys(STATUS_LABELS).map(k=>`<option value="${k}" ${k===status?'selected':''}>${STATUS_LABELS[k]}</option>`).join('')}</select>
           <button class="save-btn" onclick="saveUser('${d.id}')">${ic('check')} حفظ</button>
+          <button class="edit-btn" onclick="toggleExpert('${d.id}', ${!isExpert})">${isExpert ? '✕ شيل شارة الخبير' : '⭐ امنح شارة خبير'}</button>
         </div>
       </div>`;
     }).join('');
   }catch(err){ el.innerHTML = '<div class="urow">تعذّر تحميل المستخدمين: '+escapeHtml(err.message)+'</div>'; }
+}
+async function toggleExpert(uid, makeExpert){
+  try{
+    await db.collection('users').doc(uid).update({ isExpert: makeExpert });
+    toast(makeExpert ? 'اتمنحت شارة معلم خبير.' : 'اتشالت شارة معلم خبير.');
+    loadUsers();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= البلاغات ================= */
+async function loadReports(){
+  const el = document.getElementById('reports-list'); if(!el) return;
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('reports').where('status','==','open').orderBy('createdAt','desc').limit(100).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش بلاغات مفتوحة دلوقتي.</div></div>'; return; }
+    const rows = await Promise.all(snap.docs.map(async d => {
+      const r = d.data();
+      let postPreview = '(المنشور اتحذف بالفعل)';
+      try{
+        const postDoc = await db.collection('communityPosts').doc(r.postId).get();
+        if(postDoc.exists) postPreview = (postDoc.data().content||'').slice(0,150);
+      }catch(e){}
+      return `<div class="item" id="report-${d.id}" style="flex-direction:column; align-items:stretch;">
+        <div class="t">بلاغ من ${escapeHtml(r.reporterName||'مستخدم')}</div>
+        <div class="d">السبب: ${escapeHtml(r.reason||'(مفيش سبب مكتوب)')}</div>
+        <div class="d" style="margin-top:6px; padding:8px; background:var(--paper); border-radius:6px;">نص المنشور: ${escapeHtml(postPreview)}</div>
+        <div class="actions" style="margin-top:10px;">
+          <button class="edit-btn" onclick="dismissReport('${d.id}')">${ic('check')} تجاهل البلاغ</button>
+          <button class="del" onclick="deleteReportedPost('${d.id}','${r.postId}')">${ic('trash')} احذف المنشور</button>
+        </div>
+      </div>`;
+    }));
+    el.innerHTML = rows.join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر تحميل البلاغات: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function dismissReport(reportId){
+  try{ await db.collection('reports').doc(reportId).update({ status: 'dismissed' }); toast('اتجوهل البلاغ.'); loadReports(); }
+  catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function deleteReportedPost(reportId, postId){
+  try{
+    await db.collection('communityPosts').doc(postId).delete().catch(()=>{});
+    await db.collection('reports').doc(reportId).update({ status: 'resolved' });
+    toast('اتحذف المنشور وتم إغلاق البلاغ.');
+    loadReports();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= الإحصائيات ================= */
+async function loadAnalytics(){
+  const el = document.getElementById('analytics-content'); if(!el) return;
+  el.innerHTML = 'جاري التحميل...';
+  const counters = [
+    { label: 'المستخدمين', collection: 'users' },
+    { label: 'منشورات المجتمع', collection: 'communityPosts' },
+    { label: 'دفاتر التحضير', collection: 'prepNotebooks' },
+    { label: 'الدورات', collection: 'courses' },
+    { label: 'الدروس', collection: 'lessons' },
+    { label: 'أسئلة بنك الأسئلة', collection: 'questions' },
+    { label: 'الاختبارات', collection: 'quizzes' },
+    { label: 'محاولات الاختبارات', collection: 'quizAttempts' },
+    { label: 'أبحاث العمل', collection: 'research' },
+    { label: 'البلاغات المفتوحة', collection: 'reports', where: ['status','==','open'] },
+  ];
+  try{
+    const results = await Promise.all(counters.map(async c => {
+      let q = db.collection(c.collection);
+      if(c.where) q = q.where(c.where[0], c.where[1], c.where[2]);
+      const snap = await q.count().get();
+      return { label: c.label, count: snap.data().count };
+    }));
+    el.innerHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;">${results.map(r => `<div class="card" style="text-align:center; margin-bottom:0; padding:18px 10px;"><div style="font-size:24px; font-weight:800; color:var(--brick); margin-bottom:4px;">${r.count}</div><div style="font-size:12.5px; color:var(--ink-soft);">${escapeHtml(r.label)}</div></div>`).join('')}</div>`;
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر تحميل الإحصائيات: '+escapeHtml(err.message)+'</div></div>'; }
 }
 async function saveUser(uid){
   const plan = document.getElementById('plan-'+uid).value;
