@@ -161,6 +161,24 @@
   .group-card .g-name{font-weight:800; font-size:14px; margin-bottom:4px;}
   .group-card .g-count{font-size:11.5px; color:var(--ink-soft);}
 
+  /* الدورات */
+  .courses-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px;}
+  .course-card{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:18px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+  .course-card:hover{transform:translateY(-3px); box-shadow:0 12px 26px rgba(27,42,65,0.09);}
+  .course-card .c-title{font-weight:800; font-size:15px; margin-bottom:6px; display:flex; align-items:center; gap:6px;}
+  .course-card .c-desc{font-size:12.5px; color:var(--ink-soft); margin-bottom:12px; min-height:32px;}
+  .progress-track{height:7px; background:var(--paper-dim); border-radius:6px; overflow:hidden; margin-bottom:6px;}
+  .progress-fill{height:100%; background:var(--brick); border-radius:6px; transition:width .2s ease;}
+  .progress-fill.done{background:var(--sage);}
+  .progress-label{font-size:11px; color:var(--ink-soft);}
+  .course-complete-badge{display:inline-block; font-size:10px; font-weight:800; background:rgba(92,131,104,0.15); color:var(--sage); padding:2px 8px; border-radius:9px;}
+  .lesson-row{display:flex; align-items:center; gap:12px; background:var(--white); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px;}
+  .lesson-row.done{border-color:var(--sage); background:rgba(92,131,104,0.05);}
+  .lesson-check{width:26px; height:26px; border-radius:50%; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer; color:transparent;}
+  .lesson-check.done{background:var(--sage); border-color:var(--sage); color:#fff;}
+  .lesson-title{flex:1; font-weight:700;}
+  .back-link{background:none; color:var(--ink-soft); font-size:12.5px; margin-bottom:14px; display:inline-flex; align-items:center; gap:4px;}
+
   /* filter tabs (library / question bank) */
   .filter-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
   .filter-tab{padding:7px 16px; border-radius:20px; border:1px solid var(--line); background:var(--white); font-size:12.5px; font-weight:700; color:var(--ink-soft); transition:background .15s ease, color .15s ease, border-color .15s ease;}
@@ -465,6 +483,7 @@
 <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
 <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
 <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></symbol>
 <symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
 <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2z"/><path d="M19 15l.9 2.6L22 18.5l-2.1.9L19 22l-.9-2.6-2.1-.9 2.1-.9L19 15z"/></symbol>
 <symbol id="i-wave" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12.5V6a1.5 1.5 0 0 1 3 0v8"/><path d="M17 14v-2a1.5 1.5 0 0 1 3 0v3a6 6 0 0 1-6 6h-2a7 7 0 0 1-6-3.5L4 14.8a1.3 1.3 0 0 1 2.1-1.5L8 15"/></symbol>
@@ -622,6 +641,7 @@
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-t" onclick="showView('v-learn', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
         <button class="nav-item" id="navi-library-t" onclick="showView('v-library', this)"><svg class="icon"><use href="#i-layers"></use></svg> مكتبة الموارد</button>
+        <button class="nav-item" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-grad"></use></svg> الدورات والتعلم</button>
         <button class="nav-item" id="navi-notebooks-t" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
         <button class="nav-item" id="navi-questions-t" onclick="showView('v-questions', this)"><svg class="icon"><use href="#i-help"></use></svg> بنك الأسئلة</button>
         <button class="nav-item" id="navi-quizzes-t" onclick="showView('v-quizzes', this)"><svg class="icon"><use href="#i-edit"></use></svg> الاختبارات</button>
@@ -650,6 +670,7 @@
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-s" onclick="showView('v-learn', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
         <button class="nav-item" id="navi-library-s" onclick="showView('v-library', this)"><svg class="icon"><use href="#i-layers"></use></svg> مكتبة الموارد</button>
+        <button class="nav-item" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-grad"></use></svg> الدورات والتعلم</button>
         <button class="nav-item" id="navi-notebooks-s" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
         <button class="nav-item" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><svg class="icon"><use href="#i-monitor"></use></svg> سبورة إلكترونية</button>
@@ -1041,6 +1062,20 @@
       <div class="view" id="v-groups">
         <div class="topbar"><div><h1>مجموعات التخصص</h1><div class="sub">تصفح منشورات كل تخصص لوحده</div></div></div>
         <div class="groups-grid" id="groups-grid"></div>
+      </div>
+
+      <div class="view" id="v-courses">
+        <div class="topbar"><div><h1>الدورات والتعلم</h1><div class="sub">دورات قصيرة تطوّر بيها نفسك كمعلم — خلّص كل دروسها واحصل على شهادة إتمام</div></div></div>
+        <div class="courses-grid" id="courses-grid"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-course-detail">
+        <button class="back-link" onclick="showView('v-courses', document.querySelector('.nav-item[onclick*=v-courses]'))">← رجوع للدورات</button>
+        <div class="topbar"><div><h1 id="cd-title">—</h1><div class="sub" id="cd-desc">—</div></div></div>
+        <div class="progress-track"><div class="progress-fill" id="cd-progress-fill" style="width:0%;"></div></div>
+        <div class="progress-label" id="cd-progress-label" style="margin-bottom:18px;">0 من 0 دروس</div>
+        <div id="cd-complete-banner"></div>
+        <div id="cd-lessons-list"></div>
       </div>
 
     </div>
@@ -1462,6 +1497,7 @@ function enterApp(role){
   showView(role === 'teacher' ? 't-dash' : 's-home', document.querySelector((role === 'teacher' ? '#nav-teacher' : '#nav-student') + ' .nav-item'));
   loadLessons(); loadPracticalTips(); loadResearchVideos(); loadMyResearch(); loadCommunity(); loadNotebooks();
   loadBookmarks(); loadQuestions(); loadQuizzes(); loadFollowing();
+  loadCourses(); loadCourseProgress();
   loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce();
 }
 function renderGlobalAvatar(){
@@ -1711,6 +1747,96 @@ async function sendContactMessage(){
     document.getElementById('contact-subject').value=''; document.getElementById('contact-message').value='';
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
+/* ================= الدورات والتعلم ================= */
+async function loadCourses(){
+  try{
+    const snap = await db.collection('courses').orderBy('createdAt','desc').get();
+    coursesCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    renderCoursesGrid();
+  }catch(err){ console.warn(err); }
+}
+async function loadCourseProgress(){
+  if(!currentUid) return;
+  try{
+    const snap = await db.collection('users').doc(currentUid).collection('courseProgress').get();
+    courseProgressCache = {};
+    snap.docs.forEach(d => { courseProgressCache[d.id] = d.data(); });
+    renderCoursesGrid();
+  }catch(err){ console.warn(err); }
+}
+function getCourseProgress(courseId){
+  return courseProgressCache[courseId] || { completedLessonIds: [], completedAt: null };
+}
+function renderCoursesGrid(){
+  const el = document.getElementById('courses-grid'); if(!el) return;
+  if(!coursesCache.length){ el.innerHTML = '<div class="empty-state">لسه مفيش دورات مضافة — هتتضاف قريبًا.</div>'; return; }
+  el.innerHTML = coursesCache.map(({id,data:c}) => {
+    const lessons = c.lessons || [];
+    const prog = getCourseProgress(id);
+    const done = (prog.completedLessonIds||[]).filter(lid => lessons.some(l=>l.id===lid)).length;
+    const total = lessons.length;
+    const pct = total ? Math.round((done/total)*100) : 0;
+    const isComplete = total>0 && done>=total;
+    return `<div class="course-card" onclick="openCourse('${id}')">
+      <div class="c-title">${escapeHtml(c.title||'')}${isComplete ? '<span class="course-complete-badge">🎓 مكتملة</span>' : ''}</div>
+      <div class="c-desc">${escapeHtml(c.description||'')}</div>
+      <div class="progress-track"><div class="progress-fill ${isComplete?'done':''}" style="width:${pct}%;"></div></div>
+      <div class="progress-label">${done} من ${total} دروس</div>
+    </div>`;
+  }).join('');
+}
+function openCourse(id){
+  const course = coursesCache.find(c=>c.id===id); if(!course) return;
+  document.getElementById('cd-title').textContent = course.data.title||'';
+  document.getElementById('cd-desc').textContent = course.data.description||'';
+  showView('v-course-detail', document.querySelector('.nav-item[onclick*=v-courses]'));
+  renderCourseDetail(id);
+}
+function renderCourseDetail(id){
+  const course = coursesCache.find(c=>c.id===id); if(!course) return;
+  const lessons = course.data.lessons || [];
+  const prog = getCourseProgress(id);
+  const completed = (prog.completedLessonIds||[]).filter(lid => lessons.some(l=>l.id===lid));
+  const done = completed.length;
+  const total = lessons.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  const isComplete = total>0 && done>=total;
+  const fillEl = document.getElementById('cd-progress-fill');
+  fillEl.className = 'progress-fill' + (isComplete?' done':'');
+  fillEl.style.width = pct+'%';
+  document.getElementById('cd-progress-label').textContent = `${done} من ${total} دروس`;
+  document.getElementById('cd-complete-banner').innerHTML = isComplete ? '<div class="course-complete-badge" style="font-size:13px; padding:8px 16px; margin-bottom:16px; display:inline-block;">🎓 مبروك، خلّصت الدورة دي بالكامل!</div>' : '';
+  const listEl = document.getElementById('cd-lessons-list');
+  listEl.dataset.courseId = id;
+  if(!lessons.length){ listEl.innerHTML = '<div class="empty-state">لسه مفيش دروس في الدورة دي.</div>'; return; }
+  listEl.innerHTML = lessons.map(l => {
+    const isDone = completed.includes(l.id);
+    return `<div class="lesson-row ${isDone?'done':''}">
+      <div class="lesson-check ${isDone?'done':''}" onclick="toggleLessonComplete('${id}','${l.id}')">${isDone?'✓':''}</div>
+      <div class="lesson-title">${escapeHtml(l.title||'')}</div>
+      ${l.videoUrl ? `<a class="ci-link" href="${escapeAttr(l.videoUrl)}" target="_blank">مشاهدة</a>` : ''}
+    </div>`;
+  }).join('');
+}
+async function toggleLessonComplete(courseId, lessonId){
+  const course = coursesCache.find(c=>c.id===courseId); if(!course) return;
+  const totalLessons = (course.data.lessons||[]).length;
+  const prog = getCourseProgress(courseId);
+  let completed = prog.completedLessonIds ? [...prog.completedLessonIds] : [];
+  if(completed.includes(lessonId)) completed = completed.filter(x=>x!==lessonId);
+  else completed.push(lessonId);
+  const nowComplete = totalLessons>0 && completed.length>=totalLessons;
+  const wasComplete = !!prog.completedAt;
+  const payload = { completedLessonIds: completed, completedAt: nowComplete ? (prog.completedAt || firebase.firestore.FieldValue.serverTimestamp()) : null };
+  try{
+    await db.collection('users').doc(currentUid).collection('courseProgress').doc(courseId).set(payload, { merge: true });
+    courseProgressCache[courseId] = { completedLessonIds: completed, completedAt: payload.completedAt };
+    renderCourseDetail(courseId);
+    renderCoursesGrid();
+    if(nowComplete && !wasComplete) toast('🎓 مبروك، خلّصت الدورة!');
+  }catch(err){ toast('تعذّر الحفظ الآن.'); console.warn(err); }
+}
+
 /* ================= المتابعة ================= */
 async function loadFollowing(){
   if(!currentUid) return;
@@ -2472,6 +2598,8 @@ let bookmarksCache = [];
 let questionsCache = [];
 let quizzesCache = [];
 let followingCache = [];
+let coursesCache = [];
+let courseProgressCache = {};
 let currentLibraryFilter = 'all';
 let currentQuestionsDifficulty = 'all';
 
