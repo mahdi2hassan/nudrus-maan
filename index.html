@@ -149,6 +149,11 @@
 
   /* Q&A + follow + expert + groups */
   .expert-badge{display:inline-block; font-size:10.5px; font-weight:800; background:rgba(199,154,43,0.15); color:#8a6a1c; padding:2px 8px; border-radius:9px; margin-inline-start:4px;}
+  .verified-badge{display:inline-flex; align-items:center; justify-content:center; width:17px; height:17px; border-radius:50%; background:var(--sage); color:#fff; font-size:11px; font-weight:800; margin-inline-start:4px; vertical-align:middle;}
+  .id-card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:20px; max-width:560px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+  .id-card img{width:120px; height:120px; border-radius:6px; border:1px solid var(--line); background:#fff; padding:6px;}
+  .id-link-row{display:flex; gap:8px; align-items:center; flex:1; min-width:220px;}
+  .id-link-row input{flex:1; padding:9px 12px; border:1px solid var(--line); border-radius:5px; font-size:12.5px; font-family:inherit; background:var(--paper); color:var(--ink-soft); direction:ltr; text-align:left;}
   .question-badge{display:inline-block; font-size:10.5px; font-weight:800; background:rgba(184,83,46,0.12); color:var(--brick); padding:2px 8px; border-radius:9px; margin-inline-start:6px;}
   .follow-btn{background:none; border:1px solid var(--line); border-radius:16px; padding:3px 12px; font-size:11.5px; font-weight:700; color:var(--ink-soft); margin-inline-start:8px;}
   .follow-btn.following{color:var(--sage); border-color:var(--sage);}
@@ -937,6 +942,7 @@
           <div>
             <div class="profile-name" id="profile-name-display">—</div>
             <div class="profile-meta" id="profile-meta-display">—</div>
+            <div class="profile-meta" id="profile-rating-display" style="margin-top:4px;">—</div>
           </div>
           <div class="profile-stats" id="profile-stats"></div>
         </div>
@@ -948,6 +954,49 @@
           <button class="btn-primary" onclick="saveProfileEdits()">حفظ التعديلات</button>
           <div class="auth-status" id="profile-edit-status"></div>
         </div>
+
+        <div class="card-panel" style="margin-top:16px;">
+          <h3 style="margin-bottom:4px;">الملف الشخصي الاحترافي</h3>
+          <div class="sub" style="margin-bottom:14px;">التخصص والخبرة والنبذة اللي بتظهر لباقي المعلمين في المنصة</div>
+          <div class="field"><label>التخصص</label><input type="text" id="profile-edit-specialization" placeholder="مثال: رياضيات — المرحلة الثانوية"></div>
+          <div class="field-row" style="display:flex; gap:14px;">
+            <div class="field"><label>سنوات الخبرة</label><input type="number" min="0" id="profile-edit-experience" placeholder="مثال: 5"></div>
+            <div class="field"><label>المؤهل الدراسي</label><input type="text" id="profile-edit-education" placeholder="مثال: بكالوريوس علوم — تربية رياضيات"></div>
+          </div>
+          <div class="field"><label>نبذة عن نفسك</label><textarea rows="3" id="profile-edit-bio" placeholder="اكتب نبذة قصيرة عن خبرتك وأسلوبك في التدريس..."></textarea></div>
+          <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); margin-bottom:14px; cursor:pointer;">
+            <input type="checkbox" id="profile-edit-public" style="width:auto;" checked>
+            خلّي ملفي الاحترافي ظاهر لباقي المعلمين والطلاب (عام) — لو مطفي هيبقى خاص بيك بس
+          </label>
+          <button class="btn-primary" onclick="saveProfileEdits()">حفظ الملف الاحترافي</button>
+          <div class="auth-status" id="profile-edit-status"></div>
+        </div>
+
+        <div class="card-panel" style="margin-top:16px; max-width:none;">
+          <h3 style="margin-bottom:4px;">هوية نُدرس معًا</h3>
+          <div class="sub" style="margin-bottom:14px;">رابط وكود QR يمثّلان هويتك المهنية الرقمية — شاركهم مع زملائك أو حطهم في توقيعك</div>
+          <div class="id-card">
+            <div id="profile-qr-box"></div>
+            <div class="id-link-row">
+              <input type="text" id="profile-id-link" readonly>
+              <button class="btn-primary" style="width:auto; padding:9px 16px;" onclick="copyProfileLink()">نسخ الرابط</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-panel" style="margin-top:16px;">
+          <h3 style="margin-bottom:4px;">مركز الخصوصية والأمان</h3>
+          <div class="sub" style="margin-bottom:14px;">تحكّم في بياناتك — نزّلها كملف، أو اطلب حذف حسابك</div>
+          <button class="btn-secondary" style="margin-bottom:10px;" onclick="downloadMyData()">تنزيل نسخة من بياناتي</button><br>
+          <button class="btn-secondary" style="color:var(--brick); border-color:var(--brick);" onclick="requestAccountDeletion()">طلب حذف الحساب</button>
+          <div class="auth-status" id="privacy-center-status"></div>
+        </div>
+      </div>
+
+      <!-- ========== الملف الاحترافي العام (عرض ملف معلّم تاني) ========== -->
+      <div class="view" id="v-public-profile">
+        <div class="topbar"><div><h1>الملف الشخصي الاحترافي</h1><div class="sub" id="public-profile-visibility-note">&nbsp;</div></div></div>
+        <div id="public-profile-body"><div class="empty-state">جاري تحميل الملف...</div></div>
       </div>
 
       <div class="view" id="v-upgrade">
@@ -992,8 +1041,8 @@
             <div class="chat-thread-active" id="chat-thread-active" style="display:none;">
               <div class="chat-thread-head">
                 <button class="chat-back-btn" onclick="closeChatThread()"><svg class="icon"><use href="#i-chevron" style="transform:scaleX(-1)"></use></svg></button>
-                <div class="mini-avatar" id="chat-thread-avatar"></div>
-                <div class="chat-thread-name" id="chat-thread-name"></div>
+                <div class="mini-avatar" id="chat-thread-avatar" style="cursor:pointer;" onclick="openPublicProfile(activeOtherUid)"></div>
+                <div class="chat-thread-name" id="chat-thread-name" style="cursor:pointer;" onclick="openPublicProfile(activeOtherUid)"></div>
               </div>
               <div class="rating-row" id="chat-rating-row">
                 <span class="rating-avg" id="chat-rating-avg"></span>
@@ -1211,6 +1260,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
 const firebaseConfig = {
@@ -1249,7 +1299,7 @@ let pendingUser = { name:'', email:'', phone:'' };
 let currentUid = null;
 let plansMode = 'signup'; // 'signup' | 'upgrade'
 let selectedPlanKey = null;
-let userStatus = { plan:'free', status:'active' };
+let userStatus = { plan:'free', status:'active', isExpert:false, verified:false };
 
 function renderPlansGrid(){
   const grid = document.getElementById('plans-grid');
@@ -1564,9 +1614,16 @@ async function loadUserStatus(){
   try{
     const doc = await db.collection('users').doc(currentUid).get();
     const d = doc.data();
-    userStatus = { plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, isExpert: !!d.isExpert };
+    userStatus = { plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, isExpert: !!d.isExpert, verified: !!d.verified };
+    pendingUser.photoURL = d.photoURL || pendingUser.photoURL || '';
+    pendingUser.specialization = d.specialization || '';
+    pendingUser.bio = d.bio || '';
+    pendingUser.yearsExperience = (d.yearsExperience === 0 || d.yearsExperience) ? d.yearsExperience : '';
+    pendingUser.education = d.education || '';
+    pendingUser.profilePublic = d.profilePublic !== false;
     renderStatusUI();
     renderProfileView();
+    renderGlobalAvatar();
   }catch(err){ console.warn(err); }
 }
 function renderStatusUI(){
@@ -1627,6 +1684,14 @@ function enterApp(role){
   loadMyQuizAttempts();
   loadTasks();
   loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce();
+  handleSharedProfileLink();
+}
+// لو المستخدم داخل عن طريق رابط "هوية نُدرس معًا" (#profile=uid) بتاع حد تاني، افتح ملفه الاحترافي على طول
+function handleSharedProfileLink(){
+  const m = location.hash.match(/^#profile=(.+)$/);
+  if(m && m[1] && m[1] !== currentUid){
+    openPublicProfile(decodeURIComponent(m[1]));
+  }
 }
 function renderGlobalAvatar(){
   const el = document.getElementById('global-avatar');
@@ -1733,7 +1798,7 @@ function renderProfileView(){
   const nameEl = document.getElementById('profile-name-display');
   const metaEl = document.getElementById('profile-meta-display');
   if(!nameEl) return;
-  nameEl.innerHTML = escapeHtml(pendingUser.name || 'مستخدم') + (userStatus.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : '');
+  nameEl.innerHTML = escapeHtml(pendingUser.name || 'مستخدم') + (userStatus.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : '') + (userStatus.verified ? ' <span class="verified-badge" title="حساب موثّق">✓</span>' : '');
   const roleLabel = pendingRole === 'teacher' ? 'معلم' : 'طالب معلم';
   const plan = PLANS[userStatus.plan] || PLANS.free;
   metaEl.innerHTML = `${escapeHtml(roleLabel)} — ${escapeHtml(pendingUser.email||'')}${pendingUser.phone ? ' — '+escapeHtml(pendingUser.phone) : ''}<br>الخطة الحالية: ${escapeHtml(plan.name)}`;
@@ -1749,6 +1814,25 @@ function renderProfileView(){
   const phoneInput = document.getElementById('profile-edit-phone');
   if(nameInput) nameInput.value = pendingUser.name || '';
   if(phoneInput) phoneInput.value = pendingUser.phone || '';
+
+  const specInput = document.getElementById('profile-edit-specialization');
+  const expInput = document.getElementById('profile-edit-experience');
+  const eduInput = document.getElementById('profile-edit-education');
+  const bioInput = document.getElementById('profile-edit-bio');
+  const publicInput = document.getElementById('profile-edit-public');
+  if(specInput) specInput.value = pendingUser.specialization || '';
+  if(expInput) expInput.value = pendingUser.yearsExperience || '';
+  if(eduInput) eduInput.value = pendingUser.education || '';
+  if(bioInput) bioInput.value = pendingUser.bio || '';
+  if(publicInput) publicInput.checked = pendingUser.profilePublic !== false;
+
+  const ratingEl = document.getElementById('profile-rating-display');
+  if(ratingEl && currentUid){
+    ratingEl.textContent = 'جاري حساب تقييم المجتمع...';
+    ratingAggFor(currentUid).then(agg => {
+      ratingEl.innerHTML = agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} من 5 (${agg.count} تقييم)` : 'لسه مفيش تقييمات من المجتمع';
+    });
+  }
 
   const myPosts = communityPostsCache.filter(({data:p}) => p.authorUid === currentUid).length;
   const myNotebooks = notebooksCache.filter(({data:n}) => n.ownerUid === currentUid).length;
@@ -1771,20 +1855,121 @@ function renderProfileView(){
   if(pendingRole === 'student') stats.push({ num: myResearchCache.length, lbl: 'أبحاثي' });
   const statsEl = document.getElementById('profile-stats');
   if(statsEl) statsEl.innerHTML = stats.map(s => `<div class="profile-stat"><div class="num">${s.num}</div><div class="lbl">${escapeHtml(s.lbl)}</div></div>`).join('');
+
+  renderProfileId();
+}
+/* ---------- هوية نُدرس معًا (رابط الملف العام + QR) ---------- */
+function profileLinkFor(uid){
+  return location.origin + location.pathname + '#profile=' + uid;
+}
+function renderProfileId(){
+  if(!currentUid) return;
+  const linkInput = document.getElementById('profile-id-link');
+  const qrBox = document.getElementById('profile-qr-box');
+  if(!linkInput || !qrBox) return;
+  const link = profileLinkFor(currentUid);
+  linkInput.value = link;
+  if(qrBox.dataset.uid === currentUid) return; // القيمة متولّدة قبل كده، مفيش داعي نعيد التوليد
+  qrBox.innerHTML = '';
+  qrBox.dataset.uid = currentUid;
+  if(window.QRCode){
+    new QRCode(qrBox, { text: link, width:120, height:120, colorDark:'#1b2a41', colorLight:'#ffffff' });
+  }
+}
+function copyProfileLink(){
+  const linkInput = document.getElementById('profile-id-link');
+  if(!linkInput) return;
+  linkInput.select();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(linkInput.value).then(() => toast('اتنسخ الرابط.')).catch(() => toast('تعذّر النسخ التلقائي — انسخه يدويًا.'));
+  }else{
+    document.execCommand('copy');
+    toast('اتنسخ الرابط.');
+  }
+}
+/* ---------- مركز الخصوصية والأمان ---------- */
+async function downloadMyData(){
+  if(!currentUid) return;
+  const statusEl = document.getElementById('privacy-center-status');
+  if(statusEl){ statusEl.className='auth-status pending'; statusEl.textContent='جاري تجهيز ملف بياناتك...'; }
+  try{
+    const userDoc = await db.collection('users').doc(currentUid).get();
+    const d = userDoc.exists ? userDoc.data() : {};
+    const exportData = {
+      name: d.name, email: d.email, phone: d.phone, role: d.role,
+      specialization: d.specialization, bio: d.bio, education: d.education, yearsExperience: d.yearsExperience,
+      plan: d.plan, status: d.status, isExpert: !!d.isExpert, verified: !!d.verified,
+      profilePublic: d.profilePublic !== false,
+      exportedAt: new Date().toISOString(),
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'بياناتي-نُدرس-معًا.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    if(statusEl){ statusEl.className='auth-status ok'; statusEl.textContent='✓ اتنزّل ملف بياناتك.'; }
+  }catch(err){ if(statusEl){ statusEl.className='auth-status err'; statusEl.textContent='حصل خطأ: '+err.message; } }
+}
+async function requestAccountDeletion(){
+  if(!currentUid) return;
+  if(!confirm('هتبعت طلب حذف حساب لفريق الدعم، وهيتراجع ويتنفذ يدويًا خلال أيام قليلة. تأكيد؟')) return;
+  const statusEl = document.getElementById('privacy-center-status');
+  try{
+    await db.collection('supportMessages').add({
+      subject: 'طلب حذف حساب',
+      message: 'المستخدم طلب حذف حسابه نهائيًا من المنصة.',
+      name: pendingUser.name, email: pendingUser.email, phone: pendingUser.phone,
+      role: pendingRole, ownerUid: currentUid, status:'open',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    if(statusEl){ statusEl.className='auth-status ok'; statusEl.textContent='✓ اتبعت طلبك لفريق الدعم، هيتواصلوا معاك.'; }
+  }catch(err){ if(statusEl){ statusEl.className='auth-status err'; statusEl.textContent='حصل خطأ: '+err.message; } }
 }
 async function saveProfileEdits(){
   const name = document.getElementById('profile-edit-name').value.trim();
   const phone = document.getElementById('profile-edit-phone').value.trim();
+  const specialization = (document.getElementById('profile-edit-specialization').value || '').trim();
+  const yearsExperienceRaw = (document.getElementById('profile-edit-experience').value || '').trim();
+  const education = (document.getElementById('profile-edit-education').value || '').trim();
+  const bio = (document.getElementById('profile-edit-bio').value || '').trim();
+  const profilePublic = document.getElementById('profile-edit-public').checked;
   const status = document.getElementById('profile-edit-status');
   if(!name){ status.className='auth-status err'; status.textContent='اكتب الاسم.'; return; }
+  const yearsExperience = yearsExperienceRaw === '' ? null : Math.max(0, parseInt(yearsExperienceRaw, 10) || 0);
   status.className='auth-status pending'; status.textContent='جاري الحفظ...';
   try{
-    await db.collection('users').doc(currentUid).update({ name, phone });
+    await db.collection('users').doc(currentUid).update({
+      name, phone, specialization, bio, education, yearsExperience, profilePublic
+    });
     pendingUser.name = name; pendingUser.phone = phone;
+    pendingUser.specialization = specialization; pendingUser.bio = bio;
+    pendingUser.education = education; pendingUser.yearsExperience = yearsExperience === null ? '' : yearsExperience;
+    pendingUser.profilePublic = profilePublic;
+    await syncPublicProfile();
     status.className='auth-status ok'; status.textContent='✓ تم الحفظ.';
     renderProfileView();
     renderGlobalAvatar();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+// بيحدّث نسخة الملف العامة (publicProfiles) من بيانات المستخدم الحالية — تُقرأ من باقي المعلمين والطلاب
+async function syncPublicProfile(){
+  if(!currentUid) return;
+  try{
+    await db.collection('publicProfiles').doc(currentUid).set({
+      name: pendingUser.name || '',
+      role: pendingRole || 'teacher',
+      photoURL: pendingUser.photoURL || '',
+      specialization: pendingUser.specialization || '',
+      bio: pendingUser.bio || '',
+      yearsExperience: (pendingUser.yearsExperience === '' || pendingUser.yearsExperience == null) ? null : Number(pendingUser.yearsExperience),
+      education: pendingUser.education || '',
+      isExpert: !!(userStatus && userStatus.isExpert),
+      verified: !!(userStatus && userStatus.verified),
+      profilePublic: pendingUser.profilePublic !== false,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  }catch(err){ console.warn('تعذّرت مزامنة الملف العام:', err); }
 }
 async function switchRole(){
   if(!currentUid){ document.getElementById('screen-app').style.display = 'none'; document.getElementById('screen-role').style.display = 'flex'; return; }
@@ -2833,15 +3018,24 @@ function starsHtml(avg, interactive, uid){
   }
   return html;
 }
+// بيحسب متوسط وعدد تقييمات مستخدم من كولكشن ratings مباشرة (بدل تخزين مجموع على مستند المستخدم، لأن باقي المستخدمين مايقدروش يعدّلوا مستند بعض)
+async function ratingAggFor(uid){
+  try{
+    const snap = await db.collection('ratings').where('ratedUid', '==', uid).limit(500).get();
+    let sum = 0, count = 0;
+    snap.forEach(d => { const r = d.data(); if(typeof r.stars === 'number'){ sum += r.stars; count++; } });
+    return { sum, count, avg: count ? sum / count : 0 };
+  }catch(err){ console.warn(err); return { sum:0, count:0, avg:0 }; }
+}
 async function loadRatingForThread(otherUid){
   if(otherUid === SUPPORT_UID){ document.getElementById('chat-rating-row').style.display = 'none'; return; }
   document.getElementById('chat-rating-row').style.display = 'flex';
   try{
-    const doc = await db.collection('users').doc(otherUid).get();
-    const u = doc.data() || {};
+    const pDoc = await db.collection('publicProfiles').doc(otherUid).get();
+    const u = pDoc.exists ? pDoc.data() : {};
     if(u.photoURL){ const av = document.getElementById('chat-thread-avatar'); if(av) av.innerHTML = `<img src="${escapeAttr(u.photoURL)}" alt="">`; }
-    const avg = u.ratingCount ? (u.ratingSum / u.ratingCount) : 0;
-    document.getElementById('chat-rating-avg').innerHTML = u.ratingCount ? `${ic('star')} ${avg.toFixed(1)} (${u.ratingCount})` : 'لسه مفيش تقييمات';
+    const agg = await ratingAggFor(otherUid);
+    document.getElementById('chat-rating-avg').innerHTML = agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} (${agg.count})` : 'لسه مفيش تقييمات';
     let myStars = 0;
     try{ const rDoc = await db.collection('ratings').doc(otherUid+'_'+currentUid).get(); if(rDoc.exists) myStars = rDoc.data().stars; }catch(e){}
     document.getElementById('chat-rate-stars').innerHTML = starsHtml(myStars, true, otherUid);
@@ -2851,19 +3045,54 @@ async function rateUser(ratedUid, stars){
   if(!currentUid || ratedUid === currentUid) return;
   const ratingId = ratedUid + '_' + currentUid;
   try{
-    const ratingRef = db.collection('ratings').doc(ratingId);
-    const existing = await ratingRef.get();
-    const prevStars = existing.exists ? existing.data().stars : 0;
-    await ratingRef.set({ ratedUid, raterUid: currentUid, raterName: pendingUser.name || 'مستخدم', stars, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    const userRef = db.collection('users').doc(ratedUid);
-    if(existing.exists){
-      await userRef.update({ ratingSum: firebase.firestore.FieldValue.increment(stars - prevStars) });
-    }else{
-      await userRef.update({ ratingSum: firebase.firestore.FieldValue.increment(stars), ratingCount: firebase.firestore.FieldValue.increment(1) });
-    }
+    await db.collection('ratings').doc(ratingId).set({
+      ratedUid, raterUid: currentUid, raterName: pendingUser.name || 'مستخدم', stars,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
     toast('شكرًا على تقييمك.');
     loadRatingForThread(ratedUid);
   }catch(err){ toast('تعذّر حفظ التقييم: '+err.message, {type:'err'}); }
+}
+
+/* ================= الملف الاحترافي العام (عرض ملف معلّم/طالب معلم تاني) ================= */
+async function openPublicProfile(uid){
+  if(!uid || !currentUid) return;
+  showView('v-public-profile');
+  const bodyEl = document.getElementById('public-profile-body');
+  const noteEl = document.getElementById('public-profile-visibility-note');
+  bodyEl.innerHTML = '<div class="empty-state">جاري تحميل الملف...</div>';
+  noteEl.textContent = '\u00a0';
+  try{
+    const doc = await db.collection('publicProfiles').doc(uid).get();
+    if(!doc.exists){
+      bodyEl.innerHTML = '<div class="empty-state">المستخدم ده لسه مكملش ملفه الاحترافي.</div>';
+      return;
+    }
+    const p = doc.data();
+    if(p.profilePublic === false && uid !== currentUid){
+      bodyEl.innerHTML = '<div class="empty-state">المستخدم ده خلّى ملفه الاحترافي خاص.</div>';
+      return;
+    }
+    const agg = await ratingAggFor(uid);
+    noteEl.textContent = p.role === 'teacher' ? 'معلم' : 'طالب معلم';
+    bodyEl.innerHTML = `
+      <div class="profile-head">
+        <div class="profile-avatar-big">${p.photoURL ? `<img src="${escapeAttr(p.photoURL)}" alt="">` : `<span>${escapeHtml(initials(p.name))}</span>`}</div>
+        <div>
+          <div class="profile-name">${escapeHtml(p.name||'مستخدم')}${p.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : ''}${p.verified ? ' <span class="verified-badge" title="حساب موثّق">✓</span>' : ''}</div>
+          <div class="profile-meta">${escapeHtml(p.specialization || 'مفيش تخصص مضاف')}</div>
+          <div class="profile-meta" style="margin-top:4px;">${agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} من 5 (${agg.count} تقييم)` : 'لسه مفيش تقييمات'}</div>
+        </div>
+      </div>
+      <div class="card-panel" style="margin-top:16px;">
+        ${p.bio ? `<div class="field"><label>نبذة</label><div>${escapeHtml(p.bio)}</div></div>` : ''}
+        <div class="field-row" style="display:flex; gap:24px; flex-wrap:wrap;">
+          ${p.yearsExperience != null ? `<div class="field"><label>سنوات الخبرة</label><div>${escapeHtml(String(p.yearsExperience))}</div></div>` : ''}
+          ${p.education ? `<div class="field"><label>المؤهل الدراسي</label><div>${escapeHtml(p.education)}</div></div>` : ''}
+        </div>
+        ${uid !== currentUid ? `<button class="btn-primary" onclick="openChatWith('${escapeAttr(uid)}','${escapeAttr(p.name||'مستخدم')}')">${ic('chat-circle')} ابعتله رسالة</button>` : ''}
+      </div>`;
+  }catch(err){ bodyEl.innerHTML = '<div class="empty-state">تعذّر تحميل الملف: '+escapeHtml(err.message)+'</div>'; }
 }
 
 /* ================= صورة البروفايل ================= */
@@ -2879,6 +3108,7 @@ async function onProfilePhotoSelected(evt){
     const url = await task.ref.getDownloadURL();
     await db.collection('users').doc(currentUid).set({ photoURL: url }, { merge: true });
     pendingUser.photoURL = url;
+    await syncPublicProfile();
     renderGlobalAvatar();
     renderProfileView();
     toast('تم تحديث صورة البروفايل.');
@@ -3076,7 +3306,7 @@ async function createPost(){
       progress.textContent = '';
     }
     await db.collection('communityPosts').add({
-      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', authorIsExpert: !!userStatus.isExpert, tag, content,
+      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', authorIsExpert: !!userStatus.isExpert, authorVerified: !!userStatus.verified, tag, content,
       driveLink: driveLink || null, imageUrl: imageUrl || null,
       isQuestion, acceptedCommentId: null,
       likesCount: 0, commentsCount: 0,
@@ -3115,7 +3345,7 @@ function renderCommunityPost(id, p){
   const isMine = p.authorUid === currentUid;
   return `
       <div class="post" id="post-${id}">
-        <div class="post-head"><div class="mini-avatar">${escapeHtml(initials(p.authorName))}</div><div class="who">${escapeHtml(p.authorName||'مستخدم')}${p.authorIsExpert ? '<span class="expert-badge">⭐ خبير</span>' : ''}</div>
+        <div class="post-head"><div class="mini-avatar" style="cursor:pointer;" onclick="openPublicProfile('${escapeAttr(p.authorUid)}')">${escapeHtml(initials(p.authorName))}</div><div class="who" style="cursor:pointer;" onclick="openPublicProfile('${escapeAttr(p.authorUid)}')">${escapeHtml(p.authorName||'مستخدم')}${p.authorIsExpert ? '<span class="expert-badge">⭐ خبير</span>' : ''}${p.authorVerified ? '<span class="verified-badge" title="حساب موثّق">✓</span>' : ''}</div>
           ${!isMine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(p.authorUid)}','${escapeAttr(p.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>
           <button class="follow-btn ${isFollowing(p.authorUid)?'following':''}" onclick="toggleFollow('${escapeAttr(p.authorUid)}','${escapeAttr(p.authorName||'مستخدم')}')">${isFollowing(p.authorUid) ? '✓ بتتابعه' : '+ متابعة'}</button>` : ''}
           <span class="tag">${escapeHtml(p.tag||'عام')}</span>${p.isQuestion ? '<span class="question-badge">❓ سؤال</span>' : ''}</div>

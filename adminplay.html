@@ -991,9 +991,10 @@ async function loadUsers(){
       const plan = u.plan || 'free';
       const status = u.status || 'active';
       const isExpert = !!u.isExpert;
+      const isVerified = !!u.verified;
       return `<div class="urow" id="urow-${d.id}">
         <div class="u-top">
-          <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}</div>
+          <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}${isVerified?' <span class="badge active">✓ موثّق</span>':''}</div>
           <div class="u-meta">${escapeHtml(u.email||'')} · ${escapeHtml(u.phone||'')} · ${u.role==='teacher'?'معلم':'طالب معلم'}</div></div>
         </div>
         <div class="u-controls">
@@ -1001,6 +1002,7 @@ async function loadUsers(){
           <select id="status-${d.id}">${Object.keys(STATUS_LABELS).map(k=>`<option value="${k}" ${k===status?'selected':''}>${STATUS_LABELS[k]}</option>`).join('')}</select>
           <button class="save-btn" onclick="saveUser('${d.id}')">${ic('check')} حفظ</button>
           <button class="edit-btn" onclick="toggleExpert('${d.id}', ${!isExpert})">${isExpert ? '✕ شيل شارة الخبير' : '⭐ امنح شارة خبير'}</button>
+          <button class="edit-btn" onclick="toggleVerified('${d.id}', ${!isVerified})">${isVerified ? '✕ شيل التوثيق' : '✓ وثّق الحساب'}</button>
         </div>
       </div>`;
     }).join('');
@@ -1009,7 +1011,17 @@ async function loadUsers(){
 async function toggleExpert(uid, makeExpert){
   try{
     await db.collection('users').doc(uid).update({ isExpert: makeExpert });
+    // مزامنة الشارة مع الملف الاحترافي العام لو المستخدم عمله قبل كده
+    try{ await db.collection('publicProfiles').doc(uid).set({ isExpert: makeExpert }, { merge: true }); }catch(e){ console.warn('publicProfile sync failed', e); }
     toast(makeExpert ? 'اتمنحت شارة معلم خبير.' : 'اتشالت شارة معلم خبير.');
+    loadUsers();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function toggleVerified(uid, makeVerified){
+  try{
+    await db.collection('users').doc(uid).update({ verified: makeVerified });
+    try{ await db.collection('publicProfiles').doc(uid).set({ verified: makeVerified }, { merge: true }); }catch(e){ console.warn('publicProfile sync failed', e); }
+    toast(makeVerified ? 'اتوثّق الحساب.' : 'اتشال التوثيق.');
     loadUsers();
   }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
 }
