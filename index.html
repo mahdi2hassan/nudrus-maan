@@ -660,9 +660,10 @@
         <button class="nav-item" id="navi-library-t" onclick="showView('v-library', this)"><svg class="icon"><use href="#i-layers"></use></svg> مكتبة الموارد</button>
         <button class="nav-item" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-grad"></use></svg> الدورات والتعلم</button>
         <button class="nav-item" id="navi-notebooks-t" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
+        <button class="nav-item" id="navi-lessonplanner-t" onclick="showView('v-lesson-planner', this)"><svg class="icon"><use href="#i-edit"></use></svg> مولد تحضير الدروس</button>
         <button class="nav-item" onclick="showView('v-assistant', this)"><svg class="icon"><use href="#i-help"></use></svg> مساعد المعلم</button>
         <button class="nav-item" id="navi-questions-t" onclick="showView('v-questions', this)"><svg class="icon"><use href="#i-help"></use></svg> بنك الأسئلة</button>
-        <button class="nav-item" id="navi-quizzes-t" onclick="showView('v-quizzes', this)"><svg class="icon"><use href="#i-edit"></use></svg> الاختبارات</button>
+        <button class="nav-item" id="navi-quizzes-t" onclick="showView('v-quizzes', this)"><svg class="icon"><use href="#i-edit"></use></svg> مصنع الاختبارات وأوراق العمل</button>
         <button class="nav-item" id="navi-exam-t" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><svg class="icon"><use href="#i-monitor"></use></svg> سبورة إلكترونية</button>
         <button class="nav-item" onclick="showView('v-saved', this)"><svg class="icon"><use href="#i-bookmark"></use></svg> المحفوظات</button>
@@ -690,6 +691,7 @@
         <button class="nav-item" id="navi-library-s" onclick="showView('v-library', this)"><svg class="icon"><use href="#i-layers"></use></svg> مكتبة الموارد</button>
         <button class="nav-item" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-grad"></use></svg> الدورات والتعلم</button>
         <button class="nav-item" id="navi-notebooks-s" onclick="showView('v-notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر تحضير</button>
+        <button class="nav-item" id="navi-lessonplanner-s" onclick="showView('v-lesson-planner', this)"><svg class="icon"><use href="#i-edit"></use></svg> مولد تحضير الدروس</button>
         <button class="nav-item" onclick="showView('v-take-quiz-list', this)"><svg class="icon"><use href="#i-edit"></use></svg> اختبارات متاحة</button>
         <button class="nav-item" onclick="showView('v-assistant', this)"><svg class="icon"><use href="#i-help"></use></svg> مساعد المعلم</button>
         <button class="nav-item" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
@@ -826,6 +828,36 @@
         <div id="notebooks-list" class="content-list"><div class="empty-state">جاري تحميل الدفاتر...</div></div>
       </div>
 
+      <!-- ========== مولد تحضير الدروس ========== -->
+      <div class="view" id="v-lesson-planner">
+        <div class="topbar"><div><h1>مولد تحضير الدروس</h1><div class="sub">هيكل خطة درس كامل (أهداف، تمهيد، شرح، تقويم) — عدّله واحفظه</div></div></div>
+
+        <div class="card-panel" style="margin-bottom:20px;">
+          <div class="qb-form">
+            <div class="field field-full"><label>عنوان الدرس</label><input type="text" id="lp-title" placeholder="مثال: جمع الكسور المتشابهة"></div>
+            <div class="field"><label>المادة</label>
+              <select id="lp-subject"><option>رياضيات</option><option>عربي</option><option>إنجليزي</option><option>علوم</option><option>دراسات</option><option>لغات</option><option>عام</option></select>
+            </div>
+            <div class="field"><label>الصف</label><input type="text" id="lp-grade" placeholder="مثال: الصف الرابع الابتدائي"></div>
+            <div class="field"><label>مدة الحصة (دقيقة)</label><input type="number" id="lp-duration" value="45" min="10" max="180"></div>
+          </div>
+          <button class="btn-secondary" style="margin-bottom:14px;" onclick="scaffoldLessonPlan()">توليد هيكل الخطة تلقائيًا</button>
+          <div class="hint" style="margin-bottom:16px;">هيملّى الأقسام تحت بأسئلة إرشادية جاهزة تعدّل عليها — مش نص جاهز للتسليم زي ما هو.</div>
+
+          <div class="field field-full"><label>🎯 الأهداف التعليمية (سطر لكل هدف)</label><textarea rows="3" id="lp-objectives" placeholder="في نهاية الدرس، يكون الطالب قادرًا على..."></textarea></div>
+          <div class="field field-full"><label>🚪 التمهيد</label><textarea rows="3" id="lp-intro" placeholder="إزاي هتفتح الدرس وتشد انتباه الطلاب..."></textarea></div>
+          <div class="field field-full"><label>📖 العرض والشرح</label><textarea rows="5" id="lp-explanation" placeholder="خطوات الشرح، الأمثلة، الأنشطة..."></textarea></div>
+          <div class="field field-full"><label>✅ التقويم</label><textarea rows="3" id="lp-evaluation" placeholder="إزاي هتتأكد إن الطلاب فهموا..."></textarea></div>
+          <div class="field field-full"><label>📝 الواجب (اختياري)</label><textarea rows="2" id="lp-homework" placeholder="تكليف بعد الحصة..."></textarea></div>
+
+          <button class="btn-primary" onclick="saveLessonPlan()">حفظ خطة الدرس</button>
+          <div class="auth-status" id="lp-status"></div>
+        </div>
+
+        <div class="section-title" style="margin-top:10px;">خططي المحفوظة</div>
+        <div id="lesson-plans-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
       <!-- SHARED: تعلم كيف -->
       <div class="view" id="v-learn">
         <div class="topbar"><div><h1>تعلم كيف</h1><div class="sub">دروس مرفوعة من الداشبورد لاكتساب خبرة التدريس</div></div></div>
@@ -906,23 +938,26 @@
       </div>
 
       <div class="view" id="v-quizzes">
-        <div class="topbar"><div><h1>الاختبارات</h1><div class="sub">اعمل اختبار جديد من أسئلة بنكك، أو راجع اختباراتك السابقة</div></div></div>
+        <div class="topbar"><div><h1>مصنع الاختبارات وأوراق العمل</h1><div class="sub">ابنِ اختبار أو ورقة عمل بمزيج صعوبة من أسئلة بنكك، وصدّرهم للطباعة مع نموذج الإجابة</div></div></div>
         <div class="card-panel">
           <div class="qb-form">
             <div class="field field-full"><label>عنوان الاختبار</label><input type="text" id="qz-title" placeholder="مثلاً: اختبار الوحدة الأولى"></div>
             <div class="field"><label>المادة (اختياري)</label><input type="text" id="qz-subject" placeholder="اتركه فاضي لكل المواد"></div>
             <div class="field">
-              <label>مستوى الصعوبة</label>
-              <select id="qz-difficulty">
-                <option value="all">أي مستوى</option>
-                <option value="easy">سهل</option>
-                <option value="medium">متوسط</option>
-                <option value="hard">صعب</option>
+              <label>نوع المستند</label>
+              <select id="qz-doctype">
+                <option value="quiz">اختبار (بيتاخد وبيتصحح رقميًا)</option>
+                <option value="worksheet">ورقة عمل (للطباعة والتدريب بس)</option>
               </select>
             </div>
-            <div class="field"><label>عدد الأسئلة</label><input type="number" id="qz-count" value="5" min="1" max="30"></div>
           </div>
-          <button class="btn-primary" onclick="buildQuiz()">إنشاء الاختبار</button>
+          <div class="sub" style="margin:4px 0 8px;">حدّد عدد الأسئلة من كل مستوى صعوبة — الأسئلة بتتسحب عشوائيًا من بنك أسئلتك</div>
+          <div class="qb-form">
+            <div class="field"><label>سهل</label><input type="number" id="qz-count-easy" value="3" min="0" max="30"></div>
+            <div class="field"><label>متوسط</label><input type="number" id="qz-count-medium" value="4" min="0" max="30"></div>
+            <div class="field"><label>صعب</label><input type="number" id="qz-count-hard" value="3" min="0" max="30"></div>
+          </div>
+          <button class="btn-primary" onclick="buildQuiz()">إنشاء المستند</button>
           <div class="auth-status" id="qz-build-status"></div>
         </div>
 
@@ -1708,6 +1743,7 @@ function showView(id, btn){
   if(id === 'v-profile') renderProfileView();
   if(id === 'v-portfolio') renderPortfolio();
   if(id === 'v-calendar') renderCalendar();
+  if(id === 'v-lesson-planner') loadLessonPlans();
   if(!btn) return;
   const parent = btn.closest('#nav-teacher') || btn.closest('#nav-student');
   if(parent){ parent.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); }
@@ -2683,37 +2719,186 @@ async function deleteQuestion(id){
   catch(err){ toast('تعذّر الحذف الآن.'); console.warn(err); }
 }
 
-/* ================= الاختبارات ================= */
+/* ================= مولد تحضير الدروس ================= */
+let lessonPlansCache = [];
+let editingLessonPlanId = null;
+function scaffoldLessonPlan(){
+  const title = document.getElementById('lp-title').value.trim() || 'الدرس';
+  const fill = (id, text) => { const el = document.getElementById(id); if(el && !el.value.trim()) el.value = text; };
+  fill('lp-objectives',
+`1. أن يتعرف الطالب على المفهوم الأساسي في "${title}"
+2. أن يطبّق الطالب ما تعلمه من خلال حل تمارين متدرجة الصعوبة
+3. أن يقيّم الطالب فهمه لـ"${title}" بنفسه بنهاية الحصة`);
+  fill('lp-intro',
+`ابدأ الحصة بسؤال أو موقف حياتي مرتبط بـ"${title}" يشد انتباه الطلاب، وراجع بسرعة المعلومة السابقة المرتبطة بالدرس الجديد.`);
+  fill('lp-explanation',
+`1. اعرض "${title}" بمثال مبسط على السبورة
+2. اشرح الخطوات بالتفصيل مع أمثلة متنوعة من واقع الطلاب
+3. اعمل نشاط تطبيقي جماعي أو فردي
+4. تابع الطلاب أثناء التطبيق وصحّح الأخطاء الشائعة أول بأول`);
+  fill('lp-evaluation',
+`اسأل 2-3 أسئلة سريعة (شفهية أو مكتوبة) تغطي أهداف الدرس، وراقب مين من الطلاب محتاج متابعة إضافية بعد الحصة.`);
+  fill('lp-homework',
+`تدريبات قصيرة على "${title}" لترسيخ المفهوم قبل الحصة الجاية.`);
+  toast('اتولّد هيكل الخطة — عدّل عليه بما يناسب حصتك.');
+}
+function resetLessonPlanForm(){
+  editingLessonPlanId = null;
+  ['lp-title','lp-grade','lp-objectives','lp-intro','lp-explanation','lp-evaluation','lp-homework'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  const dur = document.getElementById('lp-duration'); if(dur) dur.value = 45;
+  const subj = document.getElementById('lp-subject'); if(subj) subj.selectedIndex = 0;
+}
+async function saveLessonPlan(){
+  const title = document.getElementById('lp-title').value.trim();
+  const subject = document.getElementById('lp-subject').value;
+  const grade = document.getElementById('lp-grade').value.trim();
+  const duration = Math.max(10, Math.min(180, parseInt(document.getElementById('lp-duration').value, 10) || 45));
+  const objectives = document.getElementById('lp-objectives').value.trim();
+  const introduction = document.getElementById('lp-intro').value.trim();
+  const explanation = document.getElementById('lp-explanation').value.trim();
+  const evaluation = document.getElementById('lp-evaluation').value.trim();
+  const homework = document.getElementById('lp-homework').value.trim();
+  const status = document.getElementById('lp-status');
+  if(!title){ status.className='auth-status err'; status.textContent='اكتب عنوان الدرس.'; return; }
+  status.className='auth-status pending'; status.textContent='جاري الحفظ...';
+  const payload = { ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم', title, subject, grade, duration, objectives, introduction, explanation, evaluation, homework, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+  try{
+    if(editingLessonPlanId){
+      await db.collection('lessonPlans').doc(editingLessonPlanId).update(payload);
+      toast('اتحدّثت خطة الدرس.');
+    }else{
+      payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection('lessonPlans').add(payload);
+      toast('اتحفظت خطة الدرس.');
+    }
+    status.className='auth-status ok'; status.textContent='✓ تم الحفظ.';
+    resetLessonPlanForm();
+    loadLessonPlans();
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+async function loadLessonPlans(){
+  if(!currentUid) return;
+  const el = document.getElementById('lesson-plans-list'); if(!el) return;
+  try{
+    const snap = await db.collection('lessonPlans').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    lessonPlansCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    if(!lessonPlansCache.length){ el.innerHTML = '<div class="empty-state">لسه معملتش أي خطة درس. اعمل أول خطة من الفورم فوق.</div>'; return; }
+    el.innerHTML = lessonPlansCache.map(({id,data:p}) => `
+      <div class="content-item">
+        <div>
+          <div class="ci-title">${escapeHtml(p.title||'')}</div>
+          <div style="font-size:11.5px; color:var(--ink-soft);">${escapeHtml(p.subject||'')}${p.grade ? ' · '+escapeHtml(p.grade) : ''} · ${p.duration||45} دقيقة</div>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="editLessonPlan('${id}')">تعديل</button>
+          <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="printLessonPlan('${id}')">🖨️ طباعة</button>
+          <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deleteLessonPlan('${id}')">حذف</button>
+        </div>
+      </div>`).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل خططك الآن.</div>'; console.warn(err); }
+}
+function editLessonPlan(id){
+  const p = lessonPlansCache.find(x=>x.id===id); if(!p) return;
+  editingLessonPlanId = id;
+  document.getElementById('lp-title').value = p.data.title || '';
+  document.getElementById('lp-subject').value = p.data.subject || 'رياضيات';
+  document.getElementById('lp-grade').value = p.data.grade || '';
+  document.getElementById('lp-duration').value = p.data.duration || 45;
+  document.getElementById('lp-objectives').value = p.data.objectives || '';
+  document.getElementById('lp-intro').value = p.data.introduction || '';
+  document.getElementById('lp-explanation').value = p.data.explanation || '';
+  document.getElementById('lp-evaluation').value = p.data.evaluation || '';
+  document.getElementById('lp-homework').value = p.data.homework || '';
+  document.getElementById('v-lesson-planner').scrollIntoView({behavior:'smooth'});
+  toast('اتحمّلت الخطة للتعديل — احفظ عشان تحدّثها.');
+}
+async function deleteLessonPlan(id){
+  if(!confirm('تأكيد حذف خطة الدرس دي؟')) return;
+  try{
+    await db.collection('lessonPlans').doc(id).delete();
+    lessonPlansCache = lessonPlansCache.filter(x=>x.id!==id);
+    if(editingLessonPlanId === id) resetLessonPlanForm();
+    loadLessonPlans();
+    toast('اتحذفت خطة الدرس.');
+  }catch(err){ toast('تعذّر الحذف الآن.'); console.warn(err); }
+}
+function printLessonPlan(id){
+  const p = lessonPlansCache.find(x=>x.id===id); if(!p) return;
+  const d = p.data;
+  const win = window.open('', '_blank');
+  if(!win){ toast('المتصفح منع فتح نافذة جديدة — اسمح بالنوافذ المنبثقة وجرّب تاني.', {type:'err'}); return; }
+  const section = (title, content) => content ? `<h2>${title}</h2><p>${escapeHtml(content).replace(/\n/g,'<br>')}</p>` : '';
+  const html = `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<title>تحضير درس — ${escapeHtml(d.title||'')}</title>
+<style>
+  body{ font-family:'Segoe UI', Tahoma, Arial, sans-serif; max-width:760px; margin:30px auto; color:#1b2a41; line-height:1.8; padding:0 24px; }
+  .head{ display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1b2a41; padding-bottom:10px; margin-bottom:14px; }
+  .head h1{ font-size:22px; margin:0 0 4px; }
+  .head .meta{ font-size:13px; color:#555; }
+  .brand{ font-size:11px; color:#999; text-align:left; }
+  h2{ font-size:15px; border-inline-start:4px solid #1b2a41; padding-inline-start:8px; margin-top:22px; }
+  @media print{ body{ margin:0 auto; } }
+</style></head>
+<body>
+  <div class="head">
+    <div><h1>${escapeHtml(d.title||'')}</h1><div class="meta">${escapeHtml(d.subject||'')}${d.grade ? ' · '+escapeHtml(d.grade) : ''} · ${d.duration||45} دقيقة</div></div>
+    <div class="brand">نُدرس معًا · إعداد: ${escapeHtml(pendingUser.name||'')}<br>${new Date().toLocaleDateString('ar-EG')}</div>
+  </div>
+  ${section('🎯 الأهداف التعليمية', d.objectives)}
+  ${section('🚪 التمهيد', d.introduction)}
+  ${section('📖 العرض والشرح', d.explanation)}
+  ${section('✅ التقويم', d.evaluation)}
+  ${section('📝 الواجب', d.homework)}
+</body></html>`;
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+  setTimeout(() => { try{ win.focus(); win.print(); }catch(e){} }, 300);
+}
+
+/* ================= الاختبارات وأوراق العمل ================= */
 async function buildQuiz(){
   const title = document.getElementById('qz-title').value.trim();
   const subject = document.getElementById('qz-subject').value.trim();
-  const difficulty = document.getElementById('qz-difficulty').value;
-  const count = Math.max(1, Math.min(30, parseInt(document.getElementById('qz-count').value, 10) || 5));
+  const docType = document.getElementById('qz-doctype').value;
+  const mix = {
+    easy: Math.max(0, Math.min(30, parseInt(document.getElementById('qz-count-easy').value, 10) || 0)),
+    medium: Math.max(0, Math.min(30, parseInt(document.getElementById('qz-count-medium').value, 10) || 0)),
+    hard: Math.max(0, Math.min(30, parseInt(document.getElementById('qz-count-hard').value, 10) || 0)),
+  };
   const status = document.getElementById('qz-build-status');
-  if(!title){ status.className='auth-status err'; status.textContent='اكتب عنوان الاختبار.'; return; }
-  let pool = questionsCache.filter(({data:q}) => (!subject || q.subject===subject) && (difficulty==='all' || q.difficulty===difficulty));
-  if(!pool.length){ status.className='auth-status err'; status.textContent='مفيش أسئلة مطابقة في بنكك — ضيف أسئلة الأول أو وسّع الفلتر.'; return; }
-  pool = pool.slice().sort(()=>Math.random()-0.5).slice(0, count);
-  const questionsSnapshot = pool.map(({id,data:q}) => ({ id, text:q.text||'', type:q.type||'mcq', options:q.options||[], answer:q.answer||'' }));
-  status.className='auth-status pending'; status.textContent='جاري إنشاء الاختبار...';
+  if(!title){ status.className='auth-status err'; status.textContent='اكتب عنوان المستند.'; return; }
+  if(!mix.easy && !mix.medium && !mix.hard){ status.className='auth-status err'; status.textContent='حدّد عدد أسئلة أكتر من صفر في مستوى واحد على الأقل.'; return; }
+  const shortages = [];
+  let picked = [];
+  ['easy','medium','hard'].forEach(level => {
+    if(!mix[level]) return;
+    let levelPool = questionsCache.filter(({data:q}) => (!subject || q.subject===subject) && q.difficulty===level);
+    levelPool = levelPool.slice().sort(()=>Math.random()-0.5);
+    if(levelPool.length < mix[level]) shortages.push(`${DIFF_LABEL[level]} (لقيت ${levelPool.length} من ${mix[level]})`);
+    picked = picked.concat(levelPool.slice(0, mix[level]));
+  });
+  if(!picked.length){ status.className='auth-status err'; status.textContent='مفيش أسئلة مطابقة في بنكك بالمستويات دي — ضيف أسئلة الأول أو غيّر المزيج.'; return; }
+  const questionsSnapshot = picked.map(({id,data:q}) => ({ id, text:q.text||'', type:q.type||'mcq', difficulty:q.difficulty||'medium', options:q.options||[], answer:q.answer||'' }));
+  status.className='auth-status pending'; status.textContent='جاري إنشاء المستند...';
   try{
     const docRef = await db.collection('quizzes').add({
-      ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم', title, subject: subject||null, difficulty,
+      ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم', title, subject: subject||null, docType, difficultyMix: mix,
       questions: questionsSnapshot, published: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    quizzesCache.unshift({ id: docRef.id, data:{ title, subject, difficulty, questions: questionsSnapshot, published: false } });
-    status.className='auth-status ok'; status.textContent='✓ اتعمل الاختبار.';
-    toast('اتعمل الاختبار — انشره لو عايز طلابك ياخدوه.');
+    quizzesCache.unshift({ id: docRef.id, data:{ title, subject, docType, difficultyMix: mix, questions: questionsSnapshot, published: false } });
+    status.className='auth-status ok'; status.textContent = shortages.length ? `✓ اتعمل المستند (تنبيه: ناقص أسئلة في ${shortages.join('، ')}).` : '✓ اتعمل المستند.';
+    toast(docType === 'worksheet' ? 'اتعملت ورقة العمل — تقدر تطبعها من القايمة تحت.' : 'اتعمل الاختبار — انشره لو عايز طلابك ياخدوه، أو اطبعه.');
     renderQuizPreview(questionsSnapshot);
     renderQuizzesList();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
 function renderQuizPreview(questions){
   const el = document.getElementById('quiz-preview-wrap'); if(!el) return;
-  el.innerHTML = `<div class="section-title" style="margin-top:22px;">معاينة الاختبار</div>` + questions.map((q,i) => `
+  el.innerHTML = `<div class="section-title" style="margin-top:22px;">معاينة المستند</div>` + questions.map((q,i) => `
     <div class="question-card">
-      <div class="q-text">${i+1}. ${escapeHtml(q.text||'')}</div>
+      <div class="q-text">${i+1}. ${escapeHtml(q.text||'')} ${q.difficulty ? `<span class="q-tag">${escapeHtml(DIFF_LABEL[q.difficulty]||q.difficulty)}</span>` : ''}</div>
       ${(q.options||[]).length ? `<div class="q-opts">${q.options.map(o => `<div class="${o===q.answer?'correct':''}">${o===q.answer?'✓ ':'— '}${escapeHtml(o)}</div>`).join('')}</div>` : ''}
     </div>`).join('');
 }
@@ -2730,11 +2915,13 @@ function renderQuizzesList(){
   if(!quizzesCache.length){ el.innerHTML = '<div class="empty-state">لسه معملتش أي اختبار.</div>'; return; }
   el.innerHTML = quizzesCache.map(({id,data:qz}) => `
     <div class="quiz-item">
-      <div><strong>${escapeHtml(qz.title||'')}</strong> <span class="lib-item-type">${qz.questions ? qz.questions.length : 0} سؤال</span> ${qz.published ? '<span class="course-complete-badge">منشور لطلابك</span>' : ''}</div>
+      <div><strong>${escapeHtml(qz.title||'')}</strong> <span class="lib-item-type">${qz.questions ? qz.questions.length : 0} سؤال</span> <span class="lib-item-type">${qz.docType==='worksheet' ? 'ورقة عمل' : 'اختبار'}</span> ${qz.published ? '<span class="course-complete-badge">منشور لطلابك</span>' : ''}</div>
       <div style="display:flex; gap:8px; flex-wrap:wrap;">
         <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="viewQuiz('${id}')">عرض</button>
-        <button class="ci-link" style="background:none; border:1px solid ${qz.published?'var(--sage)':'var(--line)'}; color:${qz.published?'var(--sage)':'var(--ink-soft)'};" onclick="toggleQuizPublish('${id}')">${qz.published ? '✓ منشور' : 'انشره'}</button>
-        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="openQuizResults('${id}')">النتائج</button>
+        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="printQuizPaper('${id}', false)">🖨️ ورقة الأسئلة</button>
+        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="printQuizPaper('${id}', true)">🗝️ نموذج الإجابة</button>
+        ${qz.docType!=='worksheet' ? `<button class="ci-link" style="background:none; border:1px solid ${qz.published?'var(--sage)':'var(--line)'}; color:${qz.published?'var(--sage)':'var(--ink-soft)'};" onclick="toggleQuizPublish('${id}')">${qz.published ? '✓ منشور' : 'انشره'}</button>
+        <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="openQuizResults('${id}')">النتائج</button>` : ''}
         <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deleteQuiz('${id}')">حذف</button>
       </div>
     </div>`).join('');
@@ -2778,6 +2965,80 @@ async function openQuizResults(id){
       </div>
       ${perQuestion}`;
   }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل النتائج الآن.</div>'; console.warn(err); }
+}
+const AR_LETTERS = ['أ','ب','ج','د','ه','و','ز','ح'];
+function printQuizPaper(id, withAnswers){
+  const qz = quizzesCache.find(x=>x.id===id); if(!qz) return;
+  const d = qz.data;
+  const win = window.open('', '_blank');
+  if(!win){ toast('المتصفح منع فتح نافذة جديدة — اسمح بالنوافذ المنبثقة وجرّب تاني.', {type:'err'}); return; }
+  const questions = d.questions || [];
+  const typeLabel = d.docType === 'worksheet' ? 'ورقة عمل' : 'اختبار';
+  const docTitle = withAnswers ? `نموذج الإجابة — ${typeLabel}` : typeLabel;
+
+  const qHtml = questions.map((q, i) => {
+    const num = i + 1;
+    let bodyHtml = '';
+    if((q.options||[]).length){
+      bodyHtml = `<div class="opts">${q.options.map((o,oi) => {
+        const isCorrect = withAnswers && o === q.answer;
+        return `<div class="opt${isCorrect?' correct':''}">${AR_LETTERS[oi]||(oi+1)}) ${escapeHtml(o)}${isCorrect?' ✓':''}</div>`;
+      }).join('')}</div>`;
+    }else if(q.type === 'tf'){
+      const correctIsTrue = withAnswers && /^(صح|true|صحيح)$/i.test((q.answer||'').trim());
+      const correctIsFalse = withAnswers && /^(خطأ|false|غلط)$/i.test((q.answer||'').trim());
+      bodyHtml = `<div class="opts">
+        <div class="opt${correctIsTrue?' correct':''}">أ) صح${correctIsTrue?' ✓':''}</div>
+        <div class="opt${correctIsFalse?' correct':''}">ب) خطأ${correctIsFalse?' ✓':''}</div>
+      </div>`;
+    }else{
+      // مقالي
+      bodyHtml = withAnswers
+        ? (q.answer ? `<div class="model-answer">الإجابة النموذجية: ${escapeHtml(q.answer)}</div>` : `<div class="model-answer">إجابة تقديرية — تُقيَّم حسب رؤية المعلم.</div>`)
+        : `<div class="answer-lines"><div class="line"></div><div class="line"></div><div class="line"></div></div>`;
+    }
+    return `<div class="q-block"><div class="q-num">${num}.</div><div class="q-body"><div class="q-text-p">${escapeHtml(q.text||'')}</div>${bodyHtml}</div></div>`;
+  }).join('');
+
+  const html = `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<title>${escapeHtml(d.title||'')} — ${escapeHtml(docTitle)}</title>
+<style>
+  body{ font-family:'Segoe UI', Tahoma, Arial, sans-serif; max-width:800px; margin:30px auto; color:#1b2a41; line-height:1.7; padding:0 24px; }
+  .paper-head{ display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1b2a41; padding-bottom:10px; margin-bottom:6px; }
+  .paper-head h1{ font-size:20px; margin:0 0 4px; }
+  .paper-head .meta{ font-size:12.5px; color:#555; }
+  .brand{ font-size:11px; color:#999; }
+  .stud-fields{ display:flex; gap:24px; flex-wrap:wrap; font-size:13px; margin:14px 0 6px; }
+  .stud-fields span{ border-bottom:1px dotted #999; padding-bottom:2px; min-width:140px; display:inline-block; }
+  .instructions{ font-size:12.5px; color:#555; background:#f4f6f8; border-radius:5px; padding:8px 12px; margin:10px 0 18px; }
+  .answer-banner{ font-size:12.5px; font-weight:800; background:#eef2f7; border-radius:5px; padding:8px 12px; margin:10px 0 18px; }
+  .q-block{ display:flex; gap:10px; margin-bottom:16px; page-break-inside:avoid; }
+  .q-num{ font-weight:800; min-width:22px; }
+  .q-text-p{ font-weight:600; margin-bottom:6px; }
+  .opts{ display:flex; flex-direction:column; gap:4px; font-size:13.5px; margin-inline-start:6px; }
+  .opt.correct{ color:#2f7a4f; font-weight:800; }
+  .model-answer{ font-size:13px; color:#2f7a4f; font-weight:700; background:#eef7f0; border-radius:5px; padding:6px 10px; margin-inline-start:6px; }
+  .answer-lines .line{ border-bottom:1px solid #ccc; height:22px; margin-inline-start:6px; max-width:520px; }
+  @media print{ body{ margin:0 auto; } }
+</style></head>
+<body>
+  <div class="paper-head">
+    <div>
+      <h1>${escapeHtml(d.title||'')}</h1>
+      <div class="meta">${d.subject ? escapeHtml(d.subject)+' · ' : ''}${escapeHtml(typeLabel)}${withAnswers ? ' — نموذج الإجابة' : ''}</div>
+    </div>
+    <div class="brand">نُدرس معًا · إعداد: ${escapeHtml(pendingUser.name||'')}<br>${new Date().toLocaleDateString('ar-EG')}</div>
+  </div>
+  ${withAnswers ? `<div class="answer-banner">هذه نسخة نموذج الإجابة — للمعلم فقط</div>` : `
+    <div class="stud-fields"><span>اسم الطالب: </span><span>الصف: </span><span>التاريخ: </span></div>
+    <div class="instructions">اقرأ كل سؤال جيدًا قبل الإجابة، وتأكد من الإجابة على كل الأسئلة.</div>
+  `}
+  ${qHtml}
+</body></html>`;
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+  setTimeout(() => { try{ win.focus(); win.print(); }catch(e){} }, 300);
 }
 async function deleteQuiz(id){
   try{ await db.collection('quizzes').doc(id).delete(); quizzesCache = quizzesCache.filter(q=>q.id!==id); renderQuizzesList(); toast('اتحذف الاختبار.'); }
