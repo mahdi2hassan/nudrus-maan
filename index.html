@@ -293,6 +293,12 @@
   .progress-txt{font-size:11px; color:var(--ink-soft);}
 
   .card-panel{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:26px; max-width:560px;}
+  .tools-hub-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px; }
+  .tools-hub-card{ background:var(--white); border:1px solid var(--line); border-radius:8px; padding:18px; cursor:pointer; transition:border-color .15s; }
+  .tools-hub-card:hover{ border-color:var(--ink); }
+  .tools-hub-card .thc-icon{ font-size:22px; margin-bottom:8px; }
+  .tools-hub-card .thc-title{ font-weight:800; font-size:14.5px; margin-bottom:4px; }
+  .tools-hub-card .thc-desc{ font-size:12px; color:var(--ink-soft); line-height:1.6; }
   .hint{font-size:12px; color:var(--ink-soft); margin-top:14px; border-top:1px dashed var(--line); padding-top:12px;}
 
   .quiz-box{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:26px; max-width:560px;}
@@ -665,11 +671,15 @@
         <button class="nav-item" id="navi-questions-t" onclick="showView('v-questions', this)"><svg class="icon"><use href="#i-help"></use></svg> بنك الأسئلة</button>
         <button class="nav-item" id="navi-quizzes-t" onclick="showView('v-quizzes', this)"><svg class="icon"><use href="#i-edit"></use></svg> مصنع الاختبارات وأوراق العمل</button>
         <button class="nav-item" id="navi-exam-t" onclick="openExamform(this)"><svg class="icon"><use href="#i-edit"></use></svg> امتحانك بسهولة</button>
+        <button class="nav-item" id="navi-certificates-t" onclick="showView('v-certificates', this)"><svg class="icon"><use href="#i-star"></use></svg> مولد الشهادات</button>
+        <button class="nav-item" id="navi-preproom-t" onclick="showView('v-prep-room', this)"><svg class="icon"><use href="#i-users"></use></svg> غرفة التحضير الجماعي</button>
+        <button class="nav-item" id="navi-toolshub-t" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> مركز الأدوات التعليمية</button>
         <button class="nav-item" onclick="window.open('https://plusinmath.vercel.app/x/boardplus','_blank')"><svg class="icon"><use href="#i-monitor"></use></svg> سبورة إلكترونية</button>
         <button class="nav-item" onclick="showView('v-saved', this)"><svg class="icon"><use href="#i-bookmark"></use></svg> المحفوظات</button>
 
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
+        <button class="nav-item" id="navi-leaderboard-t" onclick="showView('v-leaderboard', this)"><svg class="icon"><use href="#i-award"></use></svg> لوحة المتصدرين</button>
         <button class="nav-item" onclick="showView('v-qa', this)"><svg class="icon"><use href="#i-help"></use></svg> الأسئلة</button>
         <button class="nav-item" onclick="showView('v-groups', this)"><svg class="icon"><use href="#i-layers"></use></svg> مجموعات التخصص</button>
         <button class="nav-item" id="navi-chats-t" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
@@ -708,6 +718,7 @@
 
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
+        <button class="nav-item" id="navi-leaderboard-s" onclick="showView('v-leaderboard', this)"><svg class="icon"><use href="#i-award"></use></svg> لوحة المتصدرين</button>
         <button class="nav-item" onclick="showView('v-qa', this)"><svg class="icon"><use href="#i-help"></use></svg> الأسئلة</button>
         <button class="nav-item" onclick="showView('v-groups', this)"><svg class="icon"><use href="#i-layers"></use></svg> مجموعات التخصص</button>
         <button class="nav-item" id="navi-chats-s" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-s" style="display:none;">0</span></button>
@@ -858,6 +869,74 @@
         <div id="lesson-plans-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
 
+      <!-- ========== مولد الشهادات الديناميكي ========== -->
+      <div class="view" id="v-certificates">
+        <div class="topbar"><div><h1>مولد الشهادات</h1><div class="sub">أصدر شهادات تقدير لطلابك دفعة واحدة بتصميم جاهز</div></div></div>
+        <div class="card-panel">
+          <div class="qb-form">
+            <div class="field field-full"><label>عنوان الشهادة</label><input type="text" id="cert-title" value="شهادة تقدير"></div>
+            <div class="field"><label>التصميم</label>
+              <select id="cert-design">
+                <option value="classic">كلاسيك (إطار ذهبي)</option>
+                <option value="simple">بسيط وعصري</option>
+              </select>
+            </div>
+            <div class="field"><label>اسم المُصدر (المعلم/الجهة)</label><input type="text" id="cert-issuer" placeholder="هيتحط اسمك تلقائيًا"></div>
+          </div>
+          <div class="field field-full"><label>نص التقدير</label><textarea rows="2" id="cert-reason" placeholder="تقديرًا لتميزه وتفوقه خلال..."></textarea></div>
+          <div class="field field-full"><label>أسماء الطلاب (اسم في كل سطر)</label><textarea rows="6" id="cert-names" placeholder="أحمد محمد علي
+سارة إبراهيم
+..."></textarea></div>
+          <button class="btn-primary" onclick="generateCertificates()">إصدار الشهادات وطباعتها</button>
+          <div class="auth-status" id="cert-status"></div>
+        </div>
+      </div>
+
+      <!-- ========== غرفة التحضير الجماعي ========== -->
+      <div class="view" id="v-prep-room">
+        <div class="topbar"><div><h1>غرفة التحضير الجماعي</h1><div class="sub">حرر ملف تحضير مع زمايلك في نفس الوقت</div></div></div>
+        <div class="card-panel" style="margin-bottom:20px;">
+          <div class="field field-full"><label>عنوان غرفة جديدة</label><input type="text" id="room-new-title" placeholder="مثال: تحضير مراجعة نهاية الترم — رياضيات"></div>
+          <button class="btn-primary" onclick="createPrepRoom()">إنشاء غرفة جديدة</button>
+          <div class="auth-status" id="room-create-status"></div>
+        </div>
+        <div class="card-panel" style="margin-bottom:20px;">
+          <div class="field field-full"><label>الانضمام لغرفة بالكود</label><input type="text" id="room-join-code" placeholder="الصق كود الغرفة اللي بعتهولك زميلك"></div>
+          <button class="btn-secondary" onclick="joinPrepRoomByCode()">انضم للغرفة</button>
+        </div>
+        <div class="section-title">غرفي</div>
+        <div id="prep-rooms-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-prep-room-editor">
+        <div class="topbar">
+          <div><h1 id="room-editor-title">الغرفة</h1><div class="sub">أي تعديل بيتزامن مع باقي زمايلك تلقائيًا</div></div>
+          <button class="btn-secondary" onclick="leavePrepRoomEditor()">رجوع للغرف</button>
+        </div>
+        <div class="card-panel" style="margin-bottom:14px;">
+          <div class="id-link-row">
+            <input type="text" id="room-code-display" readonly>
+            <button class="btn-primary" style="width:auto; padding:9px 16px;" onclick="copyRoomCode()">نسخ كود الغرفة</button>
+          </div>
+          <div class="hint">ابعت الكود ده لزمايلك عشان ينضموا لنفس الغرفة ويعدّلوا معاك لحظيًا.</div>
+        </div>
+        <div id="room-participants" class="sub" style="margin-bottom:10px;"></div>
+        <textarea id="room-editor-textarea" rows="18" style="width:100%; font-family:inherit; font-size:14px; padding:16px; border:1px solid var(--line); border-radius:6px; line-height:1.8;" placeholder="ابدأ الكتابة هنا... أي حد في الغرفة هيشوف تعديلاتك بعد لحظات." oninput="onPrepRoomInput()"></textarea>
+        <div class="hint">مزامنة بسيطة: آخر نسخة بتتحفظ بتبقى الأساس — لو اتنين كتبوا في نفس اللحظة بالظبط ممكن تعديل يتجاوز التاني. للملفات الحساسة جدًا يُفضّل التنسيق الصوتي مع فريقك أثناء الكتابة.</div>
+      </div>
+
+      <!-- ========== مركز الأدوات التعليمية ========== -->
+      <div class="view" id="v-tools-hub">
+        <div class="topbar"><div><h1>مركز الأدوات التعليمية</h1><div class="sub">كل أدوات الإنتاج بتاعتك في مكان واحد</div></div></div>
+        <div id="tools-hub-grid" class="tools-hub-grid"></div>
+      </div>
+
+      <!-- ========== لوحة المتصدرين ========== -->
+      <div class="view" id="v-leaderboard">
+        <div class="topbar"><div><h1>لوحة المتصدرين</h1><div class="sub">أكتر المعلمين نشاطًا وعطاءً للمجتمع (نقاط الأنشطة)</div></div></div>
+        <div id="leaderboard-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
       <!-- SHARED: تعلم كيف -->
       <div class="view" id="v-learn">
         <div class="topbar"><div><h1>تعلم كيف</h1><div class="sub">دروس مرفوعة من الداشبورد لاكتساب خبرة التدريس</div></div></div>
@@ -978,6 +1057,7 @@
             <div class="profile-name" id="profile-name-display">—</div>
             <div class="profile-meta" id="profile-meta-display">—</div>
             <div class="profile-meta" id="profile-rating-display" style="margin-top:4px;">—</div>
+            <div class="profile-meta" id="profile-points-display" style="margin-top:4px;">—</div>
           </div>
           <div class="profile-stats" id="profile-stats"></div>
         </div>
@@ -1722,6 +1802,7 @@ function enterApp(role){
   loadTasks();
   loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce();
   handleSharedProfileLink();
+  handleSharedRoomLink();
 }
 // لو المستخدم داخل عن طريق رابط "هوية نُدرس معًا" (#profile=uid) بتاع حد تاني، افتح ملفه الاحترافي على طول
 function handleSharedProfileLink(){
@@ -1744,6 +1825,10 @@ function showView(id, btn){
   if(id === 'v-portfolio') renderPortfolio();
   if(id === 'v-calendar') renderCalendar();
   if(id === 'v-lesson-planner') loadLessonPlans();
+  if(id === 'v-certificates'){ const iEl = document.getElementById('cert-issuer'); if(iEl && !iEl.value) iEl.value = pendingUser.name || ''; }
+  if(id === 'v-prep-room') loadPrepRooms();
+  if(id === 'v-tools-hub') renderToolsHub();
+  if(id === 'v-leaderboard') loadLeaderboard();
   if(!btn) return;
   const parent = btn.closest('#nav-teacher') || btn.closest('#nav-student');
   if(parent){ parent.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); }
@@ -1871,6 +1956,14 @@ function renderProfileView(){
       ratingEl.innerHTML = agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} من 5 (${agg.count} تقييم)` : 'لسه مفيش تقييمات من المجتمع';
     });
   }
+  const pointsEl = document.getElementById('profile-points-display');
+  if(pointsEl && currentUid){
+    pointsEl.textContent = 'جاري حساب نقاطك...';
+    pointsAggFor(currentUid).then(total => {
+      const lvl = levelForPoints(total);
+      pointsEl.innerHTML = `${lvl.emoji} ${total} نقطة · مستوى "${escapeHtml(lvl.label)}"`;
+    });
+  }
 
   const myPosts = communityPostsCache.filter(({data:p}) => p.authorUid === currentUid).length;
   const myNotebooks = notebooksCache.filter(({data:n}) => n.ownerUid === currentUid).length;
@@ -1925,6 +2018,97 @@ function copyProfileLink(){
     toast('اتنسخ الرابط.');
   }
 }
+/* ---------- عناصر مشتركة للمستندات المُصدَّرة: علامة مائية + دعم معادلات رياضية ---------- */
+function watermarkCss(){
+  return `.wm-layer{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:999; }
+  .wm-t{ position:absolute; font-size:12px; font-weight:800; color:rgba(27,42,65,0.07); transform:rotate(-28deg); white-space:nowrap; }
+  @media print{ .wm-layer{ display:block; } }`;
+}
+function watermarkHtml(ownerName){
+  const label = escapeHtml((ownerName || 'نُدرس معًا') + ' · نُدرس معًا');
+  let spans = '';
+  for(let row=0; row<6; row++){
+    for(let col=0; col<3; col++){
+      spans += `<span class="wm-t" style="top:${row*17+4}%; left:${col*34+2}%;">${label}</span>`;
+    }
+  }
+  return `<div class="wm-layer">${spans}</div>`;
+}
+// دعم عرض المعادلات الرياضية المكتوبة بصيغة LaTeX داخل $...$ أو $$...$$ — اكتب المعادلة كده في أي نص (سؤال، تمهيد، شرح...) وهتتحول تلقائيًا وقت الطباعة
+function mathJaxTag(){
+  return `<script>window.MathJax = { tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] } };<\/script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async><\/script>`;
+}
+/* ================= نظام النقاط والشارات ================= */
+const POINTS = { courseComplete: 30, notebookPublish: 10, researchPublish: 15, communityPost: 2, acceptedAnswer: 8 };
+const LEVELS = [
+  { min: 0,   label: 'مبتدئ',        emoji: '🌱' },
+  { min: 50,  label: 'نشِط',         emoji: '⚡' },
+  { min: 150, label: 'متميز',        emoji: '🌟' },
+  { min: 350, label: 'نجم المجتمع',  emoji: '🏅' },
+];
+function levelForPoints(points){
+  let lvl = LEVELS[0];
+  for(const l of LEVELS){ if(points >= l.min) lvl = l; }
+  return lvl;
+}
+// مكافأة ذاتية — بيستخدمها المستخدم لنفسه بس على نشاط عمله هو (إكمال كورس، نشر مورد، منشور مجتمع)
+async function awardPoints(amount, reason, extra){
+  if(!currentUid) return;
+  try{
+    await db.collection('pointsLedger').add(Object.assign({
+      uid: currentUid, amount, reason, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, extra || {}));
+  }catch(err){ console.warn('award points failed', err); }
+}
+// مكافأة "إجابة معتمدة" — بيمنحها صاحب السؤال لصاحب التعليق اللي اعتمده، والرول بيتحقق إن العلاقة صحيحة فعلًا
+async function awardAcceptedAnswerPoints(postId, commentId, commentAuthorUid){
+  if(!currentUid || !commentAuthorUid || commentAuthorUid === currentUid) return;
+  try{
+    await db.collection('pointsLedger').add({
+      uid: commentAuthorUid, amount: POINTS.acceptedAnswer, reason: 'acceptedAnswer',
+      postId, commentId, awardedBy: currentUid, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }catch(err){ console.warn('award accepted-answer points failed', err); }
+}
+// مجموع نقاط أي مستخدم — بيتحسب من سجل النقاط مباشرة (زي نظام التقييمات بالظبط) عشان مانحتاجش نكتب على مستند مستخدم تاني
+async function pointsAggFor(uid){
+  try{
+    const snap = await db.collection('pointsLedger').where('uid','==', uid).limit(1000).get();
+    let total = 0;
+    snap.forEach(d => { const v = d.data().amount; if(typeof v === 'number') total += v; });
+    return total;
+  }catch(err){ console.warn(err); return 0; }
+}
+/* ---------- لوحة المتصدرين ---------- */
+async function loadLeaderboard(){
+  const el = document.getElementById('leaderboard-list'); if(!el) return;
+  el.innerHTML = '<div class="empty-state">جاري تحميل لوحة المتصدرين...</div>';
+  try{
+    const snap = await db.collection('pointsLedger').limit(2000).get();
+    const totals = {};
+    snap.forEach(d => { const v = d.data(); if(typeof v.amount === 'number' && v.uid){ totals[v.uid] = (totals[v.uid]||0) + v.amount; } });
+    const ranked = Object.entries(totals).map(([uid,total]) => ({ uid, total })).sort((a,b) => b.total - a.total).slice(0, 20);
+    if(!ranked.length){ el.innerHTML = '<div class="empty-state">لسه محدش كسب نقاط — كمّل كورس أو انشر مورد وكن أول واحد!</div>'; return; }
+    const profiles = await Promise.all(ranked.map(r => db.collection('publicProfiles').doc(r.uid).get().catch(() => null)));
+    el.innerHTML = ranked.map((r,i) => {
+      const pd = (profiles[i] && profiles[i].exists) ? profiles[i].data() : {};
+      const lvl = levelForPoints(r.total);
+      const isMe = r.uid === currentUid;
+      return `<div class="content-item" style="${isMe ? 'background:var(--paper-dim);' : ''}">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="font-weight:900; min-width:22px; color:var(--ink-soft);">${i+1}</div>
+          <div class="mini-avatar" style="cursor:pointer;" onclick="openPublicProfile('${r.uid}')">${pd.photoURL ? `<img src="${escapeAttr(pd.photoURL)}" alt="">` : escapeHtml(initials(pd.name))}</div>
+          <div>
+            <div class="ci-title" style="cursor:pointer;" onclick="openPublicProfile('${r.uid}')">${escapeHtml(pd.name || 'مستخدم')}${isMe ? ' (انت)' : ''}</div>
+            <div style="font-size:11px; color:var(--ink-soft);">${lvl.emoji} ${escapeHtml(lvl.label)}</div>
+          </div>
+        </div>
+        <div style="font-weight:800;">${r.total} نقطة</div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل لوحة المتصدرين الآن.</div>'; console.warn(err); }
+}
 /* ---------- تصدير السيرة الذاتية (CV) ---------- */
 async function exportCV(){
   if(!currentUid) return;
@@ -1971,8 +2155,10 @@ async function exportCV(){
   ul{ margin:8px 0; padding-inline-start:20px; }
   li{ margin-bottom:4px; }
   @media print{ body{ margin:0 auto; } }
-</style></head>
+  ${watermarkCss()}
+</style>${mathJaxTag()}</head>
 <body>
+  ${watermarkHtml(pendingUser.name)}
   <h1>${escapeHtml(pendingUser.name||'')}</h1>
   <div class="role">${escapeHtml(pendingUser.specialization || (pendingRole==='teacher'?'معلم':'طالب معلم'))}</div>
   <div class="badges">${badgesHtml}</div>
@@ -1994,6 +2180,226 @@ async function exportCV(){
   }catch(err){
     try{ win.document.body.innerHTML = 'تعذّر تجهيز السيرة الذاتية: ' + escapeHtml(err.message); }catch(e){}
   }
+}
+/* ---------- غرفة التحضير الجماعي ---------- */
+let prepRoomsCache = [];
+let activeRoomId = null;
+let prepRoomUnsub = null;
+let prepRoomSaveTimer = null;
+async function createPrepRoom(){
+  const title = document.getElementById('room-new-title').value.trim();
+  const status = document.getElementById('room-create-status');
+  if(!title){ status.className='auth-status err'; status.textContent='اكتب عنوان للغرفة.'; return; }
+  status.className='auth-status pending'; status.textContent='جاري الإنشاء...';
+  try{
+    const docRef = await db.collection('prepRooms').add({
+      ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم', title, content: '',
+      participants: [currentUid], participantNames: { [currentUid]: pendingUser.name || 'مستخدم' },
+      updatedBy: currentUid,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('room-new-title').value = '';
+    status.className='auth-status ok'; status.textContent='✓ اتعملت الغرفة.';
+    openPrepRoom(docRef.id);
+  }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+async function joinPrepRoomByCode(){
+  const codeInput = document.getElementById('room-join-code');
+  const code = codeInput.value.trim();
+  if(!code) return;
+  try{
+    const doc = await db.collection('prepRooms').doc(code).get();
+    if(!doc.exists){ toast('مفيش غرفة بالكود ده — تأكد إنك ناسخه صح.', {type:'err'}); return; }
+    const data = doc.data();
+    if(!(data.participants||[]).includes(currentUid)){
+      await db.collection('prepRooms').doc(code).update({
+        participants: firebase.firestore.FieldValue.arrayUnion(currentUid),
+        [`participantNames.${currentUid}`]: pendingUser.name || 'مستخدم'
+      });
+    }
+    codeInput.value = '';
+    openPrepRoom(code);
+  }catch(err){ toast('تعذّر الانضمام: '+err.message, {type:'err'}); }
+}
+async function loadPrepRooms(){
+  if(!currentUid) return;
+  const el = document.getElementById('prep-rooms-list'); if(!el) return;
+  try{
+    const snap = await db.collection('prepRooms').where('participants','array-contains', currentUid).limit(50).get();
+    prepRoomsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    prepRoomsCache.sort((a,b) => {
+      const ta = a.data.updatedAt && a.data.updatedAt.toMillis ? a.data.updatedAt.toMillis() : 0;
+      const tb = b.data.updatedAt && b.data.updatedAt.toMillis ? b.data.updatedAt.toMillis() : 0;
+      return tb - ta;
+    });
+    renderPrepRoomsList();
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل الغرف الآن.</div>'; console.warn(err); }
+}
+function renderPrepRoomsList(){
+  const el = document.getElementById('prep-rooms-list'); if(!el) return;
+  if(!prepRoomsCache.length){ el.innerHTML = '<div class="empty-state">لسه مش في أي غرفة — اعمل غرفة جديدة أو انضم بكود.</div>'; return; }
+  el.innerHTML = prepRoomsCache.map(({id,data:r}) => `
+    <div class="content-item">
+      <div><div class="ci-title">${escapeHtml(r.title||'')}</div><div style="font-size:11.5px; color:var(--ink-soft);">${(r.participants||[]).length} مشارك</div></div>
+      <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--ink-soft);" onclick="openPrepRoom('${id}')">فتح</button>
+    </div>`).join('');
+}
+function openPrepRoom(id){
+  activeRoomId = id;
+  showView('v-prep-room-editor');
+  const ta = document.getElementById('room-editor-textarea');
+  const codeEl = document.getElementById('room-code-display');
+  if(codeEl) codeEl.value = id;
+  if(ta) ta.value = 'جاري التحميل...';
+  if(prepRoomUnsub) prepRoomUnsub();
+  prepRoomUnsub = db.collection('prepRooms').doc(id).onSnapshot(doc => {
+    if(!doc.exists) return;
+    const data = doc.data();
+    const titleEl = document.getElementById('room-editor-title'); if(titleEl) titleEl.textContent = data.title || 'الغرفة';
+    const names = Object.values(data.participantNames || {});
+    const partEl = document.getElementById('room-participants'); if(partEl) partEl.textContent = names.length ? ('👥 ' + names.join('، ')) : '';
+    // متكتبش فوق اللي بتكتبه دلوقتي لو التحديث جاي من حد تاني — عشان مايقطعش تركيزك
+    if(ta && (document.activeElement !== ta || data.updatedBy === currentUid)){
+      ta.value = data.content || '';
+    }
+  }, err => console.warn(err));
+}
+function leavePrepRoomEditor(){
+  if(prepRoomUnsub){ prepRoomUnsub(); prepRoomUnsub = null; }
+  activeRoomId = null;
+  showView('v-prep-room', document.getElementById('navi-preproom-t'));
+}
+function onPrepRoomInput(){
+  if(!activeRoomId) return;
+  clearTimeout(prepRoomSaveTimer);
+  prepRoomSaveTimer = setTimeout(() => {
+    const content = document.getElementById('room-editor-textarea').value;
+    db.collection('prepRooms').doc(activeRoomId).update({
+      content, updatedBy: currentUid, updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      [`participantNames.${currentUid}`]: pendingUser.name || 'مستخدم'
+    }).catch(err => console.warn('room sync failed', err));
+  }, 700);
+}
+function copyRoomCode(){
+  const el = document.getElementById('room-code-display'); if(!el) return;
+  el.select();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(el.value).then(() => toast('اتنسخ كود الغرفة.')).catch(() => toast('تعذّر النسخ التلقائي — انسخه يدويًا.'));
+  }else{
+    document.execCommand('copy'); toast('اتنسخ كود الغرفة.');
+  }
+}
+// لو المستخدم داخل عن طريق رابط غرفة مشتركة (#room=id)
+function handleSharedRoomLink(){
+  const m = location.hash.match(/^#room=(.+)$/);
+  if(m && m[1]) joinPrepRoomByCodeDirect(decodeURIComponent(m[1]));
+}
+async function joinPrepRoomByCodeDirect(code){
+  try{
+    const doc = await db.collection('prepRooms').doc(code).get();
+    if(!doc.exists) return;
+    const data = doc.data();
+    if(!(data.participants||[]).includes(currentUid)){
+      await db.collection('prepRooms').doc(code).update({
+        participants: firebase.firestore.FieldValue.arrayUnion(currentUid),
+        [`participantNames.${currentUid}`]: pendingUser.name || 'مستخدم'
+      });
+    }
+    openPrepRoom(code);
+  }catch(err){ console.warn(err); }
+}
+
+/* ---------- مركز الأدوات التعليمية ---------- */
+function renderToolsHub(){
+  const el = document.getElementById('tools-hub-grid'); if(!el) return;
+  const tools = [
+    { icon:'❓', title:'بنك الأسئلة', desc:'أنشئ وصنّف أسئلتك حسب المادة والصعوبة', view:'v-questions' },
+    { icon:'📝', title:'مصنع الاختبارات وأوراق العمل', desc:'ابنِ اختبار أو ورقة عمل بمزيج صعوبة، واطبعه مع نموذج الإجابة', view:'v-quizzes' },
+    { icon:'📋', title:'مولد تحضير الدروس', desc:'خطة درس كاملة: أهداف، تمهيد، شرح، تقويم', view:'v-lesson-planner' },
+    { icon:'📒', title:'دفاتر تحضير', desc:'شارك دفتر تحضيرك أو استفد من دفاتر زملائك', view:'v-notebooks' },
+    { icon:'🏆', title:'مولد الشهادات', desc:'أصدر شهادات تقدير لطلابك دفعة واحدة', view:'v-certificates' },
+    { icon:'👥', title:'غرفة التحضير الجماعي', desc:'حرر ملف تحضير مع زمايلك في نفس الوقت', view:'v-prep-room' },
+    { icon:'🏆', title:'لوحة المتصدرين', desc:'نقاطك من الأنشطة، ومين أكتر المعلمين نشاطًا', view:'v-leaderboard' },
+    { icon:'👤', title:'ملفي الاحترافي', desc:'التخصص، النبذة، سجل التطور المهني، وتصدير CV', view:'v-profile' },
+    { icon:'🎓', title:'ملف الإنجاز', desc:'كل إنجازاتك على المنصة في مكان واحد', view:'v-portfolio' },
+  ];
+  const navIdByView = {
+    'v-questions':'navi-questions-t', 'v-quizzes':'navi-quizzes-t', 'v-lesson-planner':'navi-lessonplanner-t',
+    'v-notebooks':'navi-notebooks-t', 'v-certificates':'navi-certificates-t', 'v-prep-room':'navi-preproom-t',
+    'v-leaderboard':'navi-leaderboard-t'
+  };
+  el.innerHTML = tools.map((t,i) => `
+    <div class="tools-hub-card" onclick="openToolsHubItem(${i})">
+      <div class="thc-icon">${t.icon}</div>
+      <div class="thc-title">${escapeHtml(t.title)}</div>
+      <div class="thc-desc">${escapeHtml(t.desc)}</div>
+    </div>`).join('');
+  window.__toolsHubList = tools.map(t => ({ view: t.view, navId: navIdByView[t.view] || null }));
+}
+function openToolsHubItem(i){
+  const item = (window.__toolsHubList||[])[i]; if(!item) return;
+  const btn = item.navId ? document.getElementById(item.navId) : null;
+  showView(item.view, btn);
+}
+/* ---------- مولد الشهادات الديناميكي ---------- */
+function generateCertificates(){
+  const title = document.getElementById('cert-title').value.trim() || 'شهادة تقدير';
+  const design = document.getElementById('cert-design').value;
+  const issuer = document.getElementById('cert-issuer').value.trim() || pendingUser.name || 'نُدرس معًا';
+  const reason = document.getElementById('cert-reason').value.trim() || 'تقديرًا لتميزه وتفوقه';
+  const namesRaw = document.getElementById('cert-names').value.trim();
+  const status = document.getElementById('cert-status');
+  const names = namesRaw.split('\n').map(s=>s.trim()).filter(Boolean);
+  if(!names.length){ status.className='auth-status err'; status.textContent='اكتب اسم طالب واحد على الأقل.'; return; }
+  const win = window.open('', '_blank');
+  if(!win){ toast('المتصفح منع فتح نافذة جديدة — اسمح بالنوافذ المنبثقة وجرّب تاني.', {type:'err'}); return; }
+  status.className='auth-status ok'; status.textContent = `✓ جاري تجهيز ${names.length} شهادة للطباعة.`;
+
+  const dateStr = new Date().toLocaleDateString('ar-EG');
+  const certsHtml = names.map(name => `
+    <div class="cert cert-${design}">
+      <div class="cert-inner">
+        <div class="cert-brand">نُدرس معًا</div>
+        <div class="cert-title">${escapeHtml(title)}</div>
+        <div class="cert-sub">تُمنح هذه الشهادة إلى</div>
+        <div class="cert-name">${escapeHtml(name)}</div>
+        <div class="cert-reason">${escapeHtml(reason)}</div>
+        <div class="cert-footer">
+          <div class="cert-sig"><div class="line"></div><div>${escapeHtml(issuer)}</div></div>
+          <div class="cert-date">${dateStr}</div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  const html = `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<title>${escapeHtml(title)}</title>
+<style>
+  *{ box-sizing:border-box; }
+  body{ font-family:'Segoe UI', Tahoma, Arial, sans-serif; margin:0; color:#1b2a41; }
+  .cert{ width:100%; height:100vh; display:flex; align-items:center; justify-content:center; page-break-after:always; padding:30px; }
+  .cert:last-child{ page-break-after:auto; }
+  .cert-inner{ width:100%; max-width:760px; text-align:center; padding:50px 40px; border-radius:8px; }
+  .cert-classic .cert-inner{ border:10px double #c79a2b; background:#fffdf6; }
+  .cert-simple .cert-inner{ border:2px solid #1b2a41; background:#fff; }
+  .cert-brand{ font-size:13px; letter-spacing:2px; color:#8a6a1c; font-weight:800; margin-bottom:10px; }
+  .cert-simple .cert-brand{ color:#1b2a41; }
+  .cert-title{ font-size:34px; font-weight:900; margin-bottom:18px; }
+  .cert-sub{ font-size:15px; color:#555; }
+  .cert-name{ font-size:30px; font-weight:800; margin:10px 0 18px; color:#1b2a41; border-bottom:2px solid #c79a2b; display:inline-block; padding-bottom:6px; }
+  .cert-simple .cert-name{ border-bottom-color:#1b2a41; }
+  .cert-reason{ font-size:14.5px; color:#444; max-width:560px; margin:0 auto 34px; line-height:1.8; }
+  .cert-footer{ display:flex; justify-content:space-between; align-items:flex-end; font-size:12.5px; color:#555; margin-top:20px; }
+  .cert-sig .line{ border-bottom:1px solid #999; width:160px; height:26px; }
+  @media print{ .cert{ height:100vh; } }
+</style></head>
+<body>
+  ${certsHtml}
+</body></html>`;
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+  setTimeout(() => { try{ win.focus(); win.print(); }catch(e){} }, 400);
 }
 /* ---------- مركز الخصوصية والأمان ---------- */
 async function downloadMyData(){
@@ -2189,7 +2595,8 @@ async function addMyResearch(){
       ownerUid: currentUid, ownerName: pendingUser.name, createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     ['myres-title','myres-link','myres-problem','myres-hypothesis','myres-tools','myres-results','myres-recommendations'].forEach(id => { document.getElementById(id).value=''; });
-    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة.';
+    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة. (+'+POINTS.researchPublish+' نقطة)';
+    awardPoints(POINTS.researchPublish, 'researchPublish');
     loadMyResearch();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
@@ -2458,7 +2865,7 @@ async function toggleLessonComplete(courseId, lessonId){
     courseProgressCache[courseId] = { completedLessonIds: completed, completedAt: payload.completedAt };
     renderCourseDetail(courseId);
     renderCoursesGrid();
-    if(nowComplete && !wasComplete) toast('🎓 مبروك، خلّصت الدورة!');
+    if(nowComplete && !wasComplete){ toast('🎓 مبروك، خلّصت الدورة! (+'+POINTS.courseComplete+' نقطة)'); awardPoints(POINTS.courseComplete, 'courseComplete', { courseId }); }
   }catch(err){ toast('تعذّر الحفظ الآن.'); console.warn(err); }
 }
 
@@ -2838,8 +3245,10 @@ function printLessonPlan(id){
   .brand{ font-size:11px; color:#999; text-align:left; }
   h2{ font-size:15px; border-inline-start:4px solid #1b2a41; padding-inline-start:8px; margin-top:22px; }
   @media print{ body{ margin:0 auto; } }
-</style></head>
+  ${watermarkCss()}
+</style>${mathJaxTag()}</head>
 <body>
+  ${watermarkHtml(pendingUser.name)}
   <div class="head">
     <div><h1>${escapeHtml(d.title||'')}</h1><div class="meta">${escapeHtml(d.subject||'')}${d.grade ? ' · '+escapeHtml(d.grade) : ''} · ${d.duration||45} دقيقة</div></div>
     <div class="brand">نُدرس معًا · إعداد: ${escapeHtml(pendingUser.name||'')}<br>${new Date().toLocaleDateString('ar-EG')}</div>
@@ -3020,8 +3429,10 @@ function printQuizPaper(id, withAnswers){
   .model-answer{ font-size:13px; color:#2f7a4f; font-weight:700; background:#eef7f0; border-radius:5px; padding:6px 10px; margin-inline-start:6px; }
   .answer-lines .line{ border-bottom:1px solid #ccc; height:22px; margin-inline-start:6px; max-width:520px; }
   @media print{ body{ margin:0 auto; } }
-</style></head>
+  ${watermarkCss()}
+</style>${mathJaxTag()}</head>
 <body>
+  ${watermarkHtml(pendingUser.name)}
   <div class="paper-head">
     <div>
       <h1>${escapeHtml(d.title||'')}</h1>
@@ -3417,6 +3828,8 @@ async function openPublicProfile(uid){
       return;
     }
     const agg = await ratingAggFor(uid);
+    const totalPoints = await pointsAggFor(uid);
+    const lvl = levelForPoints(totalPoints);
     noteEl.textContent = p.role === 'teacher' ? 'معلم' : 'طالب معلم';
     bodyEl.innerHTML = `
       <div class="profile-head">
@@ -3425,6 +3838,7 @@ async function openPublicProfile(uid){
           <div class="profile-name">${escapeHtml(p.name||'مستخدم')}${p.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : ''}${p.verified ? ' <span class="verified-badge" title="حساب موثّق">✓</span>' : ''}</div>
           <div class="profile-meta">${escapeHtml(p.specialization || 'مفيش تخصص مضاف')}</div>
           <div class="profile-meta" style="margin-top:4px;">${agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} من 5 (${agg.count} تقييم)` : 'لسه مفيش تقييمات'}</div>
+          <div class="profile-meta" style="margin-top:4px;">${lvl.emoji} ${totalPoints} نقطة · مستوى "${escapeHtml(lvl.label)}"</div>
         </div>
       </div>
       <div class="card-panel" style="margin-top:16px;">
@@ -3660,7 +4074,8 @@ async function createPost(){
     document.getElementById('post-is-question').checked = false;
     removeComposerImage();
     status.className='auth-status ok'; status.textContent='✓ تم النشر.';
-    toast('تم نشر منشورك في المجتمع.');
+    toast('تم نشر منشورك في المجتمع. (+'+POINTS.communityPost+' نقطة)');
+    awardPoints(POINTS.communityPost, 'communityPost');
     loadCommunity();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; progress.textContent=''; }
   finally{ submitBtn.disabled = false; }
@@ -3791,11 +4206,11 @@ async function loadComments(id){
       const mine = c.authorUid === currentUid;
       const isAccepted = postData.acceptedCommentId === d.id;
       const showAcceptBtn = postData.isQuestion && isOwner;
-      return `<div class="comment-item ${isAccepted ? 'accepted-answer' : ''}" id="comment-${id}-${d.id}"><div>${isAccepted ? '<span class="expert-badge">✓ إجابة معتمدة</span> ' : ''}<b>${escapeHtml(c.authorName||'مستخدم')}:</b> ${escapeHtml(c.content||'')}</div><div style="display:flex; gap:10px; margin-top:4px;">${!mine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(c.authorUid)}','${escapeAttr(c.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>` : ''}${showAcceptBtn ? `<button class="accept-answer-btn ${isAccepted?'accepted':''}" onclick="toggleAcceptedAnswer('${id}','${d.id}')">${isAccepted ? '✓ إجابة معتمدة' : 'اعتمد كإجابة'}</button>` : ''}${mine ? `<button onclick="deleteComment('${id}','${d.id}')" style="background:none; color:var(--ink-soft); font-size:11px;">${ic('trash')} حذف</button>` : ''}</div></div>`;
+      return `<div class="comment-item ${isAccepted ? 'accepted-answer' : ''}" id="comment-${id}-${d.id}"><div>${isAccepted ? '<span class="expert-badge">✓ إجابة معتمدة</span> ' : ''}<b>${escapeHtml(c.authorName||'مستخدم')}:</b> ${escapeHtml(c.content||'')}</div><div style="display:flex; gap:10px; margin-top:4px;">${!mine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(c.authorUid)}','${escapeAttr(c.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>` : ''}${showAcceptBtn ? `<button class="accept-answer-btn ${isAccepted?'accepted':''}" onclick="toggleAcceptedAnswer('${id}','${d.id}','${escapeAttr(c.authorUid||'')}')">${isAccepted ? '✓ إجابة معتمدة' : 'اعتمد كإجابة'}</button>` : ''}${mine ? `<button onclick="deleteComment('${id}','${d.id}')" style="background:none; color:var(--ink-soft); font-size:11px;">${ic('trash')} حذف</button>` : ''}</div></div>`;
     }).join('');
   }catch(err){ el.innerHTML = '<div style="font-size:12px; color:var(--brick);">تعذّر تحميل التعليقات.</div>'; console.warn(err); }
 }
-async function toggleAcceptedAnswer(postId, commentId){
+async function toggleAcceptedAnswer(postId, commentId, commentAuthorUid){
   const cachedPost = communityPostsCache.find(p => p.id === postId);
   if(!cachedPost) return;
   const newValue = cachedPost.data.acceptedCommentId === commentId ? null : commentId;
@@ -3803,7 +4218,12 @@ async function toggleAcceptedAnswer(postId, commentId){
     await db.collection('communityPosts').doc(postId).update({ acceptedCommentId: newValue });
     cachedPost.data.acceptedCommentId = newValue;
     loadComments(postId);
-    toast(newValue ? 'اتحددت الإجابة المعتمدة.' : 'اتشالت الإجابة المعتمدة.');
+    if(newValue){
+      toast('اتحددت الإجابة المعتمدة (+'+POINTS.acceptedAnswer+' نقطة لصاحبها).');
+      awardAcceptedAnswerPoints(postId, commentId, commentAuthorUid);
+    }else{
+      toast('اتشالت الإجابة المعتمدة.');
+    }
   }catch(err){ toast('تعذّر الحفظ الآن.'); console.warn(err); }
 }
 async function addComment(id){
@@ -3887,7 +4307,8 @@ async function addNotebook(){
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     document.getElementById('nb-title').value=''; document.getElementById('nb-link').value='';
-    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة.';
+    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة. (+'+POINTS.notebookPublish+' نقطة)';
+    awardPoints(POINTS.notebookPublish, 'notebookPublish');
     loadNotebooks();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
