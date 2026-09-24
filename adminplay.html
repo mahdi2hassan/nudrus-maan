@@ -240,6 +240,8 @@
     <button class="tab" onclick="switchTab('courses', this)"><svg class="icon"><use href="#i-grad"></use></svg> الدورات</button>
     <button class="tab" onclick="switchTab('community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
     <button class="tab" onclick="switchTab('notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر التحضير</button>
+    <button class="tab" onclick="switchTab('wallet', this)"><svg class="icon"><use href="#i-check"></use></svg> المحفظة</button>
+    <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
     <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
     <button class="tab" onclick="switchTab('reports', this)"><svg class="icon"><use href="#i-flag"></use></svg> البلاغات</button>
     <button class="tab" onclick="switchTab('analytics', this)"><svg class="icon"><use href="#i-chart"></use></svg> الإحصائيات</button>
@@ -308,6 +310,20 @@
     <div id="notebooks-mod-list"></div>
   </div>
 
+  <div class="panel" id="panel-wallet">
+    <div class="d" style="margin-bottom:10px;">طلبات خصم الرصيد من اشتراك المستخدم (750 نقطة = 1 جنيه). اخصم المبلغ عند تفعيل الاشتراك يدويًا ثم اضغط "اتطبّق".</div>
+    <div id="wallet-admin-list"></div>
+  </div>
+
+  <div class="panel" id="panel-challenges">
+    <div class="card">
+      <div class="field"><label>عنوان التحدي</label><input type="text" id="chl-title"></div>
+      <div class="field"><label>الوصف</label><textarea rows="2" id="chl-desc"></textarea></div>
+      <button class="btn" onclick="addChallenge()"><svg class="icon"><use href="#i-check"></use></svg> إطلاق التحدي</button>
+    </div>
+    <div id="challenges-list"></div>
+  </div>
+
   <div class="panel" id="panel-users">
     <div class="status" id="users-status" style="margin-bottom:10px;"></div>
     <div id="users-list"></div>
@@ -368,6 +384,12 @@
 <script>
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+function sortSnap(snap, field, dir, limit){
+  const key = d => { const v = d.data()[field]; return v === undefined ? 0 : v === null ? Infinity : (v.toMillis ? v.toMillis() : v); };
+  const cmp = (a,b) => { const x = key(a), y = key(b); return typeof x === 'string' ? x.localeCompare(y) : (x === y ? 0 : x < y ? -1 : 1); };
+  let docs = [...snap.docs].sort(cmp); if(dir !== 'asc') docs.reverse(); if(limit) docs = docs.slice(0, limit);
+  return { docs, empty: !docs.length, size: docs.length, forEach: f => docs.forEach(f) };
+}
 function ic(name){ return `<svg class="icon"><use href="#i-${name}"></use></svg>`; }
 
 /* ---------- toast notifications (replaces alert/confirm) ---------- */
@@ -518,6 +540,8 @@ async function checkGate(){
     loadAnalytics();
     loadCommunityMod();
     loadNotebooksMod();
+    loadWalletAdmin();
+    loadChallengesAdmin();
     subscribeAdminConvList();
     loadContactSettings();
   }catch(e){
@@ -837,8 +861,7 @@ function subscribeAdminConvList(){
   if(adminConvListUnsub) adminConvListUnsub();
   adminConvListUnsub = db.collection('conversations')
     .where('participants', 'array-contains', SUPPORT_UID)
-    .orderBy('lastMessageAt', 'desc')
-    .onSnapshot(snap => {
+    .onSnapshot(snap0 => { const snap = sortSnap(snap0, 'lastMessageAt');
       const el = document.getElementById('admin-conv-list');
       if(!el) return;
       if(snap.empty){ el.innerHTML = '<div class="empty-state" style="padding:16px;">لسه مفيش محادثات دعم.</div>'; return; }
@@ -1031,7 +1054,7 @@ async function loadReports(){
   const el = document.getElementById('reports-list'); if(!el) return;
   el.innerHTML = 'جاري التحميل...';
   try{
-    const snap = await db.collection('reports').where('status','==','open').orderBy('createdAt','desc').limit(100).get();
+    const snap = sortSnap(await db.collection('reports').where('status','==','open').get(), 'createdAt', 'desc', 100);
     if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش بلاغات مفتوحة دلوقتي.</div></div>'; return; }
     const rows = await Promise.all(snap.docs.map(async d => {
       const r = d.data();
@@ -1064,6 +1087,45 @@ async function deleteReportedPost(reportId, postId){
     toast('اتحذف المنشور وتم إغلاق البلاغ.');
     loadReports();
   }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= المحفظة + تحدي الأسبوع ================= */
+async function loadWalletAdmin(){
+  const el = document.getElementById('wallet-admin-list'); if(!el) return;
+  try{
+    const snap = await db.collection('walletRedemptions').where('status','==','pending').get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش طلبات استبدال معلّقة.</div></div>'; return; }
+    el.innerHTML = snap.docs.map(d => { const r = d.data(); return `<div class="item" style="flex-direction:column; align-items:stretch;"><div class="t">${escapeHtml(r.name||'مستخدم')} — ${r.egp} ج.م (${r.points} نقطة)</div><div class="d">${r.purpose==='renew'?'تجديد اشتراك':'ترقية عضوية'}</div><div class="actions" style="margin-top:8px;"><button class="edit-btn" onclick="setRedeem('${d.id}','approved')">${ic('check')} اتطبّق</button><button class="del" onclick="setRedeem('${d.id}','rejected')">${ic('trash')} ارفض وارجّع النقاط</button></div></div>`; }).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function setRedeem(id, status){
+  try{ await db.collection('walletRedemptions').doc(id).update({ status }); toast('تم.'); loadWalletAdmin(); }
+  catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
+}
+async function loadChallengesAdmin(){
+  const el = document.getElementById('challenges-list'); if(!el) return;
+  try{
+    const rows = (await db.collection('challenges').get()).docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+    el.innerHTML = rows.map(c => `<div class="item"><div><div class="t">${escapeHtml(c.title||'')} ${c.active?'🔥':'🏁 الفايز: '+escapeHtml(c.winnerName||'—')}</div><div class="d">${escapeHtml(c.description||'')}</div></div>${c.active?`<div class="actions"><button class="edit-btn" onclick="closeChallenge('${c.id}')">${ic('check')} اقفل وأعلن الفايز</button></div>`:''}</div>`).join('') || '<div class="item"><div class="d">مفيش تحديات لسه.</div></div>';
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function addChallenge(){
+  const title = document.getElementById('chl-title').value.trim(), description = document.getElementById('chl-desc').value.trim();
+  if(!title){ toast('اكتب عنوان التحدي.', {type:'err'}); return; }
+  try{
+    await db.collection('challenges').add({ title, description, active: true, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    document.getElementById('chl-title').value = ''; document.getElementById('chl-desc').value = '';
+    toast('اتطلق التحدي.'); loadChallengesAdmin();
+  }catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
+}
+async function closeChallenge(id){
+  try{
+    const [es, vs] = await Promise.all([db.collection('challengeEntries').where('challengeId','==',id).get(), db.collection('challengeVotes').where('challengeId','==',id).get()]);
+    const tally = {}; vs.forEach(d => { const e = d.data().entryId; tally[e] = (tally[e]||0) + 1; });
+    const top = es.docs.map(d => ({ ...d.data(), id: d.id, v: tally[d.id]||0 })).sort((a,b) => b.v - a.v)[0];
+    await db.collection('challenges').doc(id).update({ active: false, winnerName: top ? top.ownerName : '', winnerEntryId: top ? top.id : '' });
+    toast(top ? 'الفايز: '+top.ownerName : 'اتقفل التحدي (مفيش مشاركات).'); loadChallengesAdmin();
+  }catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
 }
 
 /* ================= الإحصائيات ================= */

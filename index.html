@@ -2,7 +2,15 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B2A41">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="نُدرس معًا">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
 <title>نُدرس معًا</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
@@ -464,6 +472,24 @@
   .community-filter-row{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
   .community-filter-row input{flex:1; min-width:160px; padding:9px 12px; border:1px solid var(--line); border-radius:20px; font-family:inherit; font-size:12.5px;}
   .community-filter-row select{padding:9px 12px; border:1px solid var(--line); border-radius:20px; font-family:inherit; font-size:12.5px; background:var(--white);}
+
+  /* ===== تحسينات الموبايل (أندرويد + آيفون) ===== */
+  html{-webkit-text-size-adjust:100%;}
+  body, .shell, #screen-app, #screen-role{min-height:100vh; min-height:100dvh;}
+  body{-webkit-tap-highlight-color:transparent; overscroll-behavior-y:none; padding-left:env(safe-area-inset-left); padding-right:env(safe-area-inset-right);}
+  button, .nav-item, .filter-tab, .quiz-opt{touch-action:manipulation;}
+  .sidebar{height:100vh; height:100dvh; padding-top:calc(24px + env(safe-area-inset-top)); padding-bottom:calc(24px + env(safe-area-inset-bottom));}
+  .main{padding-bottom:calc(24px + env(safe-area-inset-bottom));}
+  .toast{max-width:calc(100vw - 24px);}
+  .content-item{flex-wrap:wrap; gap:8px;}
+  img, video, iframe{max-width:100%;}
+  @media (max-width:760px){
+    input, select, textarea{font-size:16px !important;} /* يمنع تكبير الآيفون التلقائي عند الكتابة */
+    .chat-shell{height:calc(100dvh - 200px); min-height:420px;}
+    .field-row{flex-wrap:wrap;} .field-row .field{min-width:130px;}
+    .card-panel{padding:18px;}
+    table{display:block; overflow-x:auto;}
+  }
 </style>
 </head>
 <body>
@@ -680,13 +706,20 @@
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-leaderboard-t" onclick="showView('v-leaderboard', this)"><svg class="icon"><use href="#i-award"></use></svg> لوحة المتصدرين</button>
+        <button class="nav-item" id="navi-wallet-t" onclick="showView('v-wallet', this)"><svg class="icon"><use href="#i-cash"></use></svg> المحفظة</button>
+        <button class="nav-item" onclick="showView('v-challenge', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
+        <button class="nav-item" onclick="showView('v-career', this)"><svg class="icon"><use href="#i-grad"></use></svg> مساري كمعلم</button>
+        <button class="nav-item" onclick="showView('v-sim', this)"><svg class="icon"><use href="#i-help"></use></svg> محاكاة المواقف الصفية</button>
         <button class="nav-item" onclick="showView('v-qa', this)"><svg class="icon"><use href="#i-help"></use></svg> الأسئلة</button>
         <button class="nav-item" onclick="showView('v-groups', this)"><svg class="icon"><use href="#i-layers"></use></svg> مجموعات التخصص</button>
+        <button class="nav-item" onclick="showView('v-expert', this)"><svg class="icon"><use href="#i-star"></use></svg> اسأل معلماً خبيراً</button>
+        <button class="nav-item" onclick="showView('v-problems', this)"><svg class="icon"><use href="#i-help"></use></svg> مشكلتي في الفصل</button>
         <button class="nav-item" id="navi-chats-t" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
 
         <div class="nav-group-label">الحساب</div>
         <button class="nav-item" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
         <button class="nav-item" id="navi-upgrade-t" onclick="showView('v-upgrade', this)"><svg class="icon"><use href="#i-star"></use></svg> طوّر خطتك</button>
+        <button class="nav-item install-nav" style="display:none;" onclick="installApp()"><svg class="icon"><use href="#i-star"></use></svg> ثبّت التطبيق على موبايلك</button>
         <button class="nav-item" onclick="switchRole()"><svg class="icon"><use href="#i-refresh"></use></svg> تغيير المسار</button>
 
         <div class="nav-group-label">المساعدة</div>
@@ -719,13 +752,20 @@
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-leaderboard-s" onclick="showView('v-leaderboard', this)"><svg class="icon"><use href="#i-award"></use></svg> لوحة المتصدرين</button>
+        <button class="nav-item" onclick="showView('v-wallet', this)"><svg class="icon"><use href="#i-cash"></use></svg> المحفظة</button>
+        <button class="nav-item" onclick="showView('v-challenge', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
+        <button class="nav-item" onclick="showView('v-career', this)"><svg class="icon"><use href="#i-grad"></use></svg> مساري كمعلم</button>
+        <button class="nav-item" onclick="showView('v-sim', this)"><svg class="icon"><use href="#i-help"></use></svg> محاكاة المواقف الصفية</button>
         <button class="nav-item" onclick="showView('v-qa', this)"><svg class="icon"><use href="#i-help"></use></svg> الأسئلة</button>
         <button class="nav-item" onclick="showView('v-groups', this)"><svg class="icon"><use href="#i-layers"></use></svg> مجموعات التخصص</button>
+        <button class="nav-item" onclick="showView('v-expert', this)"><svg class="icon"><use href="#i-star"></use></svg> اسأل معلماً خبيراً</button>
+        <button class="nav-item" onclick="showView('v-problems', this)"><svg class="icon"><use href="#i-help"></use></svg> مشكلتي في الفصل</button>
         <button class="nav-item" id="navi-chats-s" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-s" style="display:none;">0</span></button>
 
         <div class="nav-group-label">الحساب</div>
         <button class="nav-item" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
         <button class="nav-item" onclick="showView('v-upgrade', this)"><svg class="icon"><use href="#i-star"></use></svg> طوّر خطتك</button>
+        <button class="nav-item install-nav" style="display:none;" onclick="installApp()"><svg class="icon"><use href="#i-star"></use></svg> ثبّت التطبيق على موبايلك</button>
         <button class="nav-item" onclick="switchRole()"><svg class="icon"><use href="#i-refresh"></use></svg> تغيير المسار</button>
 
         <div class="nav-group-label">المساعدة</div>
@@ -836,6 +876,7 @@
           <div class="auth-status" id="nb-status"></div>
           <div class="hint">تأكد إن إعدادات المشاركة في درايف بتسمح لـ "أي شخص لديه الرابط" بالعرض.</div>
         </div>
+        <div id="nb-review-box"></div>
         <div id="notebooks-list" class="content-list"><div class="empty-state">جاري تحميل الدفاتر...</div></div>
       </div>
 
@@ -934,7 +975,56 @@
       <!-- ========== لوحة المتصدرين ========== -->
       <div class="view" id="v-leaderboard">
         <div class="topbar"><div><h1>لوحة المتصدرين</h1><div class="sub">أكتر المعلمين نشاطًا وعطاءً للمجتمع (نقاط الأنشطة)</div></div></div>
+        <label style="display:flex; align-items:center; gap:8px; margin-bottom:14px; font-size:14px; font-weight:700;"><input type="checkbox" id="lb-optin" onchange="toggleLb(this.checked)"> أظهر اسمي ونقاطي في لوحة المتصدرين (اختياري)</label>
         <div id="leaderboard-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <!-- ========== المحفظة الإلكترونية ========== -->
+      <div class="view" id="v-wallet">
+        <div class="topbar"><div><h1>المحفظة</h1><div class="sub">استبدل نقاطك بمكافآت داخل المنصة</div></div></div>
+        <div class="card-panel" style="margin-bottom:20px; text-align:center;">
+          <div style="font-size:13px; color:var(--ink-soft); margin-bottom:4px;">رصيدك الحالي</div>
+          <div id="wallet-balance" style="font-size:34px; font-weight:900;">—</div>
+        </div>
+        <div class="section-title">استخدم رصيدك</div>
+        <div class="card-panel" style="max-width:none; margin-bottom:26px;">
+          <div class="field-row">
+            <div class="field"><label>الغرض</label><select id="wallet-purpose"><option value="upgrade">ترقية العضوية</option><option value="renew">تجديد الاشتراك</option></select></div>
+            <div class="field"><label>المبلغ (جنيه كامل)</label><input type="number" id="wallet-egp" min="1" step="1"></div>
+          </div>
+          <button class="btn-primary" onclick="requestRedeem()">اطلب الخصم من اشتراكي</button>
+          <div class="auth-status" id="wallet-status"></div>
+          <div class="hint">كل 750 نقطة = 1 جنيه. الرصيد بيُستخدم داخل المنصة بس (ترقية أو تجديد) ومينفعش يتحوّل لفلوس نقدية.</div>
+        </div>
+        <div class="section-title">طلبات الاستبدال بتاعتي</div>
+        <div id="wallet-redemptions-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-challenge">
+        <div class="topbar"><div><h1>تحدي الأسبوع</h1><div class="sub">مهمة أسبوعية والفايز بتصويت أعضاء المجتمع</div></div></div>
+        <div id="challenge-content"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-career">
+        <div class="topbar"><div><h1>مساري كمعلم</h1><div class="sub">خارطة طريق من طالب معلم لمعلم خبير</div></div></div>
+        <div id="career-content"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-sim">
+        <div class="topbar"><div><h1>محاكاة المواقف الصفية</h1><div class="sub">جرّب قرارك في مواقف حقيقية واحصل على تغذية راجعة فورية</div></div></div>
+        <div id="sim-content"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-expert">
+        <div class="topbar"><div><h1>اسأل معلماً خبيراً</h1><div class="sub">أسئلتك للمعلمين الموثّقين — صوّت لأفضل إجابة واعتمدها</div></div></div>
+        <button class="btn-primary" style="margin-bottom:18px;" onclick="goCompose('expert')">+ اسأل سؤال جديد</button>
+        <div id="expert-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
+      </div>
+
+      <div class="view" id="v-problems">
+        <div class="topbar"><div><h1>بنك التجارب — مشكلتي في الفصل</h1><div class="sub">مشكلات حقيقية من الفصل وحلول اتجرّبت فعلاً</div></div></div>
+        <button class="btn-primary" style="margin-bottom:18px;" onclick="goCompose('problem')">+ شارك مشكلة</button>
+        <div id="problems-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
 
       <!-- SHARED: تعلم كيف -->
@@ -1195,6 +1285,8 @@
               <div class="field"><label>الصف</label><input type="text" id="pl-grade"></div>
               <div class="field"><label>المادة</label><input type="text" id="pl-subject"></div>
               <div class="field"><label>تاريخ الزيارة</label><input type="date" id="pl-date"></div>
+              <div class="field"><label>عدد الساعات</label><input type="number" id="pl-hours" min="0.5" step="0.5" value="1"></div>
+              <div class="field"><label>اسم المشرف</label><input type="text" id="pl-supervisor"></div>
               <div class="field field-full"><label>الدرس / النشاط</label><input type="text" id="pl-lesson"></div>
               <div class="field field-full"><label>ملاحظات المشرف</label><textarea rows="2" id="pl-notes"></textarea></div>
               <div class="field"><label>التقييم</label>
@@ -1210,6 +1302,11 @@
             <div class="auth-status" id="pl-status"></div>
           </div>
           <div class="section-title">سجل زياراتك<button class="linklike" onclick="printPracticalReport()">تقرير قابل للطباعة</button></div>
+          <div class="card-panel" style="max-width:none; margin-bottom:14px;">
+            <div class="field"><label>الجامعة / الكلية (تظهر في التقرير)</label><input type="text" id="pl-rep-univ"></div>
+            <div class="field-row"><div class="field"><label>من</label><input type="date" id="pl-rep-from"></div><div class="field"><label>إلى</label><input type="date" id="pl-rep-to"></div></div>
+            <div id="pl-summary" style="font-weight:800; font-size:13.5px;"></div>
+          </div>
           <div id="practical-log-list"></div>
         </div>
       </div>
@@ -1272,6 +1369,7 @@
               <option>دراسات</option><option>لغات</option><option>تربية خاصة</option><option>عام</option>
             </select>
           </div>
+          <div class="field"><label>نوع المنشور</label><select id="post-kind"><option value="">منشور عادي</option><option value="expert">🎓 اسأل معلماً خبيراً</option><option value="problem">🧩 مشكلتي في الفصل (بنك التجارب)</option></select></div>
           <div class="field"><label>منشورك</label><textarea rows="3" id="post-content" placeholder="اسأل سؤال، شارك فكرة شرح، أو ابدأ نقاش..."></textarea></div>
           <label style="display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;"><input type="checkbox" id="post-is-question" style="width:auto;"> ده سؤال محتاج إجابة من المجتمع</label>
           <div class="composer-image-preview" id="composer-image-preview">
@@ -1507,7 +1605,7 @@ async function googleAuth(){
       await auth.signOut();
     }
   }catch(err){
-    status.className = 'auth-status err'; status.textContent = friendlyAuthError(err);
+    status.className = 'auth-status err'; status.textContent = (isStandalone() && /popup|operation-not-supported/.test(err.code||'')) ? 'تسجيل الدخول بجوجل مش شغال جوّه التطبيق المثبّت — سجّل بالإيميل وكلمة السر، أو افتح الموقع من المتصفح.' : friendlyAuthError(err);
   }finally{ btn.disabled = false; }
 }
 async function completeGoogleSignup(){
@@ -1800,7 +1898,7 @@ function enterApp(role){
   loadAvailableQuizzes();
   loadMyQuizAttempts();
   loadTasks();
-  loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce();
+  syncPublicProfile(); loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce();
   handleSharedProfileLink();
   handleSharedRoomLink();
 }
@@ -1829,6 +1927,12 @@ function showView(id, btn){
   if(id === 'v-prep-room') loadPrepRooms();
   if(id === 'v-tools-hub') renderToolsHub();
   if(id === 'v-leaderboard') loadLeaderboard();
+  if(id === 'v-wallet') loadWallet();
+  if(id === 'v-expert') renderKindView('expert');
+  if(id === 'v-problems') renderKindView('problem');
+  if(id === 'v-challenge') loadChallenge();
+  if(id === 'v-career') renderCareer();
+  if(id === 'v-sim') renderSim();
   if(!btn) return;
   const parent = btn.closest('#nav-teacher') || btn.closest('#nav-student');
   if(parent){ parent.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); }
@@ -2080,34 +2184,142 @@ async function pointsAggFor(uid){
     return total;
   }catch(err){ console.warn(err); return 0; }
 }
-/* ---------- لوحة المتصدرين ---------- */
+/* ---------- لوحة المتصدرين (اختيارية) ---------- */
 async function loadLeaderboard(){
-  const el = document.getElementById('leaderboard-list'); if(!el) return;
-  el.innerHTML = '<div class="empty-state">جاري تحميل لوحة المتصدرين...</div>';
+  const el = document.getElementById('leaderboard-list'), tg = document.getElementById('lb-optin'); if(!el || !currentUid) return;
+  el.innerHTML = '<div class="empty-state">جاري التحميل...</div>';
   try{
-    const snap = await db.collection('pointsLedger').limit(2000).get();
-    const totals = {};
-    snap.forEach(d => { const v = d.data(); if(typeof v.amount === 'number' && v.uid){ totals[v.uid] = (totals[v.uid]||0) + v.amount; } });
-    const ranked = Object.entries(totals).map(([uid,total]) => ({ uid, total })).sort((a,b) => b.total - a.total).slice(0, 20);
-    if(!ranked.length){ el.innerHTML = '<div class="empty-state">لسه محدش كسب نقاط — كمّل كورس أو انشر مورد وكن أول واحد!</div>'; return; }
-    const profiles = await Promise.all(ranked.map(r => db.collection('publicProfiles').doc(r.uid).get().catch(() => null)));
-    el.innerHTML = ranked.map((r,i) => {
-      const pd = (profiles[i] && profiles[i].exists) ? profiles[i].data() : {};
-      const lvl = levelForPoints(r.total);
-      const isMe = r.uid === currentUid;
-      return `<div class="content-item" style="${isMe ? 'background:var(--paper-dim);' : ''}">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <div style="font-weight:900; min-width:22px; color:var(--ink-soft);">${i+1}</div>
-          <div class="mini-avatar" style="cursor:pointer;" onclick="openPublicProfile('${r.uid}')">${pd.photoURL ? `<img src="${escapeAttr(pd.photoURL)}" alt="">` : escapeHtml(initials(pd.name))}</div>
-          <div>
-            <div class="ci-title" style="cursor:pointer;" onclick="openPublicProfile('${r.uid}')">${escapeHtml(pd.name || 'مستخدم')}${isMe ? ' (انت)' : ''}</div>
-            <div style="font-size:11px; color:var(--ink-soft);">${lvl.emoji} ${escapeHtml(lvl.label)}</div>
-          </div>
-        </div>
-        <div style="font-weight:800;">${r.total} نقطة</div>
-      </div>`;
-    }).join('');
-  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل لوحة المتصدرين الآن.</div>'; console.warn(err); }
+    const mine = await db.collection('leaderboard').doc(currentUid).get();
+    tg.checked = mine.exists;
+    if(mine.exists) await syncLb();
+    const snap = await db.collection('leaderboard').orderBy('points','desc').limit(20).get();
+    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه محدش فعّل ظهوره في اللوحة — كن أول واحد!</div>'; return; }
+    el.innerHTML = snap.docs.map((d,i) => { const r = d.data(), me = d.id === currentUid, lvl = levelForPoints(r.points||0);
+      return `<div class="content-item" style="${me?'background:var(--paper-dim);':''}"><div style="display:flex;align-items:center;gap:10px;"><div style="font-weight:900;min-width:22px;color:var(--ink-soft);">${i+1}</div><div class="mini-avatar">${r.photoURL?`<img src="${escapeAttr(r.photoURL)}" alt="">`:escapeHtml(initials(r.name))}</div><div><div class="ci-title">${escapeHtml(r.name||'مستخدم')}${me?' (انت)':''}${r.isExpert?' ⭐':''}</div><div style="font-size:11px;color:var(--ink-soft);">${lvl.emoji} ${escapeHtml(lvl.label)}</div></div></div><div style="font-weight:800;">${r.points||0} نقطة</div></div>`; }).join('');
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل اللوحة الآن.</div>'; console.warn(err); }
+}
+async function syncLb(){
+  const points = await pointsAggFor(currentUid);
+  await db.collection('leaderboard').doc(currentUid).set({ uid: currentUid, name: pendingUser.name||'مستخدم', photoURL: pendingUser.photoURL||'', isExpert: !!userStatus.isExpert, points, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+}
+async function toggleLb(on){
+  try{ if(on) await syncLb(); else await db.collection('leaderboard').doc(currentUid).delete(); }
+  catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
+  loadLeaderboard();
+}
+/* ---------- المحفظة الإلكترونية (750 نقطة = 1 جنيه، للاستخدام داخل المنصة فقط) ---------- */
+const PTS_PER_EGP = 750;
+const RD_LABEL = { pending:'قيد المراجعة', approved:'اتطبّق على اشتراكك', rejected:'اترفض (النقاط رجعت لرصيدك)' };
+let walletAvail = 0;
+async function loadWallet(){
+  const balEl = document.getElementById('wallet-balance'), box = document.getElementById('wallet-redemptions-list'); if(!currentUid) return;
+  try{
+    const [pts, snap] = await Promise.all([pointsAggFor(currentUid), db.collection('walletRedemptions').where('uid','==',currentUid).get()]);
+    const list = snap.docs.map(d => d.data()).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+    const used = list.filter(r => r.status !== 'rejected').reduce((s,r) => s + (r.points||0), 0);
+    walletAvail = Math.max(0, pts - used);
+    const egp = Math.floor(walletAvail / PTS_PER_EGP), inp = document.getElementById('wallet-egp');
+    inp.max = egp; inp.value = egp ? 1 : '';
+    balEl.innerHTML = `${(walletAvail/PTS_PER_EGP).toFixed(2)} ج.م<div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-top:4px;">${walletAvail} نقطة · كل ${PTS_PER_EGP} نقطة = 1 جنيه</div>`;
+    box.innerHTML = list.length ? list.map(r => `<div class="content-item"><div class="ci-title">${r.egp} ج.م — ${r.purpose==='renew'?'تجديد اشتراك':'ترقية عضوية'}</div><div style="font-size:12px;color:var(--ink-soft);">${RD_LABEL[r.status]||r.status}</div></div>`).join('') : '<div class="empty-state">لسه ماعملتش أي طلب.</div>';
+  }catch(err){ balEl.textContent = '—'; console.warn(err); }
+}
+async function requestRedeem(){
+  const st = document.getElementById('wallet-status');
+  const egp = parseInt(document.getElementById('wallet-egp').value, 10) || 0, points = egp * PTS_PER_EGP;
+  if(egp < 1 || points > walletAvail){ st.className = 'auth-status err'; st.textContent = 'رصيدك مش كفاية للمبلغ ده.'; return; }
+  try{
+    await db.collection('walletRedemptions').add({ uid: currentUid, name: pendingUser.name||'', egp, points, purpose: document.getElementById('wallet-purpose').value, status: 'pending', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    st.className = 'auth-status ok'; st.textContent = '✓ اتسجّل الطلب — هيتخصم من سعر اشتراكك لما الأدمن يفعّله.';
+    loadWallet();
+  }catch(err){ st.className = 'auth-status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+/* ---------- تحدي الأسبوع ---------- */
+let chId = null;
+async function loadChallenge(){
+  const el = document.getElementById('challenge-content'); if(!el) return;
+  el.innerHTML = '<div class="empty-state">جاري التحميل...</div>';
+  try{
+    const cs = (await db.collection('challenges').get()).docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+    const ch = cs.find(c => c.active) || cs[0];
+    if(!ch){ el.innerHTML = '<div class="empty-state">مفيش تحدي حاليًا — استنى تحدي الأسبوع الجاي.</div>'; return; }
+    chId = ch.id;
+    const [es, vs] = await Promise.all([db.collection('challengeEntries').where('challengeId','==',ch.id).get(), db.collection('challengeVotes').where('challengeId','==',ch.id).get()]);
+    const votes = {}; let myVote = null;
+    vs.forEach(d => { const v = d.data(); votes[v.entryId] = (votes[v.entryId]||0) + 1; if(v.voterUid === currentUid) myVote = v.entryId; });
+    const entries = es.docs.map(d => ({id:d.id, ...d.data(), v: votes[d.id]||0})).sort((a,b) => b.v - a.v);
+    const mine = entries.some(e => e.ownerUid === currentUid);
+    el.innerHTML = `<div class="card-panel" style="max-width:none;margin-bottom:20px;"><div class="ci-title" style="font-size:17px;">${ch.active?'🔥':'🏁'} ${escapeHtml(ch.title)}</div><div class="sub" style="margin:6px 0 0;">${escapeHtml(ch.description||'')}</div>${ch.active?'':`<div style="margin-top:10px;font-weight:800;">🏆 الفايز: ${escapeHtml(ch.winnerName||'—')}</div>`}</div>
+    ${ch.active && !mine ? `<div class="card-panel" style="max-width:none;margin-bottom:20px;"><div class="field"><label>عنوان مشاركتك</label><input id="ch-title" type="text"></div><div class="field"><label>رابط الملف (Google Drive)</label><input id="ch-link" type="text" placeholder="https://drive.google.com/..."></div><button class="btn-primary" onclick="submitChallenge()">شارك في التحدي</button><div class="auth-status" id="ch-status"></div></div>` : ''}
+    <div class="section-title">المشاركات (${entries.length})</div>
+    <div class="content-list">${entries.length ? entries.map((e,i) => `<div class="content-item"><div><div class="ci-title">${i===0&&e.v?'🥇 ':''}${escapeHtml(e.title||'')}</div><div style="font-size:12px;color:var(--ink-soft);">${escapeHtml(e.ownerName||'')} · ${e.v} صوت</div>${e.link?`<a class="ci-link" href="${escapeAttr(e.link)}" target="_blank" rel="noopener">فتح</a>`:''}</div>${ch.active && e.ownerUid !== currentUid ? `<button class="${myVote===e.id?'btn-primary':'btn-secondary'}" onclick="voteEntry('${e.id}')">${myVote===e.id?'✓ صوتّك':'صوّت'}</button>` : ''}</div>`).join('') : '<div class="empty-state">لسه مفيش مشاركات — كن أول واحد!</div>'}</div>`;
+  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل التحدي.</div>'; console.warn(err); }
+}
+async function submitChallenge(){
+  const st = document.getElementById('ch-status'), title = document.getElementById('ch-title').value.trim(), link = document.getElementById('ch-link').value.trim();
+  if(!title || !/^https?:\/\//i.test(link)){ st.className = 'auth-status err'; st.textContent = 'اكتب عنوان ورابط صحيح (يبدأ بـ https://).'; return; }
+  try{
+    await db.collection('challengeEntries').doc(chId + '_' + currentUid).set({ challengeId: chId, ownerUid: currentUid, ownerName: pendingUser.name||'مستخدم', title, link, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    awardPoints(5, 'challengeEntry'); toast('اتسجّلت مشاركتك (+5 نقاط).'); loadChallenge();
+  }catch(err){ st.className = 'auth-status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function voteEntry(entryId){
+  try{
+    await db.collection('challengeVotes').doc(chId + '_' + currentUid).set({ challengeId: chId, entryId, voterUid: currentUid });
+    loadChallenge();
+  }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
+}
+/* ---------- مساري كمعلم ---------- */
+const CAREER = [
+  { n:'طالب معلم', e:'🌱', req:[] },
+  { n:'معلم متدرب', e:'📘', req:[['دورة مكتملة', m=>m.courses, 1], ['زيارة تربية عملية مسجّلة', m=>m.visits, 3]] },
+  { n:'معلم ممارس', e:'✏️', req:[['دفتر تحضير منشور', m=>m.notebooks, 2], ['منشورات في المجتمع', m=>m.posts, 5], ['نقطة نشاط', m=>m.points, 150]] },
+  { n:'معلم خبير', e:'⭐', req:[['دورات مكتملة', m=>m.courses, 3], ['نقطة نشاط', m=>m.points, 350], ['شارة معلم خبير (بتتمنح من الإدارة)', m=>m.expert?1:0, 1]] },
+];
+async function renderCareer(){
+  const el = document.getElementById('career-content'); if(!el || !currentUid) return;
+  let visits = 0;
+  try{ visits = (await db.collection('practicalLog').where('ownerUid','==',currentUid).get()).size; }catch(e){}
+  const m = { visits, points: await pointsAggFor(currentUid), expert: userStatus.isExpert,
+    courses: coursesCache.filter(({id,data:c}) => (c.lessons||[]).length && (getCourseProgress(id).completedLessonIds||[]).length >= c.lessons.length).length,
+    notebooks: notebooksCache.filter(({data:n}) => n.ownerUid === currentUid).length,
+    posts: communityPostsCache.filter(({data:p}) => p.authorUid === currentUid).length };
+  let cur = -1;
+  const stages = CAREER.map((s,i) => { const rs = s.req.map(([l,f,t]) => ({l, t, v: Math.min(f(m), t)})); const pct = rs.length ? Math.round(rs.reduce((a,r) => a + r.v/r.t, 0) / rs.length * 100) : 100; if(cur < 0 && pct < 100) cur = i; return {...s, rs, pct}; });
+  if(cur < 0) cur = CAREER.length - 1;
+  el.innerHTML = stages.map((s,i) => `<div class="card-panel" style="max-width:none;margin-bottom:12px;${i===cur?'border-color:var(--brick);':''}${i>cur?'opacity:.65;':''}"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="ci-title">${s.e} ${i+1}. ${s.n}${i===cur?' <span class="expert-badge">مرحلتك الحالية</span>':''}</div><b>${s.pct}%</b></div><div style="height:6px;background:var(--line);border-radius:3px;margin:10px 0;"><div style="height:100%;width:${s.pct}%;background:var(--brick);border-radius:3px;"></div></div>${s.rs.map(r => `<div style="font-size:12.5px;color:var(--ink-soft);">${r.v>=r.t?'✅':'⬜'} ${r.l} (${r.v}/${r.t})</div>`).join('') || '<div style="font-size:12.5px;color:var(--ink-soft);">✅ نقطة البداية</div>'}</div>`).join('');
+}
+/* ---------- محاكاة المواقف الصفية ---------- */
+const SIM = [
+  { q:'طالب بيقاطعك كل شوية وبيكلم زميله أثناء الشرح. هتعمل إيه؟', o:[
+    ['توقف الحصة وتوبّخه قدام الفصل', 0, 'التوبيخ العلني بيكسر علاقتك بالطالب وبيوتّر الفصل كله.'],
+    ['تقرّب منه وتكمّل شرحك وتسأله سؤال بسيط في الدرس', 2, 'ممتاز! القرب الجسدي وإشراكه في الدرس بيوقف المقاطعة من غير صدام.'],
+    ['تتجاهله تمامًا', 1, 'التجاهل ممكن ينفع مرة، لكن لو اتكرر لازم تتدخل بهدوء.']] },
+  { q:'نص الفصل ما فهمش الفكرة، وفاضل 10 دقايق على نهاية الحصة.', o:[
+    ['تكمّل المنهج عشان ماتتأخرش', 0, 'الفجوة هتكبر والدرس الجاي هيتبني على أساس ضعيف.'],
+    ['تعيد الشرح بمثال مختلف وتتأكد بسؤال سريع قبل ما تنهي', 2, 'صح! تنويع المثال + تقويم سريع هو أفضل استغلال للوقت.'],
+    ['تطلب منهم يذاكروها في البيت', 1, 'مقبول كحل مؤقت، بس الأفضل تعالج سوء الفهم وهما قدامك.']] },
+  { q:'ولي أمر بيشتكي إن درجات ابنه قليلة وبيلومك على التقصير.', o:[
+    ['تدافع عن نفسك وتوضّح إن المشكلة من الطالب', 0, 'الدفاع بيحوّل الحوار لخلاف بدل ما يحلّ المشكلة.'],
+    ['تسمعه للآخر، وتعرض نماذج من شغل الطالب، وتتفقوا على خطة متابعة', 2, 'ممتاز! الاستماع + دليل ملموس + خطة مشتركة هو الأسلوب المهني.'],
+    ['توعده بتحسّن الدرجات فورًا', 1, 'الوعد اللي مش مضمون بيضيّع المصداقية لو ماتحققش.']] },
+  { q:'طالب متفوق خلّص التمرين قبل الكل وبدأ يتململ.', o:[
+    ['تسيبه يستنى لحد ما الباقي يخلّصوا', 0, 'الملل هو بداية مشاكل السلوك، والطالب المتفوق محتاج تحدي.'],
+    ['تديله مسألة إثرائية أو تخليه يساعد زميل', 2, 'رائع! الإثراء أو التعلم بالنظير بيفيده ويفيد الفصل.'],
+    ['تديله تمرين زيادة من نفس المستوى', 1, 'كمية أكتر مش نفس قيمة التحدي — الأفضل مسألة أعمق.']] },
+];
+let simI = 0, simScore = 0;
+function renderSim(){ simI = 0; simScore = 0; showSim(); }
+function showSim(){
+  const el = document.getElementById('sim-content'); if(!el) return;
+  if(simI >= SIM.length){ const pct = Math.round(simScore / (SIM.length*2) * 100); el.innerHTML = `<div class="card-panel" style="max-width:none;text-align:center;"><div style="font-size:34px;font-weight:900;">${pct}%</div><div class="sub">${pct>=80?'أداء ممتاز كمعلم!':pct>=50?'كويس — راجع التغذية الراجعة وجرّب تاني.':'محتاج تراجع أساليب إدارة الفصل — جرّب تاني.'}</div><button class="btn-primary" style="margin-top:14px;" onclick="renderSim()">ابدأ من الأول</button></div>`; return; }
+  const s = SIM[simI];
+  el.innerHTML = `<div class="card-panel" style="max-width:none;"><div style="font-size:12px;color:var(--ink-soft);margin-bottom:6px;">موقف ${simI+1} من ${SIM.length}</div><div class="ci-title" style="font-size:16px;margin-bottom:14px;">${escapeHtml(s.q)}</div>${s.o.map((o,i) => `<button class="quiz-opt" onclick="simPick(${i})">${escapeHtml(o[0])}</button>`).join('')}<div id="sim-fb" style="margin-top:12px;font-size:14px;line-height:1.8;"></div></div>`;
+}
+function simPick(i){
+  const o = SIM[simI].o[i]; if(document.getElementById('sim-next')) return;
+  simScore += o[1];
+  document.getElementById('sim-fb').innerHTML = `${o[1]===2?'✅':o[1]===1?'🟡':'❌'} ${escapeHtml(o[2])}<div style="margin-top:10px;"><button id="sim-next" class="btn-primary" onclick="simI++; showSim()">${simI < SIM.length-1 ? 'الموقف التالي' : 'شوف نتيجتك'}</button></div>`;
 }
 /* ---------- تصدير السيرة الذاتية (CV) ---------- */
 async function exportCV(){
@@ -2554,7 +2766,7 @@ async function loadResearchVideos(){
 async function loadMyResearch(){
   const el = document.getElementById('myres-list'); if(!currentUid) return;
   try{
-    const snap = await db.collection('research').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    const snap = sortSnap(await db.collection('research').where('ownerUid','==', currentUid).get(), 'createdAt');
     myResearchCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     renderProfileView();
     if(!el) return;
@@ -2623,9 +2835,10 @@ async function addPracticalLog(){
   try{
     await db.collection('practicalLog').add({
       ownerUid: currentUid, school, grade, subject, visitDate, lesson, notes, evaluation,
+      hours: Math.max(0.5, parseFloat(document.getElementById('pl-hours').value) || 1), supervisor: document.getElementById('pl-supervisor').value.trim(), approved: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    ['pl-school','pl-grade','pl-subject','pl-date','pl-lesson','pl-notes'].forEach(id => { document.getElementById(id).value=''; });
+    ['pl-school','pl-grade','pl-subject','pl-date','pl-lesson','pl-notes','pl-supervisor'].forEach(id => { document.getElementById(id).value=''; });
     status.className='auth-status ok'; status.textContent='✓ تمت الإضافة للسجل.';
     loadPracticalLog();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
@@ -2634,8 +2847,9 @@ async function loadPracticalLog(){
   const el = document.getElementById('practical-log-list'); if(!el || !currentUid) return;
   el.innerHTML = 'جاري التحميل...';
   try{
-    const snap = await db.collection('practicalLog').where('ownerUid','==', currentUid).orderBy('visitDate','desc').get();
+    const snap = sortSnap(await db.collection('practicalLog').where('ownerUid','==', currentUid).get(), 'visitDate');
     practicalLogCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+    const sm = document.getElementById('pl-summary'); if(sm){ const hh = l => Number(l.hours) || 1; sm.textContent = `${practicalLogCache.length} زيارة · ${practicalLogCache.reduce((s,x) => s + hh(x.data), 0)} ساعة · معتمد منها ${practicalLogCache.filter(x => x.data.approved).reduce((s,x) => s + hh(x.data), 0)} ساعة`; }
     if(!practicalLogCache.length){ el.innerHTML = '<div class="empty-state">لسه مفيش زيارات مسجّلة. ضيف أول زيارة من الفورم فوق.</div>'; return; }
     el.innerHTML = practicalLogCache.map(({id,data:l}) => `
       <div class="content-item" style="flex-direction:column; align-items:stretch;">
@@ -2643,7 +2857,7 @@ async function loadPracticalLog(){
           <div><div class="ci-title">${escapeHtml(l.school||'')} — ${escapeHtml(l.visitDate||'')}</div><div class="ci-desc">${escapeHtml(l.subject||'')}${l.grade?' — '+escapeHtml(l.grade):''} — ${escapeHtml(l.lesson||'')}</div></div>
           <button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deletePracticalLog('${id}')">حذف</button>
         </div>
-        <div class="q-tags" style="margin-top:8px;"><span class="q-tag">التقييم: ${escapeHtml(l.evaluation||'')}</span></div>
+        <div class="q-tags" style="margin-top:8px;"><span class="q-tag">التقييم: ${escapeHtml(l.evaluation||'')}</span><span class="q-tag">${Number(l.hours)||1} ساعة</span>${l.supervisor ? `<span class="q-tag">المشرف: ${escapeHtml(l.supervisor)}</span>` : ''}<button class="ci-link" style="background:none; border:1px solid var(--line); color:${l.approved?'var(--sage)':'var(--ink-soft)'};" onclick="toggleLogApproved('${id}', ${!l.approved})">${l.approved ? '✓ الساعات معتمدة' : 'اعتماد الساعات'}</button></div>
         ${l.notes ? `<div class="ci-desc" style="margin-top:6px;">ملاحظات المشرف: ${escapeHtml(l.notes)}</div>` : ''}
       </div>`).join('');
   }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل السجل الآن.</div>'; console.warn(err); }
@@ -2652,9 +2866,26 @@ async function deletePracticalLog(id){
   try{ await db.collection('practicalLog').doc(id).delete(); loadPracticalLog(); toast('اتحذفت الزيارة.'); }
   catch(err){ toast('تعذّر الحذف الآن.'); console.warn(err); }
 }
+async function toggleLogApproved(id, val){
+  try{ await db.collection('practicalLog').doc(id).update({ approved: val }); loadPracticalLog(); }
+  catch(err){ toast('تعذّر الحفظ الآن.'); console.warn(err); }
+}
 function printPracticalReport(){
   if(!practicalLogCache.length){ toast('مفيش زيارات في السجل لسه.'); return; }
-  window.print();
+  const g = id => (document.getElementById(id) || {}).value || '';
+  const from = g('pl-rep-from'), to = g('pl-rep-to'), hh = l => Number(l.hours) || 1;
+  const rows = practicalLogCache.map(x => x.data).filter(l => (!from || l.visitDate >= from) && (!to || l.visitDate <= to)).sort((a,b) => (a.visitDate||'').localeCompare(b.visitDate||''));
+  if(!rows.length){ toast('مفيش زيارات في الفترة دي.'); return; }
+  const total = rows.reduce((s,l) => s + hh(l), 0), appr = rows.filter(l => l.approved).reduce((s,l) => s + hh(l), 0);
+  const w = window.open('', '_blank');
+  if(!w){ toast('المتصفح منع النافذة — اسمح بالنوافذ المنبثقة وجرّب تاني.', {type:'err'}); return; }
+  w.document.write(`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تقرير التدريب الميداني</title><style>@page{size:A4;margin:14mm} body{font-family:Cairo,Tahoma,sans-serif;color:#111;font-size:12px;padding:10px} h1{text-align:center;font-size:20px;margin:0 0 4px} .c{text-align:center;color:#555;margin-bottom:12px} table{width:100%;border-collapse:collapse;margin:10px 0} th,td{border:1px solid #333;padding:4px 5px;text-align:center;vertical-align:top} th{background:#eee} .info td{text-align:right;border:none;padding:2px 0} .sig{display:flex;justify-content:space-around;margin-top:50px;text-align:center} .sig div{width:28%;border-top:1px solid #333;padding-top:6px} .wrap{overflow-x:auto}</style></head><body>
+  <h1>تقرير التدريب الميداني (التربية العملية)</h1><div class="c">${escapeHtml(g('pl-rep-univ'))}</div>
+  <table class="info"><tr><td><b>الطالب المعلم:</b> ${escapeHtml(pendingUser.name||'')}</td><td><b>التخصص:</b> ${escapeHtml(pendingUser.specialization||'')}</td></tr><tr><td><b>الفترة:</b> ${escapeHtml(from||'—')} ← ${escapeHtml(to||'—')}</td><td><b>عدد الزيارات:</b> ${rows.length}</td></tr><tr><td><b>إجمالي الساعات:</b> ${total}</td><td><b>الساعات المعتمدة من المشرف:</b> ${appr}</td></tr></table>
+  <div class="wrap"><table><tr><th>#</th><th>التاريخ</th><th>المدرسة</th><th>الصف / المادة</th><th>الدرس</th><th>الساعات</th><th>التقييم</th><th>ملاحظات المشرف</th><th>الاعتماد</th></tr>${rows.map((l,i) => `<tr><td>${i+1}</td><td>${escapeHtml(l.visitDate||'')}</td><td>${escapeHtml(l.school||'')}</td><td>${escapeHtml([l.grade,l.subject].filter(Boolean).join(' / '))}</td><td>${escapeHtml(l.lesson||'')}</td><td>${hh(l)}</td><td>${escapeHtml(l.evaluation||'')}</td><td style="text-align:right">${escapeHtml(l.notes||'')}${l.supervisor ? '<br><small>م. '+escapeHtml(l.supervisor)+'</small>' : ''}</td><td>${l.approved ? '✓' : ''}</td></tr>`).join('')}</table></div>
+  <div class="sig"><div>توقيع الطالب المعلم</div><div>توقيع المشرف</div><div>ختم الكلية</div></div>
+  <script>window.onload=function(){setTimeout(function(){print()},400)}<\/script></body></html>`);
+  w.document.close();
 }
 
 /* ================= ملف الإنجاز ================= */
@@ -2917,10 +3148,14 @@ function renderQaList(){
 const SPECIALTY_TAGS = ['رياضيات','عربي','إنجليزي','علوم','دراسات','لغات','تربية خاصة','عام'];
 function renderGroupsView(){
   const el = document.getElementById('groups-grid'); if(!el) return;
-  el.innerHTML = SPECIALTY_TAGS.map(tag => {
+  el.innerHTML = SPECIALTY_TAGS.map((tag, i) => {
     const count = communityPostsCache.filter(({data:p}) => (p.tag||'عام') === tag).length;
-    return `<div class="group-card" onclick="openGroup('${escapeAttr(tag)}')"><div class="g-name">${escapeHtml(tag)}</div><div class="g-count">${count} منشور</div></div>`;
+    return `<div class="group-card" onclick="openGroup('${escapeAttr(tag)}')"><div class="g-name">${escapeHtml(tag)}</div><div class="g-count">${count} منشور</div><button class="ci-link" style="margin-top:8px;" onclick="event.stopPropagation(); joinAudioRoom(${i})">🎙️ غرفة صوتية</button></div>`;
   }).join('');
+}
+// غرفة صوتية فورية لكل مجموعة (Jitsi Meet — صوت فقط، من غير حساب)
+function joinAudioRoom(i){
+  window.open('https://meet.jit.si/NadrusMaan-g' + i + '-7f3a2c#config.startWithVideoMuted=true&config.startAudioOnly=true', '_blank', 'noopener');
 }
 function openGroup(tag){
   showView('t-community', document.querySelector('.nav-item[onclick*=t-community]'));
@@ -3088,7 +3323,7 @@ async function addQuestion(){
 async function loadQuestions(){
   if(!currentUid) return;
   try{
-    const snap = await db.collection('questions').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    const snap = sortSnap(await db.collection('questions').where('ownerUid','==', currentUid).get(), 'createdAt');
     questionsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     renderQuestions();
   }catch(err){ console.warn(err); }
@@ -3187,7 +3422,7 @@ async function loadLessonPlans(){
   if(!currentUid) return;
   const el = document.getElementById('lesson-plans-list'); if(!el) return;
   try{
-    const snap = await db.collection('lessonPlans').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    const snap = sortSnap(await db.collection('lessonPlans').where('ownerUid','==', currentUid).get(), 'createdAt');
     lessonPlansCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     if(!lessonPlansCache.length){ el.innerHTML = '<div class="empty-state">لسه معملتش أي خطة درس. اعمل أول خطة من الفورم فوق.</div>'; return; }
     el.innerHTML = lessonPlansCache.map(({id,data:p}) => `
@@ -3314,7 +3549,7 @@ function renderQuizPreview(questions){
 async function loadQuizzes(){
   if(!currentUid) return;
   try{
-    const snap = await db.collection('quizzes').where('ownerUid','==', currentUid).orderBy('createdAt','desc').get();
+    const snap = sortSnap(await db.collection('quizzes').where('ownerUid','==', currentUid).get(), 'createdAt');
     quizzesCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     renderQuizzesList();
   }catch(err){ console.warn(err); }
@@ -3356,7 +3591,7 @@ async function openQuizResults(id){
   el.innerHTML = '<div class="section-title" style="margin-top:22px;">جاري تحميل النتائج...</div>';
   el.scrollIntoView({behavior:'smooth'});
   try{
-    const snap = await db.collection('quizAttempts').where('quizId','==', id).orderBy('createdAt','desc').limit(200).get();
+    const snap = sortSnap(await db.collection('quizAttempts').where('quizId','==', id).get(), 'createdAt');
     const attempts = snap.docs.map(d => d.data());
     if(!attempts.length){ el.innerHTML = `<div class="section-title" style="margin-top:22px;">نتائج «${escapeHtml(qz.data.title||'')}»</div><div class="empty-state">لسه محدش خد الاختبار ده.</div>`; return; }
     const avgPct = Math.round(attempts.reduce((s,a) => s + (a.total ? a.score/a.total : 0), 0) / attempts.length * 100);
@@ -3565,6 +3800,12 @@ function copyAssistantPrompt(){
   }
 }
 
+function sortSnap(snap, field, dir, limit){
+  const key = d => { const v = d.data()[field]; return v === undefined ? 0 : v === null ? Infinity : (v.toMillis ? v.toMillis() : v); };
+  const cmp = (a,b) => { const x = key(a), y = key(b); return typeof x === 'string' ? x.localeCompare(y) : (x === y ? 0 : x < y ? -1 : 1); };
+  let docs = [...snap.docs].sort(cmp); if(dir !== 'asc') docs.reverse(); if(limit) docs = docs.slice(0, limit);
+  return { docs, empty: !docs.length, size: docs.length, forEach: f => docs.forEach(f) };
+}
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function ic(name){ return `<svg class="icon"><use href="#i-${name}"></use></svg>`; }
 
@@ -3592,6 +3833,7 @@ let activeConvId = null;
 let convListUnsub = null;
 let msgUnsub = null;
 let chatUserSearchTimer = null;
+let publicProfilesCache = null;
 
 function convIdFor(uidA, uidB){ return [uidA, uidB].sort().join('_'); }
 
@@ -3602,11 +3844,9 @@ async function searchChatUsers(qRaw){
   if(!q){ el.innerHTML = ''; return; }
   chatUserSearchTimer = setTimeout(async () => {
     try{
-      const snap = await db.collection('users')
-        .orderBy('name')
-        .startAt(q).endAt(q + '\uf8ff')
-        .limit(8).get();
-      const results = snap.docs.filter(d => d.id !== currentUid);
+      if(!publicProfilesCache){ publicProfilesCache = (await db.collection('publicProfiles').where('profilePublic','==',true).limit(500).get()).docs; }
+      const ql = q.toLowerCase();
+      const results = publicProfilesCache.filter(d => d.id !== currentUid && (d.data().name||'').toLowerCase().includes(ql)).slice(0, 8);
       if(!results.length){ el.innerHTML = '<div style="padding:10px 12px; font-size:12px; color:var(--ink-soft);">مفيش نتائج.</div>'; return; }
       el.innerHTML = results.map(d => {
         const u = d.data();
@@ -3621,8 +3861,7 @@ function subscribeConvList(){
   if(convListUnsub) convListUnsub();
   convListUnsub = db.collection('conversations')
     .where('participants', 'array-contains', currentUid)
-    .orderBy('lastMessageAt', 'desc')
-    .onSnapshot(snap => {
+    .onSnapshot(snap0 => { const snap = sortSnap(snap0, 'lastMessageAt');
       const listEl = document.getElementById('chat-conv-list');
       if(!listEl) return;
       if(snap.empty){ listEl.innerHTML = '<div class="empty-state">لسه مفيش محادثات — دوّر على حد وابدأ.</div>'; updateChatBadge(0); return; }
@@ -3671,19 +3910,13 @@ async function openChatWith(otherUid, otherName){
   const listPane = document.getElementById('chat-list-pane');
   if(listPane) listPane.classList.add('hide-mobile');
   try{
-    const convRef = db.collection('conversations').doc(convId);
-    const convDoc = await convRef.get();
-    if(!convDoc.exists){
-      await convRef.set({
-        participants: [currentUid, otherUid],
-        participantNames: { [currentUid]: pendingUser.name || 'مستخدم', [otherUid]: otherName },
-        lastMessage: '', lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
-        unread: { [currentUid]: 0, [otherUid]: 0 },
-        lastRead: { [currentUid]: firebase.firestore.FieldValue.serverTimestamp() }
-      });
-    }else{
-      await convRef.update({ [`unread.${currentUid}`]: 0, [`participantNames.${currentUid}`]: pendingUser.name || 'مستخدم', [`lastRead.${currentUid}`]: firebase.firestore.FieldValue.serverTimestamp() });
-    }
+    // set+merge: بينشئ المحادثة لو مش موجودة، ويحدّث بياناتك بس لو موجودة (من غير قراءة مستند ممكن يكون مش موجود)
+    await db.collection('conversations').doc(convId).set({
+      participants: [currentUid, otherUid],
+      participantNames: { [currentUid]: pendingUser.name || 'مستخدم', [otherUid]: otherName },
+      unread: { [currentUid]: 0 },
+      lastRead: { [currentUid]: firebase.firestore.FieldValue.serverTimestamp() }
+    }, { merge: true });
   }catch(err){ console.warn(err); }
   subscribeConvList();
   loadRatingForThread(otherUid);
@@ -3744,7 +3977,7 @@ async function sendChatMessage(){
   const text = input.value.trim();
   if(!text || !activeConvId) return;
   const convId = activeConvId;
-  const otherUid = convId.split('_').find(u => u !== currentUid);
+  const otherUid = activeOtherUid;
   input.value = '';
   clearTimeout(typingTimeout);
   try{
@@ -3891,8 +4124,7 @@ function subscribeNotifications(){
   let firstLoad = true;
   notifUnsub = db.collection('notifications')
     .where('recipientUid', '==', currentUid)
-    .orderBy('createdAt', 'desc').limit(30)
-    .onSnapshot(snap => {
+    .onSnapshot(snap0 => { const snap = sortSnap(snap0, 'createdAt', 'desc', 30);
       const listEl = document.getElementById('notif-list');
       const dot = document.getElementById('bell-dot');
       if(snap.empty){ if(listEl) listEl.innerHTML = '<div class="empty-state" style="padding:16px;">مفيش إشعارات لسه.</div>'; if(dot) dot.style.display='none'; firstLoad=false; return; }
@@ -4040,6 +4272,7 @@ async function createPost(){
   const content = document.getElementById('post-content').value.trim();
   const driveLink = document.getElementById('post-drive-link').value.trim();
   const isQuestion = document.getElementById('post-is-question').checked;
+  const kind = document.getElementById('post-kind').value;
   const status = document.getElementById('post-status');
   const submitBtn = document.getElementById('post-submit-btn');
   const progress = document.getElementById('post-upload-progress');
@@ -4065,7 +4298,7 @@ async function createPost(){
     await db.collection('communityPosts').add({
       authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', authorIsExpert: !!userStatus.isExpert, authorVerified: !!userStatus.verified, tag, content,
       driveLink: driveLink || null, imageUrl: imageUrl || null,
-      isQuestion, acceptedCommentId: null,
+      isQuestion: isQuestion || !!kind, kind: kind || null, acceptedCommentId: null,
       likesCount: 0, commentsCount: 0,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -4133,7 +4366,7 @@ async function loadCommunity(){
   const prevT = document.getElementById('home-community-preview');
   const prevS = document.getElementById('home-community-preview-s');
   try{
-    const snap = await db.collection('communityPosts').orderBy('createdAt','desc').limit(30).get();
+    const snap = await db.collection('communityPosts').orderBy('createdAt','desc').limit(100).get();
     communityPostsCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     if(snap.empty){
       if(el) el.innerHTML = '<div class="empty-state">لسه مفيش منشورات — كن أول من ينشر في المجتمع!</div>';
@@ -4201,14 +4434,38 @@ async function loadComments(id){
   const isOwner = postData.authorUid === currentUid;
   try{
     const snap = await db.collection('communityPosts').doc(id).collection('comments').orderBy('createdAt','asc').limit(50).get();
+    const tally = {}, mineV = new Set();
+    if(postData.isQuestion && !snap.empty){
+      try{ (await db.collection('answerVotes').where('postId','==',id).get()).forEach(v => { const x = v.data(); tally[x.commentId] = (tally[x.commentId]||0) + 1; if(x.voterUid === currentUid) mineV.add(x.commentId); }); }catch(e){}
+    }
+    myVotes[id] = mineV;
+    const cdocs = postData.isQuestion ? [...snap.docs].sort((a,b) => (tally[b.id]||0) - (tally[a.id]||0)) : snap.docs;
     if(snap.empty){ el.innerHTML = '<div style="font-size:12px; color:var(--ink-soft);">لسه مفيش تعليقات — اكتب أول تعليق.</div>'; return; }
-    el.innerHTML = snap.docs.map(d => { const c = d.data();
+    el.innerHTML = cdocs.map(d => { const c = d.data();
       const mine = c.authorUid === currentUid;
       const isAccepted = postData.acceptedCommentId === d.id;
       const showAcceptBtn = postData.isQuestion && isOwner;
-      return `<div class="comment-item ${isAccepted ? 'accepted-answer' : ''}" id="comment-${id}-${d.id}"><div>${isAccepted ? '<span class="expert-badge">✓ إجابة معتمدة</span> ' : ''}<b>${escapeHtml(c.authorName||'مستخدم')}:</b> ${escapeHtml(c.content||'')}</div><div style="display:flex; gap:10px; margin-top:4px;">${!mine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(c.authorUid)}','${escapeAttr(c.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>` : ''}${showAcceptBtn ? `<button class="accept-answer-btn ${isAccepted?'accepted':''}" onclick="toggleAcceptedAnswer('${id}','${d.id}','${escapeAttr(c.authorUid||'')}')">${isAccepted ? '✓ إجابة معتمدة' : 'اعتمد كإجابة'}</button>` : ''}${mine ? `<button onclick="deleteComment('${id}','${d.id}')" style="background:none; color:var(--ink-soft); font-size:11px;">${ic('trash')} حذف</button>` : ''}</div></div>`;
+      return `<div class="comment-item ${isAccepted ? 'accepted-answer' : ''}" id="comment-${id}-${d.id}"><div>${isAccepted ? '<span class="expert-badge">✓ إجابة معتمدة</span> ' : ''}<b>${escapeHtml(c.authorName||'مستخدم')}${c.authorIsExpert ? ' ⭐' : ''}:</b> ${escapeHtml(c.content||'')}</div><div style="display:flex; gap:10px; margin-top:4px; flex-wrap:wrap;">${postData.isQuestion ? (!mine ? `<button class="msg-btn" onclick="voteAnswer('${id}','${d.id}')">👍 ${mineV.has(d.id)?'شلت تصويتي':'أفضل إجابة'} (${tally[d.id]||0})</button>` : `<span style="font-size:11px; color:var(--ink-soft);">👍 ${tally[d.id]||0}</span>`) : ''}${!mine ? `<button class="msg-btn" onclick="openChatWith('${escapeAttr(c.authorUid)}','${escapeAttr(c.authorName||'مستخدم')}')">${ic('chat-circle')} مراسلة</button>` : ''}${showAcceptBtn ? `<button class="accept-answer-btn ${isAccepted?'accepted':''}" onclick="toggleAcceptedAnswer('${id}','${d.id}','${escapeAttr(c.authorUid||'')}')">${isAccepted ? '✓ إجابة معتمدة' : 'اعتمد كإجابة'}</button>` : ''}${mine ? `<button onclick="deleteComment('${id}','${d.id}')" style="background:none; color:var(--ink-soft); font-size:11px;">${ic('trash')} حذف</button>` : ''}</div></div>`;
     }).join('');
   }catch(err){ el.innerHTML = '<div style="font-size:12px; color:var(--brick);">تعذّر تحميل التعليقات.</div>'; console.warn(err); }
+}
+const myVotes = {};
+async function voteAnswer(postId, commentId){
+  const ref = db.collection('answerVotes').doc(commentId + '_' + currentUid);
+  try{
+    if((myVotes[postId] || new Set()).has(commentId)) await ref.delete(); else await ref.set({ postId, commentId, voterUid: currentUid });
+    loadComments(postId);
+  }catch(err){ toast('تعذّر التصويت الآن.'); console.warn(err); }
+}
+function renderKindView(kind){
+  const el = document.getElementById(kind === 'expert' ? 'expert-list' : 'problems-list'); if(!el) return;
+  const items = communityPostsCache.filter(({data:p}) => p.kind === kind);
+  el.innerHTML = items.length ? items.map(({id,data}) => renderCommunityPost(id, data)).join('') : '<div class="empty-state">لسه مفيش حاجة هنا — كن أول واحد يشارك.</div>';
+}
+function goCompose(kind){
+  showView('t-community', document.getElementById(pendingRole === 'teacher' ? 'navi-community-t' : 'navi-community-s'));
+  document.getElementById('post-kind').value = kind;
+  const t = document.getElementById('post-content'); if(t) t.focus();
 }
 async function toggleAcceptedAnswer(postId, commentId, commentAuthorUid){
   const cachedPost = communityPostsCache.find(p => p.id === postId);
@@ -4233,7 +4490,7 @@ async function addComment(id){
   input.disabled = true;
   try{
     await db.collection('communityPosts').doc(id).collection('comments').add({
-      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', content,
+      authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', authorIsExpert: !!userStatus.isExpert, content,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     await db.collection('communityPosts').doc(id).update({ commentsCount: firebase.firestore.FieldValue.increment(1) });
@@ -4303,21 +4560,37 @@ async function addNotebook(){
   status.className='auth-status pending'; status.textContent='جاري الإضافة...';
   try{
     await db.collection('prepNotebooks').add({
-      title, subject, link, ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم',
+      title, subject, link, ownerUid: currentUid, ownerName: pendingUser.name || 'مستخدم', reviewStatus: userStatus.isExpert ? 'approved' : 'pending',
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     document.getElementById('nb-title').value=''; document.getElementById('nb-link').value='';
-    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة. (+'+POINTS.notebookPublish+' نقطة)';
+    status.className='auth-status ok'; status.textContent = userStatus.isExpert ? '✓ تمت الإضافة. (+'+POINTS.notebookPublish+' نقطة)' : '✓ اتبعت لمراجعة معلم خبير — هيظهر في المكتبة بعد الاعتماد. (+'+POINTS.notebookPublish+' نقطة)';
     awardPoints(POINTS.notebookPublish, 'notebookPublish');
     loadNotebooks();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+function renderReviewQueue(docs){
+  const el = document.getElementById('nb-review-box'); if(!el) return;
+  const q = userStatus.isExpert ? docs.filter(d => d.data().reviewStatus === 'pending' && d.data().ownerUid !== currentUid) : [];
+  el.innerHTML = q.length ? `<div class="section-title">🔎 مراجعة النظراء — دفاتر بتنتظر اعتمادك (${q.length})</div><div class="content-list" style="margin-bottom:22px;">${q.map(d => { const n = d.data(); return `<div class="content-item"><div><div class="ci-title">${escapeHtml(n.title||'')}</div><div class="ci-desc">${escapeHtml(n.subject||'')} — ${escapeHtml(n.ownerName||'')}</div></div><div style="display:flex; gap:8px; flex-wrap:wrap;"><a class="ci-link" href="${escapeAttr(n.link)}" target="_blank" rel="noopener">معاينة</a><button class="ci-link" onclick="reviewNotebook('${d.id}', true)">اعتماد</button><button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="reviewNotebook('${d.id}', false)">يحتاج تعديل</button></div></div>`; }).join('')}</div>` : '';
+}
+async function reviewNotebook(id, ok){
+  const note = ok ? '' : (prompt('اكتب ملاحظتك لزميلك (اختياري):') || '');
+  try{
+    await db.collection('prepNotebooks').doc(id).update({ reviewStatus: ok ? 'approved' : 'rejected', reviewNote: note, reviewedBy: currentUid, reviewedByName: pendingUser.name || '' });
+    toast(ok ? 'اتعتمد الدفتر وظهر في المكتبة.' : 'اتبعتت ملاحظتك لصاحب الدفتر.');
+    loadNotebooks();
+  }catch(err){ toast('تعذّر الحفظ: ' + err.message, {type:'err'}); }
 }
 async function loadNotebooks(){
   const el = document.getElementById('notebooks-list');
   const prevT = document.getElementById('home-notebooks-preview');
   const prevS = document.getElementById('home-notebooks-preview-s');
   try{
-    const snap = await db.collection('prepNotebooks').orderBy('createdAt','desc').limit(50).get();
+    const snap0 = await db.collection('prepNotebooks').orderBy('createdAt','desc').limit(50).get();
+    const snap = { docs: snap0.docs.filter(d => { const x = d.data(); return !x.reviewStatus || x.reviewStatus === 'approved' || x.ownerUid === currentUid; }) };
+    snap.empty = !snap.docs.length;
+    renderReviewQueue(snap0.docs);
     notebooksCache = snap.docs.map(d => ({ id: d.id, data: d.data() }));
     if(snap.empty){
       if(el) el.innerHTML = '<div class="empty-state">لسه مفيش دفاتر — كن أول من يضيف دفتر تحضير!</div>';
@@ -4329,7 +4602,7 @@ async function loadNotebooks(){
     const renderNotebook = (d) => { const n = d.data();
       const mine = n.ownerUid === currentUid;
       return `<div class="content-item">
-        <div><div class="ci-title">${escapeHtml(n.title||'')}</div><div class="ci-desc">${escapeHtml(n.subject||'')} — بواسطة ${escapeHtml(n.ownerName||'مستخدم')}</div></div>
+        <div><div class="ci-title">${escapeHtml(n.title||'')}${n.reviewStatus === 'pending' ? ' <span class="q-tag">⏳ قيد مراجعة الخبراء</span>' : n.reviewStatus === 'rejected' ? ' <span class="q-tag">✗ محتاج تعديل' + (n.reviewNote ? ': ' + escapeHtml(n.reviewNote) : '') + '</span>' : ''}</div><div class="ci-desc">${escapeHtml(n.subject||'')} — بواسطة ${escapeHtml(n.ownerName||'مستخدم')}</div></div>
         <div style="display:flex; gap:8px; align-items:center;">
           <a class="ci-link" href="${escapeAttr(n.link)}" target="_blank">فتح الدفتر</a>
           ${mine ? `<button class="ci-link" style="background:none; border:1px solid var(--line); color:var(--brick);" onclick="deleteNotebook('${d.id}')">حذف</button>` : ''}
@@ -4362,6 +4635,22 @@ async function deleteNotebook(id){
   }catch(err){ toast('تعذّر الحذف: ' + err.message, {type:'err'}); }
 }
 function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+
+/* ================= تثبيت الموقع كتطبيق (PWA) ================= */
+let deferredInstall = null;
+const isStandalone = () => (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function setInstallVisible(v){ document.querySelectorAll('.install-nav').forEach(b => b.style.display = v ? '' : 'none'); }
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if(!isStandalone()) setInstallVisible(true); });
+window.addEventListener('appinstalled', () => { deferredInstall = null; setInstallVisible(false); toast('اتثبّت التطبيق بنجاح 🎉'); });
+if(!isStandalone() && isIOS) setInstallVisible(true);
+async function installApp(){
+  if(deferredInstall){ deferredInstall.prompt(); try{ await deferredInstall.userChoice; }catch(e){} deferredInstall = null; setInstallVisible(false); return; }
+  alert(isIOS ? 'على الآيفون: افتح الموقع من متصفح Safari، اضغط زر المشاركة ⬆️ ثم اختار "إضافة إلى الشاشة الرئيسية".' : 'من قائمة المتصفح (⋮) اختار "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية".');
+}
+if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW', err)); });
+}
 </script>
 </body>
 </html>
