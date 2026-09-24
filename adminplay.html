@@ -365,13 +365,35 @@
 
   <div class="panel" id="panel-settings">
     <div class="card">
-      <div class="field"><label>رقم واتساب (بالصيغة الدولية بدون +، مثال: 201234567890)</label><input type="text" id="set-whatsapp"></div>
+      <div class="field"><label>رقم واتساب (بالصيغة الدولية بدون +، مثال: 201234567890)</label><input type="text" id="set-whatsapp" placeholder="201007586279"></div>
       <div class="field"><label>رقم هاتف للاتصال</label><input type="text" id="set-phone"></div>
       <div class="field"><label>إيميل التواصل</label><input type="text" id="set-email"></div>
       <div class="field"><label>رابط جروب فيسبوك</label><input type="text" id="set-fb"></div>
       <div class="field"><label>رابط تليجرام</label><input type="text" id="set-tg"></div>
       <button class="btn" onclick="saveContactSettings()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعدادات التواصل</button>
       <div class="status" id="settings-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:10px;">📣 إعلان عام لكل المستخدمين</h3>
+      <div class="field"><label>نص الإعلان (هيظهر فورًا فوق الصفحة لكل المعلمين وطلاب المعلم)</label><textarea id="set-announce-text" rows="2" placeholder="مثال: صيانة مجدولة غدًا من 2 إلى 4 عصرًا"></textarea></div>
+      <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; margin-bottom:12px;"><input type="checkbox" id="set-announce-active" style="width:auto;"> تفعيل عرض الإعلان الآن</label>
+      <button class="btn" onclick="saveAnnouncement()"><svg class="icon"><use href="#i-check"></use></svg> نشر الإعلان</button>
+      <div class="status" id="announce-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:10px;">🛠️ وضع الصيانة</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">لما تفعّله، الموقع بيتقفل بالكامل قدام كل المستخدمين (المعلمين وطلاب المعلم) برسالة الصيانة، لحد ما توقفه تاني. لوحة الأدمن دي مش بتتأثر.</p>
+      <div class="field"><label>رسالة الصيانة</label><textarea id="set-maint-msg" rows="2" placeholder="بنشتغل على تحسينات هنرجعلكم قريب."></textarea></div>
+      <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; margin-bottom:12px; color:var(--brick);"><input type="checkbox" id="set-maint-active" style="width:auto;"> تفعيل وضع الصيانة الآن (هيقفل الموقع فورًا)</label>
+      <button class="btn" style="background:var(--brick);" onclick="saveMaintenance()"><svg class="icon"><use href="#i-check"></use></svg> حفظ وضع الصيانة</button>
+      <div class="status" id="maint-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">🧩 التحكم في ظهور أدوات القائمة الجانبية</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">شيل علامة الصح عن أي أداة عشان تختفي من القائمة الجانبية لكل المعلمين وطلاب المعلم فورًا (من غير ما تحذف حاجة من الكود).</p>
+      <div id="ff-list" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:6px 14px; margin-bottom:14px;"></div>
+      <button class="btn" onclick="saveFeatureFlags()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعدادات الظهور</button>
+      <div class="status" id="ff-status"></div>
     </div>
   </div>
 </div>
@@ -544,6 +566,9 @@ async function checkGate(){
     loadChallengesAdmin();
     subscribeAdminConvList();
     loadContactSettings();
+    loadAnnouncement();
+    loadMaintenance();
+    loadFeatureFlags();
   }catch(e){
     err.textContent = 'دخول فشل: ' + (e.message || e.code);
   }
@@ -945,6 +970,85 @@ async function saveContactSettings(){
     await db.collection('siteSettings').doc('contact').set(data, { merge: true });
     status.className = 'status ok'; status.textContent = '✓ تم حفظ إعدادات التواصل.';
     toast('اتحفظت إعدادات التواصل.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
+/* ================= إعلان عام (siteSettings/announcement) — يظهر فورًا لكل المستخدمين ================= */
+async function loadAnnouncement(){
+  try{
+    const doc = await db.collection('siteSettings').doc('announcement').get();
+    const d = doc.exists ? doc.data() : {};
+    document.getElementById('set-announce-text').value = d.text || '';
+    document.getElementById('set-announce-active').checked = !!d.active;
+  }catch(err){ console.warn(err); }
+}
+async function saveAnnouncement(){
+  const status = document.getElementById('announce-status');
+  const text = document.getElementById('set-announce-text').value.trim();
+  const active = document.getElementById('set-announce-active').checked;
+  try{
+    await db.collection('siteSettings').doc('announcement').set({ text, active, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    status.className = 'status ok'; status.textContent = active ? '✓ الإعلان ظاهر الآن لكل المستخدمين.' : '✓ تم الحفظ (الإعلان متوقف حاليًا).';
+    toast('اتحفظ الإعلان.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
+/* ================= وضع الصيانة (siteSettings/maintenance) ================= */
+async function loadMaintenance(){
+  try{
+    const doc = await db.collection('siteSettings').doc('maintenance').get();
+    const d = doc.exists ? doc.data() : {};
+    document.getElementById('set-maint-msg').value = d.message || '';
+    document.getElementById('set-maint-active').checked = !!d.active;
+  }catch(err){ console.warn(err); }
+}
+async function saveMaintenance(){
+  const status = document.getElementById('maint-status');
+  const message = document.getElementById('set-maint-msg').value.trim();
+  const active = document.getElementById('set-maint-active').checked;
+  try{
+    await db.collection('siteSettings').doc('maintenance').set({ message, active, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    status.className = 'status ok'; status.textContent = active ? '⚠️ الموقع مقفول دلوقتي على كل المستخدمين.' : '✓ تم الحفظ (الموقع شغال عادي).';
+    toast(active ? 'اتفعّل وضع الصيانة.' : 'اتحفظ — الموقع شغال عادي.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
+/* ================= التحكم في ظهور أدوات القائمة الجانبية (siteSettings/featureFlags) ================= */
+const FEATURE_FLAG_ITEMS = [
+  ['v-learn','تعلم كيف'], ['v-library','مكتبة الموارد'], ['v-courses','الدورات والتعلم'],
+  ['v-notebooks','دفاتر تحضير'], ['v-lesson-planner','مولد تحضير الدروس'], ['v-assistant','مساعد المعلم'],
+  ['v-questions','بنك الأسئلة (معلم)'], ['v-quizzes','مصنع الاختبارات (معلم)'], ['exam-easy','امتحانك بسهولة'],
+  ['v-certificates','مولد الشهادات (معلم)'], ['v-prep-room','غرفة التحضير الجماعي (معلم)'], ['v-tools-hub','مركز الأدوات (معلم)'],
+  ['boardplus','سبورة إلكترونية'], ['v-saved','المحفوظات'], ['t-community','المجتمع'],
+  ['v-leaderboard','لوحة المتصدرين'], ['v-wallet','المحفظة'], ['v-challenge','تحدي الأسبوع'],
+  ['v-career','مساري كمعلم'], ['v-sim','محاكاة المواقف الصفية'], ['v-qa','الأسئلة'],
+  ['v-groups','مجموعات التخصص'], ['v-expert','اسأل معلماً خبيراً'], ['v-problems','مشكلتي في الفصل'],
+  ['v-chats','الدردشات'], ['v-take-quiz-list','اختبارات متاحة (طالب معلم)'], ['s-practical','التربية العملية (طالب معلم)'],
+  ['s-research','بحوث الفعل (طالب معلم)'], ['s-myresearch','أبحاثي (طالب معلم)'], ['v-portfolio','ملف الإنجاز (طالب معلم)'],
+  ['v-tasks','سجل المهام (طالب معلم)'], ['v-calendar','التقويم (طالب معلم)'],
+];
+function renderFeatureFlagList(hidden){
+  const el = document.getElementById('ff-list');
+  if(!el) return;
+  el.innerHTML = FEATURE_FLAG_ITEMS.map(([key,label]) =>
+    `<label style="display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700;">
+      <input type="checkbox" class="ff-check" data-key="${key}" style="width:auto;" ${hidden.includes(key)?'':'checked'}> ${label}
+    </label>`).join('');
+}
+async function loadFeatureFlags(){
+  try{
+    const doc = await db.collection('siteSettings').doc('featureFlags').get();
+    const hidden = (doc.exists && Array.isArray(doc.data().hidden)) ? doc.data().hidden : [];
+    renderFeatureFlagList(hidden);
+  }catch(err){ renderFeatureFlagList([]); console.warn(err); }
+}
+async function saveFeatureFlags(){
+  const status = document.getElementById('ff-status');
+  const hidden = Array.from(document.querySelectorAll('.ff-check')).filter(c => !c.checked).map(c => c.dataset.key);
+  try{
+    await db.collection('siteSettings').doc('featureFlags').set({ hidden, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    status.className = 'status ok'; status.textContent = '✓ اتحفظت إعدادات الظهور.';
+    toast('اتحفظت إعدادات الظهور.');
   }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
 }
 
