@@ -241,6 +241,7 @@
     <button class="tab" onclick="switchTab('community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
     <button class="tab" onclick="switchTab('notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر التحضير</button>
     <button class="tab" onclick="switchTab('wallet', this)"><svg class="icon"><use href="#i-check"></use></svg> المحفظة</button>
+    <button class="tab" onclick="switchTab('referrals', this)"><svg class="icon"><use href="#i-users"></use></svg> الإحالات</button>
     <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
     <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
     <button class="tab" onclick="switchTab('reports', this)"><svg class="icon"><use href="#i-flag"></use></svg> البلاغات</button>
@@ -313,6 +314,11 @@
   <div class="panel" id="panel-wallet">
     <div class="d" style="margin-bottom:10px;">طلبات خصم الرصيد من اشتراك المستخدم (750 نقطة = 1 جنيه). اخصم المبلغ عند تفعيل الاشتراك يدويًا ثم اضغط "اتطبّق".</div>
     <div id="wallet-admin-list"></div>
+  </div>
+
+  <div class="panel" id="panel-referrals">
+    <div class="d" style="margin-bottom:10px;">إحالات جديدة سجّلت حساب عن طريق رابط دعوة زميل — امنح المُحيل نقاطه بعد التأكد.</div>
+    <div id="referrals-admin-list"></div>
   </div>
 
   <div class="panel" id="panel-challenges">
@@ -563,6 +569,7 @@ async function checkGate(){
     loadCommunityMod();
     loadNotebooksMod();
     loadWalletAdmin();
+    loadReferralsAdmin();
     loadChallengesAdmin();
     subscribeAdminConvList();
     loadContactSettings();
@@ -1191,6 +1198,26 @@ async function deleteReportedPost(reportId, postId){
     toast('اتحذف المنشور وتم إغلاق البلاغ.');
     loadReports();
   }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= الإحالات ================= */
+async function loadReferralsAdmin(){
+  const el = document.getElementById('referrals-admin-list'); if(!el) return;
+  try{
+    const snap = await db.collection('referrals').where('rewarded','==',false).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش إحالات معلّقة.</div></div>'; return; }
+    const rows = [];
+    for(const d of snap.docs){ const r = d.data(); rows.push({id:d.id, ...r}); }
+    el.innerHTML = rows.map(r => `<div class="item"><div><div class="t">${escapeHtml(r.newName||'مستخدم')}</div><div class="d">دعوة من: ${escapeHtml(r.referrerUid)}</div></div><div class="actions"><button class="edit-btn" onclick="rewardReferral('${r.id}','${r.referrerUid}')">${ic('check')} امنح ${REFERRAL_POINTS_ADMIN} نقطة</button></div></div>`).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+const REFERRAL_POINTS_ADMIN = 30;
+async function rewardReferral(id, referrerUid){
+  try{
+    await db.collection('pointsLedger').add({ uid: referrerUid, amount: REFERRAL_POINTS_ADMIN, reason: 'referral', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    await db.collection('referrals').doc(id).update({ rewarded: true });
+    toast('اتمنحت النقاط.'); loadReferralsAdmin();
+  }catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
 }
 
 /* ================= المحفظة + تحدي الأسبوع ================= */
