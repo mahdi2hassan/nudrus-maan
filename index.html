@@ -508,14 +508,12 @@
 
   /* ===== تحسينات الموبايل (أندرويد + آيفون) ===== */
   html{-webkit-text-size-adjust:100%;}
-  body, .shell, #screen-app, #screen-role{min-height:100vh; min-height:100dvh;}
+  html, body{width:100%; max-width:100%; overflow-x:hidden; overflow-y:auto;} /* overflow-y:auto صريح عشان overflow-x:hidden لوحده بيخلي بعض المتصفحات تحسب overflow-y auto بطريقة بتقفل سكرول الصفحة */
   body{-webkit-tap-highlight-color:transparent; overscroll-behavior-y:contain; -webkit-overflow-scrolling:touch;}
   button, .nav-item, .filter-tab, .quiz-opt{touch-action:manipulation;}
-  html, body{max-width:100%; overflow-x:hidden;}
-  .shell{width:100%; max-width:100vw; overflow-x:hidden;}
   .main{min-width:0; max-width:100%;}
-  .sidebar{height:100vh; height:100dvh; visibility:hidden; box-shadow:none; transform:translateX(105%); transition:transform .25s ease, visibility 0s linear .25s;}
-  .sidebar.open{visibility:visible; box-shadow:-10px 0 30px rgba(0,0,0,0.2); transition:transform .25s ease, visibility 0s;}
+  .sidebar{height:100vh; height:100dvh; box-shadow:none; transform:translateX(105%); transition:transform .25s ease; pointer-events:none;}
+  .sidebar.open{box-shadow:-10px 0 30px rgba(0,0,0,0.2); pointer-events:auto;}
   .toast{max-width:calc(100vw - 24px);}
   .content-item{flex-wrap:wrap; gap:8px;}
   img, video, iframe{max-width:100%;}
@@ -645,6 +643,7 @@
 </div>
 
 <div id="screen-role">
+  <div class="app-actions" style="max-width:420px; margin:0 auto 16px;"><button class="btn-install install-nav" onclick="installApp()">📲 ثبّت التطبيق على موبايلك</button><button class="btn-relogin" onclick="reLogin()">🔄 إعادة تسجيل الدخول</button></div>
   <button class="top-login-btn" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
   <div class="brand">
     <div class="brand-mark">نُدرس <span>معًا</span></div>
@@ -929,7 +928,6 @@
 
       <!-- TEACHER HOME -->
       <div class="view active" id="t-dash">
-        <div class="app-actions"><button class="btn-install install-nav" onclick="installApp()">📲 ثبّت التطبيق على موبايلك</button><button class="btn-relogin" onclick="reLogin()">🔄 إعادة تسجيل الدخول</button></div>
         <div class="topbar">
           <div><h1 id="dash-greeting">أهلًا <svg class="icon"><use href="#i-wave"></use></svg></h1><div class="sub">نظرة سريعة</div></div>
         </div>
@@ -966,7 +964,6 @@
         <div id="home-notebooks-preview" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
       <div class="view" id="s-home">
-        <div class="app-actions"><button class="btn-install install-nav" onclick="installApp()">📲 ثبّت التطبيق على موبايلك</button><button class="btn-relogin" onclick="reLogin()">🔄 إعادة تسجيل الدخول</button></div>
         <div class="topbar">
           <div><h1 id="dash-greeting-s">أهلًا <svg class="icon"><use href="#i-wave"></use></svg></h1><div class="sub">رحلتك في التدريس</div></div>
         </div>
@@ -1288,7 +1285,6 @@
       </div>
 
       <div class="view" id="v-profile">
-        <div class="app-actions"><button class="btn-install install-nav" onclick="installApp()">📲 ثبّت التطبيق على موبايلك</button><button class="btn-relogin" onclick="reLogin()">🔄 إعادة تسجيل الدخول</button></div>
         <div class="topbar"><div><h1>الملف الشخصي</h1><div class="sub">بياناتك ونشاطك على المنصة</div></div></div>
 
         <div class="profile-head">
