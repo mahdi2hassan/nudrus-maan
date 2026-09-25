@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة المعدل التراكمي (GPA)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        .section {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group > div {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+        }
+
+        .subject-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-add {
+            background-color: #2ecc71;
+            width: auto;
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .btn-add:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-remove {
+            background-color: #e74c3c;
+            padding: 10px;
+            width: auto;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-remove:hover {
+            background-color: #c0392b;
+        }
+
+        .results {
+            margin-top: 25px;
+            padding: 20px;
+            background: #e8f6f3;
+            border-radius: 8px;
+            border: 1px solid #1abc9c;
+            text-align: center;
+            display: none;
+        }
+
+        .results h3 {
+            margin: 0 0 15px 0;
+            color: #16a085;
+        }
+
+        .result-item {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>حاسبة المعدل التراكمي (GPA)</h2>
+
+    <!-- بيانات الفصول السابقة -->
+    <div class="section">
+        <div class="section-title">بيانات السنوات/الفصول السابقة (اختياري)</div>
+        <p style="font-size: 0.85em; color: #7f8c8d; margin-top: 0;">أدخل هذه البيانات إذا كنت تريد حساب التراكمي العام بدمج درجاتك القديمة مع الفصل الحالي.</p>
+        <div class="form-group">
+            <div>
+                <label for="prevGpa">المعدل التراكمي السابق (GPA)</label>
+                <input type="number" id="prevGpa" step="0.01" min="0" max="4" placeholder="مثال: 3.2">
+            </div>
+            <div>
+                <label for="prevHours">إجمالي الساعات السابقة</label>
+                <input type="number" id="prevHours" min="0" placeholder="مثال: 65">
+            </div>
+        </div>
+    </div>
+
+    <!-- بيانات الفصل الحالي -->
+    <div class="section">
+        <div class="section-title">مواد الفصل الحالي</div>
+        <div id="subjectsContainer">
+            <!-- سيتم إضافة المواد هنا -->
+        </div>
+        <button class="btn btn-add" onclick="addSubject()">+ إضافة مادة</button>
+    </div>
+
+    <button class="btn" onclick="calculateGPA()">احسب المعدل التراكمي والفصلي</button>
+
+    <!-- عرض النتائج -->
+    <div class="results" id="resultsArea">
+        <h3>النتيجة</h3>
+        <div class="result-item" id="termGpaResult">المعدل الفصلي: -</div>
+        <div class="result-item" id="cumGpaResult">المعدل التراكمي الكلي: -</div>
+    </div>
+</div>
+
+<script>
+    // خريطة التقديرات والنقاط (عدلها حسب لائحة الكلية الخاصة بك إذا لزم الأمر)
+    const gradePoints = {
+        'A+': 4.0,
+        'A': 3.7,
+        'B+': 3.3,
+        'B': 3.0,
+        'C+': 2.7,
+        'C': 2.4,
+        'D+': 2.2,
+        'D': 2.0,
+        'F': 0.0
+    };
+
+    // خيارات التقديرات لقائمة الـ Select
+    const gradeOptionsHtml = Object.keys(gradePoints).map(grade => 
+        `<option value="${gradePoints[grade]}">${grade}</option>`
+    ).join('');
+
+    const subjectsContainer = document.getElementById('subjectsContainer');
+
+    // دالة لإضافة مادة جديدة
+    function addSubject() {
+        const row = document.createElement('div');
+        row.className = 'subject-row';
+        row.innerHTML = `
+            <div style="flex: 2;">
+                <input type="text" placeholder="اسم المادة (اختياري)">
+            </div>
+            <div style="flex: 1;">
+                <input type="number" class="credit-hours" min="1" max="10" placeholder="الساعات" required>
+            </div>
+            <div style="flex: 1.5;">
+                <select class="grade-select">
+                    <option value="" disabled selected>التقدير</option>
+                    ${gradeOptionsHtml}
+                </select>
+            </div>
+            <button class="btn btn-remove" onclick="this.parentElement.remove()" title="حذف المادة">✕</button>
+        `;
+        subjectsContainer.appendChild(row);
+    }
+
+    // إضافة 4 مواد افتراضياً عند فتح الصفحة
+    window.onload = () => {
+        for(let i=0; i<4; i++) addSubject();
+    };
+
+    // دالة الحساب
+    function calculateGPA() {
+        // قراءة البيانات السابقة
+        const prevGpaInput = document.getElementById('prevGpa').value;
+        const prevHoursInput = document.getElementById('prevHours').value;
+        
+        let prevGpa = parseFloat(prevGpaInput) || 0;
+        let prevHours = parseFloat(prevHoursInput) || 0;
+        let prevPoints = prevGpa * prevHours;
+
+        // قراءة مواد الفصل الحالي
+        const hourInputs = document.querySelectorAll('.credit-hours');
+        const gradeSelects = document.querySelectorAll('.grade-select');
+
+        let termPoints = 0;
+        let termHours = 0;
+        let validSubjectsCount = 0;
+
+        for (let i = 0; i < hourInputs.length; i++) {
+            const hours = parseFloat(hourInputs[i].value);
+            const points = parseFloat(gradeSelects[i].value);
+
+            if (!isNaN(hours) && !isNaN(points)) {
+                termPoints += hours * points;
+                termHours += hours;
+                validSubjectsCount++;
+            }
+        }
+
+        if (validSubjectsCount === 0 && prevHours === 0) {
+            alert("يرجى إدخال بيانات مادة واحدة على الأقل أو البيانات السابقة.");
+            return;
+        }
+
+        // الحسابات
+        let termGPA = termHours > 0 ? (termPoints / termHours) : 0;
+        
+        let totalHours = prevHours + termHours;
+        let totalPoints = prevPoints + termPoints;
+        let cumulativeGPA = totalHours > 0 ? (totalPoints / totalHours) : 0;
+
+        // عرض النتائج
+        document.getElementById('termGpaResult').innerText = termHours > 0 
+            ? `المعدل الفصلي: ${termGPA.toFixed(2)}` 
+            : 'المعدل الفصلي: لا يوجد مواد حالية';
+            
+        document.getElementById('cumGpaResult').innerText = `المعدل التراكمي الكلي: ${cumulativeGPA.toFixed(2)}`;
+        
+        document.getElementById('resultsArea').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
