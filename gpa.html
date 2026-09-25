@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(GPA)</title>
+    <title>(GPA Pro)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
         
-        /* تعريف متغيرات الألوان للوضع الفاتح والداكن */
         :root {
             --bg-color: #f4f7f6;
             --container-bg: #ffffff;
@@ -58,12 +57,11 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 700px;
+            max-width: 800px; /* زيادة العرض قليلاً لاستيعاب المدخلات */
             position: relative;
             transition: background-color 0.3s;
         }
 
-        /* زر الوضع الداكن */
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -122,7 +120,7 @@
             padding: 10px;
             border: 1px solid var(--input-border);
             border-radius: 5px;
-            font-size: 1em;
+            font-size: 0.95em;
             outline: none;
             background-color: var(--input-bg);
             color: var(--text-color);
@@ -143,7 +141,6 @@
             border-bottom: 1px dashed var(--border-color);
         }
 
-        /* تنسيق الأعمدة داخل الصف */
         .col-name { flex: 2; min-width: 120px; }
         .col-hours { flex: 1; min-width: 70px; }
         .col-score { flex: 1.5; min-width: 90px; }
@@ -210,16 +207,16 @@
 <div class="container">
     <button class="theme-toggle" onclick="toggleDarkMode()" id="themeBtn">🌙</button>
     
-    <h2>حاسبة المعدل التراكمي (GPA)</h2>
+    <h2>حاسبة المعدل التراكمي (نظام 60% نجاح)</h2>
 
     <!-- بيانات الفصول السابقة -->
     <div class="section">
         <div class="section-title">البيانات التراكمية السابقة (اختياري)</div>
-        <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0;">البيانات السابقة يتم حفظها تلقائياً على جهازك للرجوع إليها.</p>
+        <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0;">يتم حفظها تلقائياً على المتصفح.</p>
         <div class="form-group">
             <div>
                 <label>التراكمي السابق (GPA)</label>
-                <input type="number" id="prevGpa" step="0.01" min="0" max="4" placeholder="مثال: 3.2">
+                <input type="number" id="prevGpa" step="0.01" min="0" max="4" placeholder="مثال: 2.8">
             </div>
             <div>
                 <label>إجمالي الساعات المكتسبة</label>
@@ -231,6 +228,7 @@
     <!-- بيانات الفصل الحالي -->
     <div class="section">
         <div class="section-title">مواد الفصل الحالي</div>
+        <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0;">(المادة بساعة نهايتها 50 درجة، وبساعتين نهايتها 100 درجة)</p>
         <div id="subjectsContainer">
             <!-- سيتم إضافة المواد هنا -->
         </div>
@@ -248,25 +246,23 @@
 </div>
 
 <script>
-    // نظام التقديرات والنقاط (عدل الدرجات حسب لائحة كليتك)
+    // جدول التقديرات (النجاح من 60%)
+    // يمكنك تعديل النقاط (points) إذا كانت كليتك تستخدم كسوراً مختلفة مثل 3.5 بدلاً من 3.3
     const gradePoints = [
-        { grade: 'A+', points: 4.0, minScore: 90 },
-        { grade: 'A', points: 3.7, minScore: 85 },
-        { grade: 'B+', points: 3.3, minScore: 80 },
-        { grade: 'B', points: 3.0, minScore: 75 },
-        { grade: 'C+', points: 2.7, minScore: 70 },
-        { grade: 'C', points: 2.4, minScore: 65 },
-        { grade: 'D+', points: 2.2, minScore: 60 },
-        { grade: 'D', points: 2.0, minScore: 50 },
-        { grade: 'F', points: 0.0, minScore: 0 }
+        { grade: 'A+', points: 4.0, minPercent: 90 },
+        { grade: 'A',  points: 3.7, minPercent: 85 },
+        { grade: 'B+', points: 3.3, minPercent: 80 },
+        { grade: 'B',  points: 3.0, minPercent: 75 },
+        { grade: 'C+', points: 2.7, minPercent: 70 },
+        { grade: 'C',  points: 2.4, minPercent: 65 },
+        { grade: 'D',  points: 2.0, minPercent: 60 }, // النجاح يبدأ من هنا
+        { grade: 'F',  points: 0.0, minPercent: 0 }
     ];
 
-    // توليد خيارات التقديرات للقائمة المنسدلة
     const gradeOptionsHtml = gradePoints.map(g => 
         `<option value="${g.points}">${g.grade}</option>`
     ).join('');
 
-    // تفعيل / تعطيل الوضع الداكن
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
@@ -274,15 +270,18 @@
         localStorage.setItem('darkMode', isDark);
     }
 
-    // إضافة مادة جديدة
     function addSubject() {
         const container = document.getElementById('subjectsContainer');
         const row = document.createElement('div');
         row.className = 'subject-row';
         row.innerHTML = `
-            <div class="col-name"><input type="text" placeholder="اسم المادة (اختياري)"></div>
-            <div class="col-hours"><input type="number" class="credit-hours" min="1" max="10" placeholder="الساعات"></div>
-            <div class="col-score"><input type="number" class="score-input" min="0" max="100" placeholder="الدرجة من 100" oninput="autoSelectGrade(this)"></div>
+            <div class="col-name"><input type="text" placeholder="اسم المادة"></div>
+            <div class="col-hours">
+                <input type="number" class="credit-hours" min="1" max="10" placeholder="الساعات" oninput="triggerAutoSelect(this)">
+            </div>
+            <div class="col-score">
+                <input type="number" class="score-input" min="0" placeholder="الدرجة" oninput="autoSelectGrade(this)" title="إذا كانت ساعة أدخل من 50، وإذا ساعتين أدخل من 100">
+            </div>
             <div class="col-grade">
                 <select class="grade-select">
                     <option value="" disabled selected>التقدير</option>
@@ -294,29 +293,43 @@
         container.appendChild(row);
     }
 
-    // دالة تحويل الدرجة المكتوبة إلى تقدير تلقائياً
+    // دالة لحساب التقدير عند تغيير الساعات بعد كتابة الدرجة
+    function triggerAutoSelect(hoursInput) {
+        const row = hoursInput.closest('.subject-row');
+        const scoreInput = row.querySelector('.score-input');
+        if (scoreInput.value !== "") {
+            autoSelectGrade(scoreInput);
+        }
+    }
+
+    // دالة تحويل الدرجة المكتوبة إلى تقدير بناءً على الساعات
     function autoSelectGrade(inputElement) {
-        const score = parseFloat(inputElement.value);
         const row = inputElement.closest('.subject-row');
+        const score = parseFloat(inputElement.value);
+        const hours = parseFloat(row.querySelector('.credit-hours').value);
         const selectElement = row.querySelector('.grade-select');
 
-        if (isNaN(score) || score < 0) {
-            selectElement.value = ""; // تفريغ التحديد إذا تم مسح الرقم
+        // التأكد من إدخال الساعات والدرجة بشكل صحيح
+        if (isNaN(score) || score < 0 || isNaN(hours) || hours <= 0) {
+            selectElement.value = ""; 
             return;
         }
 
-        // البحث عن التقدير المناسب للدرجة
+        // المعادلة: الدرجة النهائية للمادة = عدد الساعات × 50
+        // النسبة المئوية = (الدرجة المكتسبة / الدرجة النهائية) × 100
+        const maxMarks = hours * 50;
+        const percent = (score / maxMarks) * 100;
+
+        // البحث عن التقدير المناسب للنسبة
         for (let g of gradePoints) {
-            if (score >= g.minScore) {
+            if (percent >= g.minPercent) {
                 selectElement.value = g.points;
                 break;
             }
         }
     }
 
-    // دالة حساب المعدل
     function calculateGPA() {
-        // جلب البيانات السابقة وحفظها في التخزين المحلي (Local Storage)
         const prevGpa = parseFloat(document.getElementById('prevGpa').value) || 0;
         const prevHours = parseFloat(document.getElementById('prevHours').value) || 0;
         
@@ -326,7 +339,6 @@
         let prevPoints = prevGpa * prevHours;
         let termPoints = 0, termHours = 0, validSubjectsCount = 0;
 
-        // جلب بيانات الفصل الحالي
         const rows = document.querySelectorAll('.subject-row');
         rows.forEach(row => {
             const hours = parseFloat(row.querySelector('.credit-hours').value);
@@ -344,13 +356,11 @@
             return;
         }
 
-        // الحساب النهائي
         let termGPA = termHours > 0 ? (termPoints / termHours) : 0;
         let totalHours = prevHours + termHours;
         let totalPoints = prevPoints + termPoints;
         let cumulativeGPA = totalHours > 0 ? (totalPoints / totalHours) : 0;
 
-        // عرض النتائج
         document.getElementById('termGpaResult').innerText = termHours > 0 
             ? `المعدل الفصلي: ${termGPA.toFixed(2)}` 
             : 'المعدل الفصلي: لا يوجد';
@@ -358,17 +368,11 @@
         document.getElementById('resultsArea').style.display = 'block';
     }
 
-    // تنفيذ أولي عند تحميل الصفحة
     window.onload = () => {
-        // استرجاع تفضيل الوضع الداكن
         if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
-
-        // استرجاع البيانات التراكمية المحفوظة
         document.getElementById('prevGpa').value = localStorage.getItem('savedGpa') || '';
         document.getElementById('prevHours').value = localStorage.getItem('savedHours') || '';
-
-        // إضافة 4 مواد افتراضية
-        for(let i=0; i<4; i++) addSubject();
+        for(let i=0; i<5; i++) addSubject(); // إضافة 5 مواد افتراضية
     };
 </script>
 
