@@ -546,6 +546,42 @@
   .maint-ic{font-size:44px; margin-bottom:10px;}
   .maint-box h2{font-size:19px; margin-bottom:8px;}
   .maint-box p{font-size:13.5px; color:var(--ink-soft); line-height:1.8;}
+
+  .legal-screen{min-height:100vh; min-height:100dvh; display:none; padding:32px 20px; justify-content:center;}
+  .legal-panel{max-width:640px; width:100%; background:var(--white); border:1px solid var(--line); border-radius:10px; padding:28px 26px; height:fit-content;}
+  .legal-tabs{display:flex; gap:8px; margin-bottom:18px;}
+  .legal-tabs button{flex:1; padding:10px; border-radius:8px; font-weight:800; font-size:13px; background:var(--paper-dim); color:var(--ink-soft);}
+  .legal-tabs button.active{background:var(--brick); color:#fff;}
+  .legal-body h4{font-size:15px; margin:18px 0 6px; color:var(--brick-dark);}
+  .legal-body p, .legal-body li{font-size:13.5px; line-height:1.9; color:var(--ink-soft);}
+  .legal-body ul{padding-inline-start:20px; margin-bottom:6px;}
+
+  .landing-features{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; max-width:800px; margin:34px 0; width:100%;}
+  .lf-card{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:18px 14px; text-align:center;}
+  .lf-card .icon-circle{width:42px; height:42px; margin:0 auto 10px; border-radius:12px;}
+  .lf-card .icon-circle .icon{width:22px; height:22px;}
+  .lf-card h4{font-size:13.5px; margin-bottom:4px;}
+  .lf-card p{font-size:11.5px; color:var(--ink-soft); line-height:1.6;}
+  .landing-steps{display:flex; gap:18px; flex-wrap:wrap; justify-content:center; max-width:760px; margin-bottom:30px;}
+  .ls-step{flex:1 1 200px; text-align:center;}
+  .ls-step .num{width:34px; height:34px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; margin:0 auto 8px;}
+  .ls-step p{font-size:12.5px; color:var(--ink-soft); line-height:1.6;}
+  .landing-price-teaser{background:var(--white); border:1px solid var(--gold); border-radius:10px; padding:16px 22px; text-align:center; margin-bottom:30px; max-width:420px;}
+  .landing-price-teaser b{color:var(--brick-dark); font-size:15px;}
+
+  .tour-overlay{position:fixed; inset:0; background:rgba(27,42,65,0.55); z-index:400; display:none; align-items:center; justify-content:center; padding:20px;}
+  .tour-card{background:var(--white); border-radius:14px; padding:26px 24px; max-width:360px; width:100%; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.25);}
+  .tour-card .tour-icon{width:56px; height:56px; border-radius:16px; background:rgba(184,83,46,0.1); color:var(--brick); display:flex; align-items:center; justify-content:center; margin:0 auto 14px;}
+  .tour-card .tour-icon .icon{width:28px; height:28px;}
+  .tour-card h3{font-size:17px; margin-bottom:8px;}
+  .tour-card p{font-size:13.5px; color:var(--ink-soft); line-height:1.8; margin-bottom:18px;}
+  .tour-dots{display:flex; gap:6px; justify-content:center; margin-bottom:16px;}
+  .tour-dots span{width:7px; height:7px; border-radius:50%; background:var(--line);}
+  .tour-dots span.active{background:var(--brick); width:18px; border-radius:4px;}
+  .tour-actions{display:flex; gap:10px;}
+  .tour-actions button{flex:1; padding:11px; border-radius:8px; font-weight:800; font-size:13.5px;}
+  .tour-actions .tour-skip{background:var(--paper-dim); color:var(--ink-soft);}
+  .tour-actions .tour-next{background:var(--brick); color:#fff;}
 </style>
 </head>
 <body>
@@ -648,6 +684,22 @@
     <div class="brand-mark">نُدرس <span>معًا</span></div>
     <div class="brand-tag">نتعلم… نتطور… ونُدرس معًا</div>
   </div>
+  <div class="section-title" style="justify-content:center; margin-top:6px;">✨ كل اللي محتاجه كمعلم أو طالب معلم في مكان واحد</div>
+  <div class="landing-features">
+    <div class="lf-card"><div class="icon-circle" style="background:rgba(184,83,46,0.1); color:var(--brick);"><svg class="icon"><use href="#i-layers"></use></svg></div><h4>مكتبة موارد</h4><p>دفاتر تحضير وخطط دروس جاهزة من معلمين زُملاء</p></div>
+    <div class="lf-card"><div class="icon-circle" style="background:rgba(92,131,104,0.12); color:var(--sage);"><svg class="icon"><use href="#i-users"></use></svg></div><h4>مجتمع المعلمين</h4><p>اسأل خبيرًا، شارك تجربتك، وانضم لمجموعات تخصصك</p></div>
+    <div class="lf-card"><div class="icon-circle" style="background:rgba(199,154,43,0.14); color:var(--gold);"><svg class="icon"><use href="#i-edit"></use></svg></div><h4>أدوات جاهزة</h4><p>امتحانك بسهولة، مصنع اختبارات، ومولد شهادات</p></div>
+    <div class="lf-card"><div class="icon-circle" style="background:rgba(27,42,65,0.08); color:var(--ink);"><svg class="icon"><use href="#i-clipboard"></use></svg></div><h4>التربية العملية</h4><p>سجّل زياراتك واطبع تقرير جاهز لجامعتك</p></div>
+    <div class="lf-card"><div class="icon-circle" style="background:rgba(184,83,46,0.1); color:var(--brick);"><svg class="icon"><use href="#i-star"></use></svg></div><h4>تحدي وتحفيز</h4><p>نقاط، تحدي أسبوعي، ومساري كمعلم بمراحل واضحة</p></div>
+    <div class="lf-card"><div class="icon-circle" style="background:rgba(92,131,104,0.12); color:var(--sage);"><svg class="icon"><use href="#i-monitor"></use></svg></div><h4>سبورة إلكترونية</h4><p>اشرح واعرض لطلابك من أي مكان</p></div>
+  </div>
+  <div class="landing-steps">
+    <div class="ls-step"><div class="num">1</div><p>اختار دورك (معلم أو طالب معلم) وسجّل مجانًا</p></div>
+    <div class="ls-step"><div class="num">2</div><p>استخدم الأدوات والمكتبة والمجتمع لمدة 20 يوم مجانًا</p></div>
+    <div class="ls-step"><div class="num">3</div><p>اشترك في الخطة المناسبة لك واستمر في التطور</p></div>
+  </div>
+  <div class="landing-price-teaser">تجربة مجانية <b>20 يوم</b> بدون أي بيانات دفع — وخطط بعدها تبدأ من <b>100 جنيه</b></div>
+
   <div class="role-cards">
     <div class="role-card">
       <div class="icon-circle"><svg class="icon"><use href="#i-user"></use></svg></div>
@@ -662,7 +714,7 @@
       <button onclick="startSignup('student')">ابدأ كطالب معلم</button>
     </div>
   </div>
-  <div class="role-legal">جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="role-footer-year"></span> — تواصل واتساب: <a href="https://wa.me/201007586279" target="_blank" rel="noopener">01007586279</a></div>
+  <div class="role-legal">جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="role-footer-year"></span> — تواصل واتساب: <a href="https://wa.me/201007586279" target="_blank" rel="noopener">01007586279</a><br><a href="javascript:void(0)" onclick="openLegal('terms')">الشروط والأحكام</a> · <a href="javascript:void(0)" onclick="openLegal('privacy')">سياسة الخصوصية</a></div>
 </div>
 <script>
   // أول زيارة للموقع: اعرض شاشة التعريف قبل شاشة اختيار الدور
@@ -684,6 +736,40 @@
 </script>
 
 <!-- ========== SIGNUP SCREEN ========== -->
+<div id="screen-legal" class="legal-screen">
+  <div class="legal-panel">
+    <button class="top-login-btn" style="position:static; margin-bottom:16px;" onclick="closeLegal()"><svg class="icon"><use href="#i-x"></use></svg> رجوع</button>
+    <div class="brand-mark" style="font-size:24px; margin-bottom:14px;">نُدرس <span>معًا</span></div>
+    <div class="legal-tabs">
+      <button id="legal-tab-terms" onclick="showLegalTab('terms')">الشروط والأحكام</button>
+      <button id="legal-tab-privacy" onclick="showLegalTab('privacy')">سياسة الخصوصية</button>
+    </div>
+    <div class="legal-body" id="legal-terms">
+      <h4>1. طبيعة الخدمة</h4>
+      <p>"نُدرس معًا" منصة تعليمية تجمّع أدوات وموارد ومجتمع للمعلمين والطلاب المعلمين، ومزوّدة بميزات مدفوعة اختيارية (خطط الاشتراك) وميزات مجانية.</p>
+      <h4>2. الحساب والاشتراك</h4>
+      <ul><li>الحساب شخصي ومسؤوليتك الحفاظ على بيانات دخولك.</li><li>الاشتراكات المدفوعة تُفعَّل يدويًا بعد تأكيد الدفع (تحويل/إنستاباي) عبر واتساب، وتُحتسب المدة من وقت التفعيل الفعلي.</li><li>المدفوعات غير قابلة للاسترجاع بعد التفعيل، إلا في حالات الخطأ التقني من جانبنا.</li></ul>
+      <h4>3. المحتوى والمجتمع</h4>
+      <ul><li>يمنع نشر محتوى مسيء أو منتهك لحقوق الملكية أو مخالف لآداب المهنة.</li><li>إدارة المنصة لها الحق في حذف أي محتوى مخالف أو إيقاف أي حساب يسيء استخدام الخدمة.</li><li>الموارد التي يرفعها المستخدمون (دفاتر تحضير، أبحاث) تبقى ملكية فكرية لأصحابها، وبمشاركتها يمنح المستخدم المنصة حق عرضها لباقي الأعضاء.</li></ul>
+      <h4>4. نظام النقاط والمحفظة</h4>
+      <p>النقاط والرصيد داخل المنصة وسيلة تحفيزية للاستخدام داخل المنصة فقط (ترقية/تجديد الاشتراك)، ولا تُصرف نقدًا ولا تُستبدل بأي شكل خارج المنصة.</p>
+      <h4>5. التعديلات</h4>
+      <p>قد تُحدَّث هذه الشروط من وقت لآخر، وسيتم إعلام المستخدمين بأي تغييرات جوهرية.</p>
+    </div>
+    <div class="legal-body" id="legal-privacy" style="display:none;">
+      <h4>1. البيانات التي نجمعها</h4>
+      <p>الاسم، البريد الإلكتروني، رقم الهاتف، بيانات النشاط على المنصة (المنشورات، دفاتر التحضير، سجل التربية العملية)، وفي حال استخدام تسجيل الدخول بجوجل: الاسم والبريد وصورة الحساب.</p>
+      <h4>2. كيف نستخدم بياناتك</h4>
+      <ul><li>تشغيل الحساب والميزات (المجتمع، المحادثات، الإشعارات).</li><li>التواصل بخصوص الاشتراك والدعم الفني عبر واتساب أو البريد.</li><li>تحسين المنصة وتحليل الاستخدام بشكل مجمّع.</li></ul>
+      <h4>3. مشاركة البيانات</h4>
+      <p>لا نبيع بياناتك لأي طرف ثالث. تُخزَّن البيانات على منصة Firebase (Google) وتخضع لسياسات الأمان الخاصة بها. رقم هاتفك يُستخدم فقط للتواصل الإداري.</p>
+      <h4>4. حقوقك</h4>
+      <p>يمكنك طلب تعديل بياناتك أو حذف حسابك بالكامل بالتواصل معنا عبر واتساب على الرقم الظاهر بأسفل الصفحة الرئيسية.</p>
+      <h4>5. ملفات تعريف الارتباط والتخزين المحلي</h4>
+      <p>نستخدم التخزين المحلي بالمتصفح لحفظ تفضيلات بسيطة (مثل إخفاء الجولة التعريفية) فقط، ولا نستخدمه للتتبع الإعلاني.</p>
+    </div>
+  </div>
+</div>
 <div id="screen-signup">
   <div class="auth-panel">
     <div class="auth-logo"><svg class="icon"><use href="#i-cap"></use></svg></div>
@@ -789,6 +875,16 @@
   </div>
 </div>
 
+
+<div class="tour-overlay" id="tour-overlay">
+  <div class="tour-card">
+    <div class="tour-icon" id="tour-icon"><svg class="icon"><use href="#i-sparkle"></use></svg></div>
+    <h3 id="tour-title"></h3>
+    <p id="tour-text"></p>
+    <div class="tour-dots" id="tour-dots"></div>
+    <div class="tour-actions"><button class="tour-skip" onclick="skipTour()">تخطي</button><button class="tour-next" id="tour-next-btn" onclick="nextTourStep()">التالي</button></div>
+  </div>
+</div>
 <!-- ========== APP SHELL ========== -->
 <div id="screen-app">
   <div class="shell">
@@ -1285,6 +1381,15 @@
 
       <div class="view" id="v-profile">
         <div class="topbar"><div><h1>الملف الشخصي</h1><div class="sub">بياناتك ونشاطك على المنصة</div></div></div>
+<div class="card-panel" id="referral-box" style="max-width:none; margin-bottom:22px;">
+          <div class="section-title" style="margin-top:0;">🎁 ادعُ زميلك واكسب نقاط</div>
+          <p style="font-size:13px; color:var(--ink-soft); margin-bottom:12px;">شارك رابطك، وكل زميل يسجّل حساب بيه هتكسب 30 نقطة (بعد اعتماد الأدمن).</p>
+          <div class="field-row">
+            <div class="field" style="flex:1;"><input type="text" id="referral-link" readonly onclick="this.select()"></div>
+            <button class="btn-secondary" onclick="copyReferralLink()">نسخ</button>
+          </div>
+          <div style="font-size:12px; color:var(--ink-soft); margin-top:8px;" id="referral-stats"></div>
+        </div>
 
         <div class="profile-head">
           <div class="profile-avatar-big" id="profile-avatar-big" onclick="document.getElementById('profile-photo-input').click()">
@@ -1656,6 +1761,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
@@ -1820,6 +1926,7 @@ async function completeGoogleSignup(){
       trialEndsAt: Date.now() + 20*24*60*60*1000,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
+    justSignedUp = true;
     status.textContent = '';
     plansMode = 'signup';
     document.getElementById('plans-back-btn').style.display = 'block';
@@ -1889,6 +1996,7 @@ async function createAccountAndSendCode(){
       trialEndsAt: Date.now() + 20*24*60*60*1000,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
+    justSignedUp = true;
 
     try{
       await sendEmailJS(EMAILJS_TEMPLATE_AUTOREPLY, { otp_code: code });
@@ -2092,9 +2200,14 @@ function enterApp(role){
   showView(role === 'teacher' ? 't-dash' : 's-home', document.querySelector((role === 'teacher' ? '#nav-teacher' : '#nav-student') + ' .nav-item'));
   loadLessons(); loadPracticalTips(); loadResearchVideos(); loadCommunity(); loadNotebooks();
   loadBookmarks(); loadFollowing();
-  syncPublicProfile(); loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce(); subscribeAnnouncement(); updateLoginStreak();
+  syncPublicProfile(); loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce(); setupPushNotifications(); subscribeAnnouncement(); updateLoginStreak();
   handleSharedProfileLink();
   handleSharedRoomLink();
+  if(justSignedUp){
+    justSignedUp = false;
+    recordReferral();
+    if(!localStorage.getItem('ndm_tour_seen')) setTimeout(startOnboardingTour, 700);
+  }
 }
 // لو المستخدم داخل عن طريق رابط "هوية نُدرس معًا" (#profile=uid) بتاع حد تاني، افتح ملفه الاحترافي على طول
 function handleSharedProfileLink(){
@@ -2132,6 +2245,7 @@ function showView(id, btn){
   if(id === 'v-tools-hub') renderToolsHub();
   if(id === 'v-leaderboard') loadLeaderboard();
   if(id === 'v-wallet') loadWallet();
+  if(id === 'v-profile') loadReferralBox();
   if(id === 'v-expert') renderKindView('expert');
   if(id === 'v-problems') renderKindView('problem');
   if(id === 'v-challenge') loadChallenge();
@@ -4107,6 +4221,8 @@ let convListUnsub = null;
 let msgUnsub = null;
 let chatUserSearchTimer = null;
 let publicProfilesCache = null;
+let justSignedUp = false;
+let pendingReferralUid = null;
 
 function convIdFor(uidA, uidB){ return [uidA, uidB].sort().join('_'); }
 
@@ -4464,7 +4580,7 @@ function requestNotifPermissionOnce(){
   if(Notification.permission === 'denied') return;
   if(localStorage.getItem('ndm_notif_asked')) return;
   localStorage.setItem('ndm_notif_asked','1');
-  Notification.requestPermission().then(p => { notifPermissionGranted = (p === 'granted'); });
+  Notification.requestPermission().then(p => { notifPermissionGranted = (p === 'granted'); if(p === 'granted') setupPushNotifications(); });
 }
 
 /* ---------- Toast notifications (replaces alert/confirm) ---------- */
@@ -4951,6 +5067,101 @@ async function reLogin(){
 if(sessionStorage.getItem('ndm_relogin')){
   try{ sessionStorage.removeItem('ndm_relogin'); }catch(e){}
   setTimeout(() => { try{ if(!currentUid) showLogin(); }catch(e){} }, 600);
+}
+
+function openLegal(tab){
+  ['screen-role','screen-signup','screen-login','screen-intro'].forEach(id => { const el = document.getElementById(id); if(el && el.style.display !== 'none') el.dataset.legalReturn = '1'; });
+  document.getElementById('screen-legal').style.display = 'flex';
+  showLegalTab(tab || 'terms');
+}
+function closeLegal(){ document.getElementById('screen-legal').style.display = 'none'; }
+function showLegalTab(tab){
+  document.getElementById('legal-terms').style.display = tab === 'terms' ? 'block' : 'none';
+  document.getElementById('legal-privacy').style.display = tab === 'privacy' ? 'block' : 'none';
+  document.getElementById('legal-tab-terms').classList.toggle('active', tab === 'terms');
+  document.getElementById('legal-tab-privacy').classList.toggle('active', tab === 'privacy');
+}
+
+/* ---------- الجولة التعريفية ---------- */
+const TOUR_STEPS = [
+  { icon:'menu', title:'أهلًا بيك في نُدرس معًا 👋', text:'من زرار القايمة ☰ فوق هتلاقي كل الأقسام: تعلم كيف، مكتبة الموارد، دفاتر التحضير، وأدوات كتير.' },
+  { icon:'sparkle', title:'✨ الجديد على المنصة', text:'في الصفحة الرئيسية هتلاقي قسم "الجديد" فيه المحفظة وتحدي الأسبوع ومساري كمعلم ومحاكاة المواقف الصفية.' },
+  { icon:'users', title:'المجتمع', text:'شارك بموارد، اسأل معلمًا خبيرًا، أو انضم لمجموعة تخصصك وشارك في الغرف الصوتية.' },
+  { icon:'bell', title:'جاهز تبدأ؟', text:'هتوصلك إشعارات على أي رد أو رسالة جديدة. لو محتاج مساعدة، تواصل معنا من القايمة الجانبية في أي وقت.' },
+];
+let tourStep = 0;
+function startOnboardingTour(){
+  tourStep = 0; renderTourStep();
+  document.getElementById('tour-overlay').style.display = 'flex';
+}
+function renderTourStep(){
+  const s = TOUR_STEPS[tourStep];
+  document.getElementById('tour-icon').innerHTML = ic(s.icon);
+  document.getElementById('tour-title').textContent = s.title;
+  document.getElementById('tour-text').textContent = s.text;
+  document.getElementById('tour-dots').innerHTML = TOUR_STEPS.map((x,i) => `<span class="${i===tourStep?'active':''}"></span>`).join('');
+  document.getElementById('tour-next-btn').textContent = tourStep === TOUR_STEPS.length - 1 ? 'يلا نبدأ' : 'التالي';
+}
+function nextTourStep(){
+  tourStep++;
+  if(tourStep >= TOUR_STEPS.length){ skipTour(); return; }
+  renderTourStep();
+}
+function skipTour(){
+  document.getElementById('tour-overlay').style.display = 'none';
+  try{ localStorage.setItem('ndm_tour_seen', '1'); }catch(e){}
+}
+
+/* ---------- نظام الإحالة (Referral) ---------- */
+const REFERRAL_POINTS = 30;
+(function captureReferralParam(){
+  try{
+    const p = new URLSearchParams(location.search).get('ref');
+    if(p) sessionStorage.setItem('ndm_ref', p);
+  }catch(e){}
+})();
+async function recordReferral(){
+  let ref = null; try{ ref = sessionStorage.getItem('ndm_ref'); }catch(e){}
+  if(!ref || ref === currentUid) return;
+  try{
+    await db.collection('referrals').doc(ref + '_' + currentUid).set({
+      referrerUid: ref, newUid: currentUid, newName: pendingUser.name || 'مستخدم',
+      rewarded: false, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    try{ sessionStorage.removeItem('ndm_ref'); }catch(e){}
+  }catch(err){ console.warn('referral record failed', err); }
+}
+function referralLink(){ return location.origin + location.pathname + '?ref=' + currentUid; }
+async function loadReferralBox(){
+  const el = document.getElementById('referral-box'); if(!el || !currentUid) return;
+  const linkEl = document.getElementById('referral-link'); if(linkEl) linkEl.value = referralLink();
+  try{
+    const snap = await db.collection('referrals').where('referrerUid','==',currentUid).get();
+    const total = snap.size, rewarded = snap.docs.filter(d => d.data().rewarded).length;
+    const statEl = document.getElementById('referral-stats');
+    if(statEl) statEl.textContent = `${total} دعوة سجّلت حساب · ${rewarded} اتكافأ عليها (${rewarded * REFERRAL_POINTS} نقطة)`;
+  }catch(err){ console.warn(err); }
+}
+function copyReferralLink(){
+  const el = document.getElementById('referral-link'); if(!el) return;
+  el.select(); el.setSelectionRange(0, 999);
+  try{ navigator.clipboard.writeText(el.value); toast('اتنسخ الرابط ✓'); }
+  catch(e){ document.execCommand('copy'); toast('اتنسخ الرابط ✓'); }
+}
+
+/* ---------- إشعارات Push (FCM) ---------- */
+const FCM_VAPID_KEY = 'PASTE_YOUR_VAPID_KEY_HERE'; // من Firebase Console → إعدادات المشروع → Cloud Messaging → Web Push certificates
+async function setupPushNotifications(){
+  if(!currentUid || !('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
+  if(FCM_VAPID_KEY === 'PASTE_YOUR_VAPID_KEY_HERE') return; // لسه محتاج مفتاح VAPID من الأدمن
+  try{
+    if(Notification.permission !== 'granted') return;
+    const reg = await navigator.serviceWorker.ready;
+    const messaging = firebase.messaging();
+    const token = await messaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
+    if(token) await db.collection('users').doc(currentUid).set({ fcmTokens: firebase.firestore.FieldValue.arrayUnion(token) }, { merge: true });
+    messaging.onMessage(payload => { toast((payload.notification && payload.notification.title) || 'إشعار جديد'); });
+  }catch(err){ console.warn('FCM setup failed', err); }
 }
 </script>
 </body>
