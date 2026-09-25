@@ -26,6 +26,7 @@
   a{color:var(--brick);}
   ::selection{background:var(--gold); color:var(--ink);}
 
+  html{scroll-behavior:smooth;}
   #screen-role{min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; position:relative;
     background: radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%), radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%), var(--paper);}
   .brand{text-align:center; margin-bottom:40px;}
@@ -44,6 +45,17 @@
   .role-card.student{ --role-color:var(--sage); }
   .role-legal{margin-top:22px; font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.8; max-width:420px;}
   .role-legal a{color:var(--brick); font-weight:800;}
+
+  .top-login-btn{position:fixed; top:18px; left:18px; z-index:80; display:flex; align-items:center; gap:6px; background:var(--white); color:var(--ink); border:2px solid var(--ink); padding:9px 18px; border-radius:24px; font-size:13.5px; font-weight:800; box-shadow:0 6px 18px rgba(27,42,65,0.14); transition:background .15s ease, color .15s ease, transform .15s ease;}
+  .top-login-btn:hover{background:var(--ink); color:#fff; transform:translateY(-1px);}
+  .top-login-btn .icon{width:16px; height:16px;}
+  @media (max-width:480px){ .top-login-btn{top:12px; left:12px; padding:8px 14px; font-size:12.5px;} }
+
+  #scroll-top-btn{position:fixed; bottom:24px; left:24px; z-index:150; width:44px; height:44px; border-radius:50%; background:var(--ink); color:#fff; display:none; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(27,42,65,0.28); transition:opacity .2s ease, transform .2s ease; opacity:0; transform:translateY(8px);}
+  #scroll-top-btn.show{display:flex; opacity:1; transform:translateY(0);}
+  #scroll-top-btn:hover{background:var(--brick);}
+  #scroll-top-btn .icon{width:19px; height:19px; transform:rotate(90deg);}
+  @media (max-width:480px){ #scroll-top-btn{bottom:16px; left:16px; width:40px; height:40px;} }
 
   #screen-intro{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px 20px;
     background: radial-gradient(circle at 15% 20%, rgba(184,83,46,0.09), transparent 40%), radial-gradient(circle at 85% 80%, rgba(92,131,104,0.11), transparent 45%), var(--paper); animation:viewIn .35s cubic-bezier(.22,1,.36,1);}
@@ -542,6 +554,19 @@
 </style>
 </head>
 <body>
+<button id="scroll-top-btn" title="ارجع لفوق" aria-label="ارجع لفوق"><svg class="icon"><use href="#i-chevron"></use></svg></button>
+<script>
+  (function(){
+    var btn = document.getElementById('scroll-top-btn');
+    if(!btn) return;
+    window.addEventListener('scroll', function(){
+      if(window.scrollY > 320) btn.classList.add('show'); else btn.classList.remove('show');
+    }, { passive: true });
+    btn.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>
 <div id="screen-maintenance" style="display:none;">
   <div class="maint-box">
     <div class="maint-ic">🛠️</div>
@@ -622,6 +647,7 @@
 </div>
 
 <div id="screen-role">
+  <button class="top-login-btn" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
   <div class="brand">
     <div class="brand-mark">نُدرس <span>معًا</span></div>
     <div class="brand-tag">نتعلم… نتطور… ونُدرس معًا</div>
@@ -640,7 +666,6 @@
       <button onclick="startSignup('student')">ابدأ كطالب معلم</button>
     </div>
   </div>
-  <button class="back-link" style="margin-top:26px;" onclick="showLogin()">عندك حساب بالفعل؟ سجّل دخول</button>
   <div class="role-legal">جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="role-footer-year"></span> — تواصل واتساب: <a href="https://wa.me/201007586279" target="_blank" rel="noopener">01007586279</a></div>
 </div>
 <script>
@@ -776,6 +801,7 @@
       <button class="sidebar-close-btn" onclick="toggleSidebar(false)"><svg class="icon"><use href="#i-x"></use></svg></button>
       <div class="brand-mark">نُدرس <span>معًا</span></div>
       <div class="role-pill" id="role-pill">معلم</div>
+      <div id="streak-badge" style="display:none; align-items:center; gap:6px; background:rgba(199,154,43,0.16); border:1px solid rgba(199,154,43,0.35); color:#EFD79A; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:20px; margin:-14px 0 18px; width:fit-content;"></div>
 
       <div id="nav-teacher" style="display:none;">
         <button class="nav-item active" onclick="showView('t-dash', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
@@ -1102,6 +1128,7 @@
       <div class="view" id="v-leaderboard">
         <div class="topbar"><div><h1>لوحة المتصدرين</h1><div class="sub">أكتر المعلمين نشاطًا وعطاءً للمجتمع (نقاط الأنشطة)</div></div></div>
         <label style="display:flex; align-items:center; gap:8px; margin-bottom:14px; font-size:14px; font-weight:700;"><input type="checkbox" id="lb-optin" onchange="toggleLb(this.checked)"> أظهر اسمي ونقاطي في لوحة المتصدرين (اختياري)</label>
+        <button class="btn-secondary" style="margin-bottom:14px;" onclick="shareMyAchievement()">📤 شارك ترتيبك ونقاطك</button>
         <div id="leaderboard-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
 
@@ -2070,13 +2097,9 @@ function enterApp(role){
   renderGlobalAvatar();
   loadUserStatus();
   showView(role === 'teacher' ? 't-dash' : 's-home', document.querySelector((role === 'teacher' ? '#nav-teacher' : '#nav-student') + ' .nav-item'));
-  loadLessons(); loadPracticalTips(); loadResearchVideos(); loadMyResearch(); loadCommunity(); loadNotebooks();
-  loadBookmarks(); loadQuestions(); loadQuizzes(); loadFollowing();
-  loadCourses(); loadCourseProgress();
-  loadAvailableQuizzes();
-  loadMyQuizAttempts();
-  loadTasks();
-  syncPublicProfile(); loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce(); subscribeAnnouncement();
+  loadLessons(); loadPracticalTips(); loadResearchVideos(); loadCommunity(); loadNotebooks();
+  loadBookmarks(); loadFollowing();
+  syncPublicProfile(); loadContactChannels(); subscribeConvList(); subscribeNotifications(); requestNotifPermissionOnce(); subscribeAnnouncement(); updateLoginStreak();
   handleSharedProfileLink();
   handleSharedRoomLink();
 }
@@ -2097,6 +2120,16 @@ function showView(id, btn){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   toggleSidebar(false);
+  if(!window.__lazyLoaded) window.__lazyLoaded = {};
+  const lazyOnce = (key, fn) => { if(!window.__lazyLoaded[key]){ window.__lazyLoaded[key] = true; fn(); } };
+  if(id === 'v-questions') lazyOnce('questions', loadQuestions);
+  if(id === 'v-quizzes') lazyOnce('quizzes', loadQuizzes);
+  if(id === 'v-take-quiz-list'){ lazyOnce('availQuizzes', loadAvailableQuizzes); lazyOnce('myQuizAttempts', loadMyQuizAttempts); }
+  if(id === 'v-profile'){ lazyOnce('myQuizAttempts', loadMyQuizAttempts); lazyOnce('myResearch', loadMyResearch); lazyOnce('courses', async () => { await loadCourses(); await loadCourseProgress(); renderProfileView(); }); }
+  if(id === 'v-courses'){ lazyOnce('courses', () => { loadCourses(); loadCourseProgress(); }); }
+  if(id === 'v-portfolio'){ lazyOnce('courses', async () => { await loadCourses(); await loadCourseProgress(); renderPortfolio(); }); }
+  if(id === 'v-tasks') lazyOnce('tasks', loadTasks);
+  if(id === 's-myresearch') lazyOnce('myResearch', loadMyResearch);
   if(id === 'v-profile') renderProfileView();
   if(id === 'v-portfolio') renderPortfolio();
   if(id === 'v-calendar') renderCalendar();
@@ -2389,6 +2422,15 @@ async function toggleLb(on){
   catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
   loadLeaderboard();
 }
+async function shareMyAchievement(){
+  try{
+    const points = await pointsAggFor(currentUid);
+    const lvl = levelForPoints(points);
+    const text = `أنا على منصة نُدرس معًا 🎓 وصلت لـ ${points} نقطة ومستوى "${lvl.label}" ${lvl.emoji}! انضم معايا: https://wa.me/201007586279`;
+    if(navigator.share){ navigator.share({ text }).catch(() => {}); }
+    else{ window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); }
+  }catch(e){ toast('حصل خطأ في المشاركة، حاول تاني.', {type:'err'}); }
+}
 /* ---------- المحفظة الإلكترونية (750 نقطة = 1 جنيه، للاستخدام داخل المنصة فقط) ---------- */
 const PTS_PER_EGP = 750;
 const RD_LABEL = { pending:'قيد المراجعة', approved:'اتطبّق على اشتراكك', rejected:'اترفض (النقاط رجعت لرصيدك)' };
@@ -2510,6 +2552,11 @@ async function exportCV(){
   if(!win){ toast('المتصفح منع فتح نافذة جديدة — اسمح بالنوافذ المنبثقة وجرّب تاني.', {type:'err'}); return; }
   win.document.write('<title>جاري التجهيز...</title><body style="font-family:sans-serif; padding:40px; text-align:center; color:#555;">جاري تجهيز السيرة الذاتية...</body>');
   try{
+    // تأكيد إن بيانات الدورات والأبحاث محمّلة حتى لو المستخدم لسه مزارش الصفحات دي
+    await Promise.all([
+      (typeof coursesCache !== 'undefined' && coursesCache.length) ? Promise.resolve() : loadCourses().catch(()=>{}),
+      (typeof myResearchCache !== 'undefined' && myResearchCache.length) ? Promise.resolve() : loadMyResearch().catch(()=>{})
+    ]);
     const completedCourses = (typeof coursesCache !== 'undefined' ? coursesCache : []).filter(({id,data:c}) => {
       const lessons = c.lessons || [];
       const prog = getCourseProgress(id);
@@ -4006,7 +4053,32 @@ function subscribeAnnouncement(){
   }, () => { el.style.display = 'none'; });
 }
 
-/* ================= مزايا ظاهرة/مخفية من الأدمن (siteSettings/featureFlags) ================= */
+/* ================= سلسلة أيام الدخول المتتالية (Streak) ================= */
+function dateKey(d){ return d.toISOString().slice(0,10); }
+async function updateLoginStreak(){
+  const badge = document.getElementById('streak-badge');
+  if(!currentUid) return;
+  try{
+    const ref = db.collection('users').doc(currentUid);
+    const snap = await ref.get();
+    const d = snap.exists ? snap.data() : {};
+    const today = dateKey(new Date());
+    const yesterday = dateKey(new Date(Date.now() - 24*60*60*1000));
+    let streak = d.loginStreak || 0;
+    if(d.lastLoginDate === today){
+      // اتحسب النهاردة بالفعل
+    }else if(d.lastLoginDate === yesterday){
+      streak += 1;
+      await ref.set({ loginStreak: streak, lastLoginDate: today }, { merge: true });
+    }else{
+      streak = 1;
+      await ref.set({ loginStreak: streak, lastLoginDate: today }, { merge: true });
+    }
+    if(badge && streak > 1){ badge.style.display = 'flex'; badge.textContent = '🔥 ' + streak + ' يوم متتالي'; }
+    else if(badge){ badge.style.display = 'none'; }
+  }catch(e){ console.warn('streak', e); }
+}
+
 async function applyFeatureFlags(){
   try{
     const doc = await db.collection('siteSettings').doc('featureFlags').get();
