@@ -3,65 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة المعدل التراكمي (GPA)</title>
+    <title>(GPA)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
         
+        /* تعريف متغيرات الألوان للوضع الفاتح والداكن */
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #7f8c8d;
+            --border-color: #eeeeee;
+            --input-bg: #ffffff;
+            --input-border: #cccccc;
+            --section-bg: #fdfdfd;
+            --result-bg: #e8f6f3;
+            --result-border: #1abc9c;
+            --result-text: #16a085;
+            --primary-color: #3498db;
+        }
+
+        .dark-mode {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #f1f1f1;
+            --text-muted: #aaaaaa;
+            --border-color: #333333;
+            --input-bg: #2c2c2c;
+            --input-border: #444444;
+            --section-bg: #252525;
+            --result-bg: #1e3a34;
+            --result-border: #1abc9c;
+            --result-text: #2ecc71;
+        }
+
         * {
             box-sizing: border-box;
             font-family: 'Cairo', sans-serif;
         }
 
         body {
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
-            background: #fff;
+            background: var(--container-bg);
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        /* زر الوضع الداكن */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-color);
         }
 
         h2 {
             text-align: center;
-            color: #2c3e50;
             margin-bottom: 25px;
         }
 
         .section {
-            background: #fdfdfd;
-            border: 1px solid #eee;
+            background: var(--section-bg);
+            border: 1px solid var(--border-color);
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .section-title {
             font-size: 1.1em;
             font-weight: 600;
             margin-bottom: 15px;
-            color: #34495e;
-            border-bottom: 2px solid #3498db;
+            border-bottom: 2px solid var(--primary-color);
             display: inline-block;
             padding-bottom: 5px;
         }
 
         .form-group {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 15px;
         }
 
         .form-group > div {
             flex: 1;
+            min-width: 150px;
         }
 
         label {
@@ -74,29 +120,41 @@
         input, select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--input-border);
             border-radius: 5px;
             font-size: 1em;
             outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-color);
             transition: 0.3s;
         }
 
         input:focus, select:focus {
-            border-color: #3498db;
+            border-color: var(--primary-color);
         }
 
         .subject-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 10px;
             align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
         }
 
+        /* تنسيق الأعمدة داخل الصف */
+        .col-name { flex: 2; min-width: 120px; }
+        .col-hours { flex: 1; min-width: 70px; }
+        .col-score { flex: 1.5; min-width: 90px; }
+        .col-grade { flex: 1.5; min-width: 100px; }
+        .col-btn { flex: 0.5; min-width: 40px; text-align: left; }
+
         .btn {
-            background-color: #3498db;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
@@ -106,48 +164,38 @@
             margin-top: 10px;
         }
 
-        .btn:hover {
-            background-color: #2980b9;
-        }
-
+        .btn:hover { background-color: #2980b9; }
+        
         .btn-add {
             background-color: #2ecc71;
             width: auto;
             padding: 8px 15px;
             font-size: 0.9em;
         }
-
-        .btn-add:hover {
-            background-color: #27ae60;
-        }
+        .btn-add:hover { background-color: #27ae60; }
 
         .btn-remove {
             background-color: #e74c3c;
-            padding: 10px;
-            width: auto;
+            padding: 8px;
+            width: 100%;
             margin-top: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
-        .btn-remove:hover {
-            background-color: #c0392b;
-        }
+        .btn-remove:hover { background-color: #c0392b; }
 
         .results {
             margin-top: 25px;
             padding: 20px;
-            background: #e8f6f3;
+            background: var(--result-bg);
             border-radius: 8px;
-            border: 1px solid #1abc9c;
+            border: 1px solid var(--result-border);
             text-align: center;
             display: none;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .results h3 {
             margin: 0 0 15px 0;
-            color: #16a085;
+            color: var(--result-text);
         }
 
         .result-item {
@@ -160,19 +208,21 @@
 <body>
 
 <div class="container">
+    <button class="theme-toggle" onclick="toggleDarkMode()" id="themeBtn">🌙</button>
+    
     <h2>حاسبة المعدل التراكمي (GPA)</h2>
 
     <!-- بيانات الفصول السابقة -->
     <div class="section">
-        <div class="section-title">بيانات السنوات/الفصول السابقة (اختياري)</div>
-        <p style="font-size: 0.85em; color: #7f8c8d; margin-top: 0;">أدخل هذه البيانات إذا كنت تريد حساب التراكمي العام بدمج درجاتك القديمة مع الفصل الحالي.</p>
+        <div class="section-title">البيانات التراكمية السابقة (اختياري)</div>
+        <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0;">البيانات السابقة يتم حفظها تلقائياً على جهازك للرجوع إليها.</p>
         <div class="form-group">
             <div>
-                <label for="prevGpa">المعدل التراكمي السابق (GPA)</label>
+                <label>التراكمي السابق (GPA)</label>
                 <input type="number" id="prevGpa" step="0.01" min="0" max="4" placeholder="مثال: 3.2">
             </div>
             <div>
-                <label for="prevHours">إجمالي الساعات السابقة</label>
+                <label>إجمالي الساعات المكتسبة</label>
                 <input type="number" id="prevHours" min="0" placeholder="مثال: 65">
             </div>
         </div>
@@ -187,101 +237,115 @@
         <button class="btn btn-add" onclick="addSubject()">+ إضافة مادة</button>
     </div>
 
-    <button class="btn" onclick="calculateGPA()">احسب المعدل التراكمي والفصلي</button>
+    <button class="btn" onclick="calculateGPA()">احسب المعدل</button>
 
     <!-- عرض النتائج -->
     <div class="results" id="resultsArea">
-        <h3>النتيجة</h3>
+        <h3>نتائج الحساب</h3>
         <div class="result-item" id="termGpaResult">المعدل الفصلي: -</div>
         <div class="result-item" id="cumGpaResult">المعدل التراكمي الكلي: -</div>
     </div>
 </div>
 
 <script>
-    // خريطة التقديرات والنقاط (عدلها حسب لائحة الكلية الخاصة بك إذا لزم الأمر)
-    const gradePoints = {
-        'A+': 4.0,
-        'A': 3.7,
-        'B+': 3.3,
-        'B': 3.0,
-        'C+': 2.7,
-        'C': 2.4,
-        'D+': 2.2,
-        'D': 2.0,
-        'F': 0.0
-    };
+    // نظام التقديرات والنقاط (عدل الدرجات حسب لائحة كليتك)
+    const gradePoints = [
+        { grade: 'A+', points: 4.0, minScore: 90 },
+        { grade: 'A', points: 3.7, minScore: 85 },
+        { grade: 'B+', points: 3.3, minScore: 80 },
+        { grade: 'B', points: 3.0, minScore: 75 },
+        { grade: 'C+', points: 2.7, minScore: 70 },
+        { grade: 'C', points: 2.4, minScore: 65 },
+        { grade: 'D+', points: 2.2, minScore: 60 },
+        { grade: 'D', points: 2.0, minScore: 50 },
+        { grade: 'F', points: 0.0, minScore: 0 }
+    ];
 
-    // خيارات التقديرات لقائمة الـ Select
-    const gradeOptionsHtml = Object.keys(gradePoints).map(grade => 
-        `<option value="${gradePoints[grade]}">${grade}</option>`
+    // توليد خيارات التقديرات للقائمة المنسدلة
+    const gradeOptionsHtml = gradePoints.map(g => 
+        `<option value="${g.points}">${g.grade}</option>`
     ).join('');
 
-    const subjectsContainer = document.getElementById('subjectsContainer');
+    // تفعيل / تعطيل الوضع الداكن
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark);
+    }
 
-    // دالة لإضافة مادة جديدة
+    // إضافة مادة جديدة
     function addSubject() {
+        const container = document.getElementById('subjectsContainer');
         const row = document.createElement('div');
         row.className = 'subject-row';
         row.innerHTML = `
-            <div style="flex: 2;">
-                <input type="text" placeholder="اسم المادة (اختياري)">
-            </div>
-            <div style="flex: 1;">
-                <input type="number" class="credit-hours" min="1" max="10" placeholder="الساعات" required>
-            </div>
-            <div style="flex: 1.5;">
+            <div class="col-name"><input type="text" placeholder="اسم المادة (اختياري)"></div>
+            <div class="col-hours"><input type="number" class="credit-hours" min="1" max="10" placeholder="الساعات"></div>
+            <div class="col-score"><input type="number" class="score-input" min="0" max="100" placeholder="الدرجة من 100" oninput="autoSelectGrade(this)"></div>
+            <div class="col-grade">
                 <select class="grade-select">
                     <option value="" disabled selected>التقدير</option>
                     ${gradeOptionsHtml}
                 </select>
             </div>
-            <button class="btn btn-remove" onclick="this.parentElement.remove()" title="حذف المادة">✕</button>
+            <div class="col-btn"><button class="btn btn-remove" onclick="this.parentElement.parentElement.remove()" title="حذف">✕</button></div>
         `;
-        subjectsContainer.appendChild(row);
+        container.appendChild(row);
     }
 
-    // إضافة 4 مواد افتراضياً عند فتح الصفحة
-    window.onload = () => {
-        for(let i=0; i<4; i++) addSubject();
-    };
+    // دالة تحويل الدرجة المكتوبة إلى تقدير تلقائياً
+    function autoSelectGrade(inputElement) {
+        const score = parseFloat(inputElement.value);
+        const row = inputElement.closest('.subject-row');
+        const selectElement = row.querySelector('.grade-select');
 
-    // دالة الحساب
+        if (isNaN(score) || score < 0) {
+            selectElement.value = ""; // تفريغ التحديد إذا تم مسح الرقم
+            return;
+        }
+
+        // البحث عن التقدير المناسب للدرجة
+        for (let g of gradePoints) {
+            if (score >= g.minScore) {
+                selectElement.value = g.points;
+                break;
+            }
+        }
+    }
+
+    // دالة حساب المعدل
     function calculateGPA() {
-        // قراءة البيانات السابقة
-        const prevGpaInput = document.getElementById('prevGpa').value;
-        const prevHoursInput = document.getElementById('prevHours').value;
+        // جلب البيانات السابقة وحفظها في التخزين المحلي (Local Storage)
+        const prevGpa = parseFloat(document.getElementById('prevGpa').value) || 0;
+        const prevHours = parseFloat(document.getElementById('prevHours').value) || 0;
         
-        let prevGpa = parseFloat(prevGpaInput) || 0;
-        let prevHours = parseFloat(prevHoursInput) || 0;
+        localStorage.setItem('savedGpa', document.getElementById('prevGpa').value);
+        localStorage.setItem('savedHours', document.getElementById('prevHours').value);
+
         let prevPoints = prevGpa * prevHours;
+        let termPoints = 0, termHours = 0, validSubjectsCount = 0;
 
-        // قراءة مواد الفصل الحالي
-        const hourInputs = document.querySelectorAll('.credit-hours');
-        const gradeSelects = document.querySelectorAll('.grade-select');
-
-        let termPoints = 0;
-        let termHours = 0;
-        let validSubjectsCount = 0;
-
-        for (let i = 0; i < hourInputs.length; i++) {
-            const hours = parseFloat(hourInputs[i].value);
-            const points = parseFloat(gradeSelects[i].value);
+        // جلب بيانات الفصل الحالي
+        const rows = document.querySelectorAll('.subject-row');
+        rows.forEach(row => {
+            const hours = parseFloat(row.querySelector('.credit-hours').value);
+            const points = parseFloat(row.querySelector('.grade-select').value);
 
             if (!isNaN(hours) && !isNaN(points)) {
                 termPoints += hours * points;
                 termHours += hours;
                 validSubjectsCount++;
             }
-        }
+        });
 
         if (validSubjectsCount === 0 && prevHours === 0) {
-            alert("يرجى إدخال بيانات مادة واحدة على الأقل أو البيانات السابقة.");
+            alert("يرجى إدخال بيانات مادة واحدة على الأقل للاستمرار.");
             return;
         }
 
-        // الحسابات
+        // الحساب النهائي
         let termGPA = termHours > 0 ? (termPoints / termHours) : 0;
-        
         let totalHours = prevHours + termHours;
         let totalPoints = prevPoints + termPoints;
         let cumulativeGPA = totalHours > 0 ? (totalPoints / totalHours) : 0;
@@ -289,12 +353,23 @@
         // عرض النتائج
         document.getElementById('termGpaResult').innerText = termHours > 0 
             ? `المعدل الفصلي: ${termGPA.toFixed(2)}` 
-            : 'المعدل الفصلي: لا يوجد مواد حالية';
-            
+            : 'المعدل الفصلي: لا يوجد';
         document.getElementById('cumGpaResult').innerText = `المعدل التراكمي الكلي: ${cumulativeGPA.toFixed(2)}`;
-        
         document.getElementById('resultsArea').style.display = 'block';
     }
+
+    // تنفيذ أولي عند تحميل الصفحة
+    window.onload = () => {
+        // استرجاع تفضيل الوضع الداكن
+        if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
+
+        // استرجاع البيانات التراكمية المحفوظة
+        document.getElementById('prevGpa').value = localStorage.getItem('savedGpa') || '';
+        document.getElementById('prevHours').value = localStorage.getItem('savedHours') || '';
+
+        // إضافة 4 مواد افتراضية
+        for(let i=0; i<4; i++) addSubject();
+    };
 </script>
 
 </body>
