@@ -26,7 +26,6 @@
   a{color:var(--brick);}
   ::selection{background:var(--gold); color:var(--ink);}
 
-  html{scroll-behavior:smooth;}
   #screen-role{min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 20px; position:relative;
     background: radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%), radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%), var(--paper);}
   .brand{text-align:center; margin-bottom:40px;}
@@ -415,7 +414,6 @@
   .view{animation:viewIn .3s cubic-bezier(.22,1,.36,1);}
   @keyframes viewIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
   .view.active{display:block;}
-  .main{scroll-behavior:smooth;}
   .btn-primary, .btn-secondary, .btn-google, .quick-card, .role-card, .plan-card button, .nav-item{transition:background .15s ease, border-color .15s ease, transform .12s ease, box-shadow .15s ease, opacity .15s ease;}
   .btn-primary:active, .btn-secondary:active{transform:scale(.97);}
   .post{box-shadow:0 1px 3px rgba(27,42,65,0.05); transition:box-shadow .15s ease;}
@@ -511,7 +509,7 @@
   /* ===== تحسينات الموبايل (أندرويد + آيفون) ===== */
   html{-webkit-text-size-adjust:100%;}
   body, .shell, #screen-app, #screen-role{min-height:100vh; min-height:100dvh;}
-  body{-webkit-tap-highlight-color:transparent; overscroll-behavior-y:none;}
+  body{-webkit-tap-highlight-color:transparent; overscroll-behavior-y:contain; -webkit-overflow-scrolling:touch;}
   button, .nav-item, .filter-tab, .quiz-opt{touch-action:manipulation;}
   html, body{max-width:100%; overflow-x:hidden;}
   .shell{width:100%; max-width:100vw; overflow-x:hidden;}
