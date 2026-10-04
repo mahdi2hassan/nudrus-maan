@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>ملزمة بلس - بوستر الرياضيات التفاعلي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A3 landscape;
+            margin: 10mm;
+        }
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            color: #2b2d42;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        /* تصميم الهيدر الانسيابي */
+        .header {
+            text-align: center;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            border-radius: 50px;
+            margin-bottom: 45px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 34pt; 
+            font-weight: 900; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .header p { 
+            margin: 10px 0 0 0; 
+            font-size: 16pt; 
+            font-weight: bold; 
+            color: #ffd700; 
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 30px;
+        }
+        
+        /* شبكة الكروت */
+        .poster-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        /* تصميم البطاقات المودرن */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .card h2 {
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 17pt;
+            margin-top: -45px; 
+            box-shadow: 0 8px 15px rgba(255, 8, 68, 0.3);
+            font-weight: 900;
+        }
+        
+        .card:nth-child(even) h2 {
+            background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);
+            box-shadow: 0 8px 15px rgba(11, 163, 96, 0.3);
+        }
+
+        .card h3 { 
+            color: #667eea; 
+            font-size: 15pt; 
+            border-bottom: 3px solid #f0f0f0; 
+            padding-bottom: 8px; 
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .card p, .card ul { 
+            font-size: 13.5pt; 
+            line-height: 1.7; 
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            padding-right: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        li::marker {
+            color: #ff0844;
+            font-size: 1.2em;
+        }
+
+        /* تصميم الخطوات */
+        .step { 
+            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+            color: #fff; 
+            font-size: 13pt; 
+            padding: 5px 15px; 
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(19, 84, 122, 0.2);
+        }
+        
+        /* التمييز */
+        .highlight { 
+            background-color: #fff3cd; 
+            border-right: 5px solid #ffc107;
+            padding: 10px 15px; 
+            border-radius: 12px;
+            display: block;
+            font-weight: bold;
+            color: #856404;
+            margin-top: 15px;
+        }
+        
+        .page-break { page-break-before: always; }
+        
+        /* تصميم صفحة الأسئلة */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .q-box { 
+            background: #fff; 
+            border-radius: 20px;
+            padding: 25px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-right: 8px solid #764ba2;
+            font-size: 14pt;
+            line-height: 1.7;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .q-box::before {
+            content: '?';
+            position: absolute;
+            left: -10px;
+            top: -20px;
+            font-size: 100pt;
+            color: rgba(118, 75, 162, 0.04);
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .q-box h3 { 
+            color: #fff; 
+            background: #764ba2;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 15px;
+            margin-top: 0; 
+            font-size: 15pt;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+        }
+        
+        .q-box:nth-child(2n) { border-right-color: #ff0844; }
+        .q-box:nth-child(2n) h3 { background: #ff0844; box-shadow: 0 5px 15px rgba(255, 8, 68, 0.3); }
+        
+        .q-box:nth-child(3n) { border-right-color: #0ba360; }
+        .q-box:nth-child(3n) h3 { background: #0ba360; box-shadow: 0 5px 15px rgba(11, 163, 96, 0.3); }
+
+        .equation {
+            direction: ltr;
+            display: inline-block;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 6px;
+            color: #d63384;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- الصفحة الأولى -->
+    <div class="header">
+        <h1>مَلْزَمَةُ بَلَس - خُلاصة الرّياضيات (الثاني الإعدادي)</h1>
+        <p>إعداد المعلم: مهدي حسن &nbsp; | &nbsp; 📞 01007586279</p>
+    </div>
+    
+    <div class="poster-grid">
+        <!-- العمود الأول -->
+        <div class="card">
+            <h2>الوحدة الأولى: ح والفترات</h2>
+            <h3>مجموعات الأعداد</h3>
+            <p><b>الأعداد النسبية (Q):</b> تُكتب على صورة <span class="equation">a/b</span>.<br>
+            <b>غير النسبية (Q'):</b> جذور لا تنتهي (مثل <span class="equation">√2</span> و <span class="equation">π</span>).</br>
+            <b>الأعداد الحقيقية (R):</b> اتحاد المجموعتين السابقتين.</p>
+            
+            <h3>الفترات وعملياتها</h3>
+            <ul>
+                <li><b>مغلقة [a, b]:</b> الأطراف معانا!</li>
+                <li><b>مفتوحة ]a, b[:</b> الأطراف بره!</li>
+                <li><b>التقاطع (∩):</b> المشترك فقط.</li>
+                <li><b>الاتحاد (∪):</b> كله من غير تكرار.</li>
+                <li><b>الفرق (-):</b> اللي هنا ومش هناك.</li>
+            </ul>
+            <span class="highlight">💡 تلميح: في المعادلات، اعزل الرمز (x) لوحده، ولو أخدت جذر تربيعي متنساش (الموجب والسالب).</span>
+        </div>
+
+        <!-- العمود الثاني -->
+        <div class="card">
+            <h2>الوحدة الثانية: الجذور والأسس</h2>
+            <h3>العمليات على الجذور</h3>
+            <ul>
+                <li><b>الضرب:</b> <span class="equation">√a × √b = √(ab)</span></li>
+                <li><b>القسمة:</b> <span class="equation">√a / √b = √(a/b)</span></li>
+                <li><b>الجمع:</b> للحدود المتشابهة فقط<br> <span class="equation">2√3 + 5√3 = 7√3</span></li>
+                <li><b>المترافقان:</b> مرافق <span class="equation">(√a + √b)</span> هو <span class="equation">(√a - √b)</span>.<br> ضربهم = الأول² - الثاني² = <span class="equation">a - b</span></li>
+            </ul>
+            
+            <h3>قوانين الأسس</h3>
+            <ul>
+                <li><b>الضرب:</b> نجمع الأسس <span class="equation">a<sup>m+n</sup></span>.</li>
+                <li><b>القسمة:</b> نطرح الأسس <span class="equation">a<sup>m-n</sup></span>.</li>
+                <li><b>الأس الصفري:</b> <span class="equation">a<sup>0</sup> = 1</span></li>
+                <li><b>الأس السالب:</b> ينزل في المقام <span class="equation">a<sup>-n</sup> = 1/a<sup>n</sup></span></li>
+            </ul>
+        </div>
+
+        <!-- العمود الثالث -->
+        <div class="card">
+            <h2>طرق التحليل (1)</h2>
+            <p><span class="step">1. العامل المشترك (ع.م.أ)</span><br>
+            أول حاجة تفكر فيها! اسحب أكبر رقم وأصغر أُس.<br>
+            <i>مثال:</i> <span class="equation">6x² - 3x = 3x(2x - 1)</span></p>
+            
+            <p><span class="step">2. الثلاثي البسيط (x² + bx + c)</span><br>
+            افتح قوسين. دور على رقمين ضربهم الأخير وجمعهم (أو طرحهم) الأوسط.<br>
+            <i>مثال:</i> <span class="equation">x² + 5x + 6 = (x+2)(x+3)</span></p>
+            
+            <p><span class="step">3. الثلاثي غير البسيط (ax²...)</span><br>
+            استخدم طريقة المقص، أو اضرب معامل <span class="equation">a</span> في الحد الأخير، حلل عادي، وبعدين اقسم الأرقام تاني على <span class="equation">a</span>.</p>
+        </div>
+
+        <!-- العمود الرابع -->
+        <div class="card">
+            <h2>طرق التحليل (2)</h2>
+            <p><span class="step">4. المربع الكامل</span><br>
+            الأول والأخير ليهم جذر، والأوسط = <span class="equation">2 × √الأول × √الأخير</span>. <br>
+            تحليله: قوس تربيع <span class="equation">(√الأول ± √الأخير)²</span>.</p>
+            
+            <p><span class="step">5. الفرق بين مربعين</span><br>
+            قوسين توأم بس الإشارة مختلفة!<br>
+            <i>مثال:</i> <span class="equation">x² - y² = (x - y)(x + y)</span></p>
+            
+            <p><span class="step">6. المكعبين (مجموع وفرق)</span><br>
+            قوس صغير (جذر تكعيبي)، وقوس كبير (ربّع، غيّر إشارة، اضربهم، ربّع).<br>
+            <i>مثال:</i> <span class="equation">x³ - 8 = (x - 2)(x² + 2x + 4)</span></p>
+            
+            <p><span class="step">7. التحليل بالتقسيم</span><br>
+            للمقدار من 4 حدود. قسمهم (2 و 2) وخد مشترك، أو (3 و 1) لعمل مربع كامل وبعده فرق بين مربعين.</p>
+        </div>
+    </div>
+
+    <!-- الصفحة الثانية -->
+    <div class="page-break"></div>
+    
+    <div class="header" style="margin-top: 20px;">
+        <h1>مَلْزَمَةُ بَلَس - بنك الأسئلة والتدريبات الشاملة</h1>
+        <p>المراجعة النهائية &nbsp; | &nbsp; مستر مهدي حسن</p>
+    </div>
+    
+    <div class="questions-grid">
+        <div class="q-box">
+            <h3>س1/ أكمل ما يأتي:</h3>
+            1. مجموعة الأعداد الحقيقية <span class="equation">R</span> عبارة عن اتحاد ........ و ........<br><br>
+            2. العدد غير النسبي المحصور بين 2 و 3 هو ........<br><br>
+            3. المعكوس الضربي للعدد <span class="equation">(√3 - 2)</span> في أبسط صورة هو ........<br><br>
+            4. إذا كان <span class="equation">x + y = 10</span> و <span class="equation">a - b = 7</span> فإن <span class="equation">x(a-b) + y(a-b)</span> = ........
+        </div>
+        
+        <div class="q-box">
+            <h3>س2/ أوجد في R مجموعة الحل:</h3>
+            1) <span class="equation">3x² - 7 = 8</span><br><br>
+            2) <span class="equation">10x³ - 25x² = 0</span><br><br>
+            3) <span class="equation">x² - 8x + 15 = 0</span><br><br>
+            4) <span class="equation">x² + 5x - 36 = 0</span><br><br>
+            5) <span class="equation">6x + 9 = c(2x + d)</span> "أوجد الثوابت c,d"
+        </div>
+        
+        <div class="q-box">
+            <h3>س3/ ضع في أبسط صورة:</h3>
+            1) <span class="equation">√32 - √72 + √50</span><br><br>
+            2) <span class="equation">(√7 - 1)(2√7 + 3)</span><br><br>
+            3) <span class="equation">(-√3 a b)⁴ / (3 a⁴ b²)</span><br><br>
+            4) <span class="equation">12 / 5√2</span> (مع جعل المقام صحيحاً)
+        </div>
+
+        <div class="q-box">
+            <h3>س4/ حلل تحليلاً تاماً:</h3>
+            1) <span class="equation">4x³ - 8x² + 12x</span><br><br>
+            2) <span class="equation">x² - 7x - 18</span><br><br>
+            3) <span class="equation">9x² - 16</span><br><br>
+            4) <span class="equation">x³ + 125</span><br><br>
+            5) <span class="equation">ax + by + ay + bx</span>
+        </div>
+
+        <div class="q-box">
+            <h3>س5/ استخدام التحليل للحساب:</h3>
+            1) <span class="equation">(57)² + 2(57)(43) + (43)²</span><br><br>
+            2) <span class="equation">(99)² - 1</span><br><br>
+            3) <span class="equation">37 × 163 - 37 × 26 - (37)²</span><br><br>
+            4) إذا كان <span class="equation">a² - b² = 12</span> و <span class="equation">b - a = -3</span>، أوجد قيمة <span class="equation">(a+b)</span>.
+        </div>
+
+        <div class="q-box">
+            <h3>س6/ تطبيقات هندسية:</h3>
+            1) مثلث مساحته 35 سم²، فإذا كان طول قاعدته يزيد 9 سم عن الارتفاع المناظر لها، فما ارتفاع المثلث؟<br><br>
+            2) إذا كانت <span class="equation">a = √5 + √2</span> و <span class="equation">b = √5 - √2</span>، أوجد قيمة المقدار: <span class="equation">a² - b²</span>.<br><br>
+            3) مربع مساحته <span class="equation">(25x² + 10x + 1)</span>، أوجد تعبيراً يمثل طول ضلعه.
+        </div>
+    </div>
+</body>
+</html>
